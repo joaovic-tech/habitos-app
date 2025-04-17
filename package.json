@@ -11,12 +11,17 @@
   "dependencies": {
     "expo": "~52.0.46",
     "expo-status-bar": "~2.0.1",
+    "phosphor-react-native": "^2.3.1",
     "react": "18.3.1",
-    "react-native": "0.76.9"
+    "react-native": "0.76.9",
+    "styled-components": "^6.1.17"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.26.10",
+    "@babel/plugin-transform-runtime": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
     "@types/react": "~18.3.12",
+    "babel-plugin-module-resolver": "^5.0.2",
     "typescript": "^5.3.3"
   },
   "private": true
