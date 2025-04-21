@@ -10,8 +10,8 @@ export default {
         TEXT_DARK2: '#777777',
     },
     FONT_FAMILY: {
-        REGULAR: 'Roboto_400Regular',
-        BOLD: 'Roboto_700Bold',
+        REGULAR: 'Dosis_400Regular',
+        BOLD: 'Dosis_700Bold',
     },
     FONT_SIZE: {
         SM: 14,
