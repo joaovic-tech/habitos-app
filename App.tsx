@@ -1,10 +1,17 @@
 import { ThemeProvider } from 'styled-components/native'
+import {
+  useFonts,
+  Dosis_400Regular,
+  Dosis_700Bold
+} from '@expo-google-fonts/dosis'
 
 import theme from './src/theme'
 import MainScreen from '@screens/MainScreen'
-import { StatusBar } from 'react-native'
+import { ActivityIndicator, StatusBar } from 'react-native'
 
 export default function App () {
+  const [fontsLoaded] = useFonts({ Dosis_400Regular, Dosis_700Bold })
+
   return (
     <ThemeProvider theme={theme}>
       <StatusBar
@@ -13,7 +20,7 @@ export default function App () {
         translucent
       />
 
-      <MainScreen />
+      {fontsLoaded ? <MainScreen /> : <ActivityIndicator />}
     </ThemeProvider>
   )
 }

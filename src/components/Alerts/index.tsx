@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#FFF',
-    fontSize: 22
+    fontSize: 22,
+    fontFamily: 'Dosis_700Bold'
   }
 })
