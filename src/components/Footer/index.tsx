@@ -17,13 +17,15 @@ interface FooterProps {
 
 const BUTTONS = [
   { key: 'info', label: 'Info', IconComp: Info },
-  { key: 'dicas', label: 'Dicas', IconComp: Lightbulb },
-  { key: 'Alerts', label: 'Alerts', IconComp: Alarm },
-  { key: 'perfil', label: 'Perfil', IconComp: User }
+  { key: 'tips', label: 'Dicas', IconComp: Lightbulb },
+  { key: 'alerts', label: 'Alerta', IconComp: Alarm },
+  { key: 'profile', label: 'Perfil', IconComp: User }
 ]
 
-export function Footer ({ onSelect, selected }: FooterProps) {
+export default function Footer ({ onSelect, selected }: FooterProps) {
   const animatedValues = useRef<{ [key: string]: Animated.Value }>({})
+
+  console.log('selected', selected)
 
   // Inicializa os valores animados
   BUTTONS.forEach(({ key }) => {

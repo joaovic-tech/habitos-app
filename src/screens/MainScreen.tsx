@@ -1,21 +1,22 @@
 import Alerts from '@components/Alerts'
-import Dicas from '@components/Dicas'
-import { Footer } from '@components/Footer'
+import Tips from '@components/Tips'
+import Footer from '@components/Footer'
 import Info from '@components/Info'
-import Perfil from '@components/Perfil'
+import Profile from '@components/Profile'
 import React, { useState } from 'react'
 import { View, StyleSheet, Animated } from 'react-native'
+import theme from '../theme'
 
 export default function MainScreen () {
-  const [selected, setSelected] = useState('alertas')
+  const [selected, setSelected] = useState('alerts')
   const fadeAnim = new Animated.Value(1)
 
   const renderContent = () => {
     switch (selected) {
-      case 'dicas':
-        return <Dicas />
-      case 'perfil':
-        return <Perfil />
+      case 'tips':
+        return <Tips />
+      case 'profile':
+        return <Profile />
       case 'info':
         return <Info />
       default:
@@ -53,7 +54,7 @@ export default function MainScreen () {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121214',
+    backgroundColor: theme.COLORS.DARK,
     justifyContent: 'space-between'
   },
   content: {

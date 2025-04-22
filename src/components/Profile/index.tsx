@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-export default function Dicas () {
+export default function Profile () {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tela de Dicas</Text>
+      <Text style={styles.title}>Tela de Perfil</Text>
       {/* conteúdo da tela */}
     </View>
   )
