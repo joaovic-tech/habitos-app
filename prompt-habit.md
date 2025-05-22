@@ -6,7 +6,7 @@ quantidade de alertas: 4 / dia
 
 com essas informações o app irar saber quantas vezes tera que alerta o usuário para ele não fazer o determinado hábito.
 
-com isso, crie um aplicativo react native usando typescript (blank) com nativecn-ui/nativewind que terar esses requisitos:
+com isso, crie um aplicativo react native usando typescript (expo-navigator) com nativecn-ui/nativewind que terar esses requisitos:
 
 frontend:
 - Criar componentes separados em src/components
