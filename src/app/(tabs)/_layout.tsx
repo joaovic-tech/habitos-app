@@ -1,12 +1,10 @@
-import { FontAwesome } from '@expo/vector-icons';
-import Tab from './alert';
 import { TabBar } from '../../components/TabBar';
 import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
     return (
         <Tabs
-            initialRouteName="alert"
+            initialRouteName="info" // para estilizar (mudar depois pro alert)
             tabBar={props => <TabBar {...props} />}
         >
             <Tabs.Screen name="info" options={{ headerShown: false, }} />

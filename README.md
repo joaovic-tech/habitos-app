@@ -47,7 +47,6 @@ Aplicativo mobile desenvolvido para auxiliar pacientes e a comunidade acadêmica
 | Não Funcional | RNF11  | O modo escuro deve utilizar a paleta de cores especificada na documentação. |
 | Não Funcional | RNF12  | As telas de login e cadastro devem ser apenas frontend, sem lógica de autenticação obrigatória inicialmente. |
 
-
 ---
 
 ## 🏛️ Instituição
