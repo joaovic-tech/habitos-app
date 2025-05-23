@@ -17,7 +17,7 @@ const labels = {
 export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const [dimensions, setDimensions] = useState({ height: 20, width: 20 });
   const buttonWidth = dimensions.width / state.routes.length;
-  const { colorScheme, setColorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
 
   const onTabbarLayout = (event: LayoutChangeEvent) => {
     setDimensions({
@@ -44,9 +44,9 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   });
 
   return (
-    <View onLayout={onTabbarLayout} className='absolute bottom-0 flex-row items-center w-full h-40 text-center shadow-xl bg-background2 rounded-e-lg'>
+    <View onLayout={onTabbarLayout} className='absolute bottom-0 flex-row items-center w-full h-40 text-center bg-white shadow-lg shadow-gray-600 dark:bg-gray-800 rounded-e-lg'>
       <Animated.View
-        className='absolute z-10 rounded-full shadow-lg left-[10px] -top-8 bg-primary shadow-primary'
+        className='absolute z-10 rounded-full shadow-xl left-[10px] -top-8 bg-primary shadow-primary'
         style={[{
           height: buttonWidth - 20,
           width: buttonWidth - 20,
@@ -54,7 +54,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
       />
 
       <Animated.View
-        className='absolute rounded-full bg-background -top-10'
+        className='absolute bg-gray-200 rounded-full dark:bg-gray-900 -top-10'
         style={[{
           height: buttonWidth,
           width: buttonWidth,
@@ -97,6 +97,8 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 
         const text = labels[label as keyof typeof labels] || label;
 
+        const colorTheme = colorScheme === 'dark' ? colors.gray[900] : colors.gray[500];
+
         return (
           <TabBarButton
             key={route.name}
@@ -104,7 +106,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             onLongPress={onLongPress}
             isFocused={isFocused}
             routeName={route.name as "info" | "form" | "alert" | "profile" | "settings"}
-            color={colors.black}
+            color={colorTheme}
             label={text as string}
           />
         );

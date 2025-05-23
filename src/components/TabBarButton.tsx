@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, useColorScheme } from 'react-native'
 import React, { use, useEffect, useState } from 'react'
 import { icon } from '../constants/icon';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -62,12 +62,13 @@ export default function TabBarButton({
       >
         {icon[routeName]({
           size: 30,
-          color: isFocused ? colors.text : colors.text2,
+          color: isFocused ? colors.gray[500] : colors.gray[600],
+          isFocused,
         })}
       </Animated.View>
       <Animated.Text
         style={[animatedTextStyle]}
-        className="text-base font-bold -bottom-4 text-text"
+        className="items-center m-auto text-base font-bold -bottom-4 text- text-text-light dark:text-gray-500"
       >
         {label}
       </Animated.Text>

@@ -50,7 +50,7 @@ const AvatarFallback = forwardRef<
     )}
     {...props}
   >
-    <Text className={cn('text-lg text-primary', textClassname)}>
+    <Text className={cn('text-lg text-blue-600', textClassname)}>
       {children}
     </Text>
   </View>
