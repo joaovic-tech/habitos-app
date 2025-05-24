@@ -23,7 +23,8 @@
         "backgroundColor": "#121214"
       },
       "edgeToEdgeEnabled": true,
-      "backgroundColor": "#121214"
+      "backgroundColor": "#121214",
+      "package": "com.habitosapp"
     },
     "web": {
       "bundler": "metro",

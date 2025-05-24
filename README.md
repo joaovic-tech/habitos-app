@@ -14,8 +14,6 @@ Aplicativo mobile desenvolvido para auxiliar pacientes e a comunidade acadêmica
 
 ## Requisitos do Sistema
 
-# 📋 Requisitos do Projeto
-
 | Categoria | Código  | Descrição |
 | --------- | ------- | --------- |
 | Funcional | RF01    | O usuário deve poder cadastrar um novo hábito, informando título, período de ocorrência e quantidade de alertas diários. |

@@ -1,5 +1,4 @@
-import { colors } from "@/styles/colors";
-import { FontAwesome } from "@expo/vector-icons";
+
 import { Text, View } from "react-native";
 
 type Props = {
@@ -11,7 +10,7 @@ type Props = {
 export function Header({ title, icon }: Props) {
   return (
     <>
-      <View className="items-center px-6 py-3 m-auto mb-24 dark:bg-gray-800 rounded-e-lg">
+      <View className="items-center px-6 py-3 m-auto mb-16 bg-white dark:bg-gray-800 rounded-e-lg">
         <Text className="text-xl font-bold text-secondary">Hábitos+</Text>
       </View>
 
