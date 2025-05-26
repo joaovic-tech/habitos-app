@@ -6,7 +6,7 @@ const TABS = ['about', 'form', 'alert', 'profile', 'settings'] as const;
 export default function TabLayout() {
   return (
     <Tabs
-      initialRouteName='about' // para estilizar (mudar depois pro alert)
+      initialRouteName='profile' // para estilizar (mudar depois pro alert)
       tabBar={props => <TabBar {...props} />}
       screenOptions={{
         headerShown: false

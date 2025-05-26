@@ -14,6 +14,7 @@ export default function InfoScreen() {
   return (
     <ScrollView className="flex-1 px-6 bg-gray-200 dark:bg-gray-900">
       <Header title='Sobre o App' icon={icon} />
+      
       <View className="flex-col gap-4 px-4 py-6 bg-white shadow dark:bg-gray-800 rounded-2xl shadow-gray-800">
         <View className="flex-col gap-2 text-start">
           <Text className="text-lg font-semibold text-gray-900 dark:text-white">Sobre o Hábitos+</Text>
