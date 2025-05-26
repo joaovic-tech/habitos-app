@@ -9,7 +9,7 @@ import { useColorScheme } from 'nativewind';
 const labels = {
   alert: 'Alertas',
   form: 'Responda',
-  info: 'Sobre',
+  about: 'Sobre',
   profile: 'Perfil',
   settings: 'Ajustes',
 };
@@ -105,7 +105,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             onPress={onPress}
             onLongPress={onLongPress}
             isFocused={isFocused}
-            routeName={route.name as "info" | "form" | "alert" | "profile" | "settings"}
+            routeName={route.name as "about" | "form" | "alert" | "profile" | "settings"}
             color={colorTheme}
             label={text as string}
           />
