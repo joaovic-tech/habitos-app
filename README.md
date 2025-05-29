@@ -50,3 +50,7 @@ Aplicativo mobile desenvolvido para auxiliar pacientes e a comunidade acadêmica
 ## 🏛️ Instituição
 
 Este projeto é uma iniciativa acadêmica e tecnológica desenvolvida com apoio da: UNISAGRADO – Centro Universitário Sagrado Coração (Bauru/SP) Curso de Odontologia + Núcleo de Inovação em Tecnologia
+
+## Build
+
+🔎 TIP: You are using a build configuration that could benefit from using eas build:dev command. Run it to install and run cached development build, or create a new one if a compatible build doesn't exist yet.

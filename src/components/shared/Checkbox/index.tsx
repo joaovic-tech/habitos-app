@@ -1,0 +1,58 @@
+// Move the existing Checkbox component here
+import React, { useState } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { cn } from '@/lib/utils';
+import { colors } from '@/styles/colors';
+
+interface CheckboxProps {
+  label?: React.ReactNode;
+  initialValue?: boolean;
+  onChange?: (checked: boolean) => void;
+  className?: string;
+}
+
+export function Checkbox({ label, initialValue = false, onChange, className }: CheckboxProps) {
+  const [checked, setChecked] = useState(initialValue);
+
+  const handlePress = () => {
+    const newValue = !checked;
+    setChecked(newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
+  };
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={handlePress}
+      className={cn('flex-row items-center', className)}
+    >
+      <View
+        className={cn(
+          'w-5 h-5 justify-center items-center rounded-md border',
+          checked ? 'bg-primary border-primary' : 'border-gray-400'
+        )}
+      >
+        {checked && (
+          <Feather
+            name="check"
+            size={14}
+            color={colors.gray[500]}
+          />
+        )}
+      </View>
+      {label && (
+        <View className="ml-2">
+          {typeof label === 'string' ? (
+            <Text className="text-gray-700 dark:text-gray-300 text-sm">{label}</Text>
+          ) : (
+            label
+          )}
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+}
+

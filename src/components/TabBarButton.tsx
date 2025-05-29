@@ -1,8 +1,13 @@
-import { View, Text, Pressable, useColorScheme } from 'react-native'
-import React, { use, useEffect, useState } from 'react'
-import { icon } from '../constants/icon';
-import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { colors } from '@/styles/colors';
+import { View, Text, Pressable, useColorScheme } from "react-native";
+import React, { use, useEffect, useState } from "react";
+import { icon } from "../constants/icon";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import { colors } from "@/styles/colors";
 
 type RouteName = keyof typeof icon;
 
@@ -11,7 +16,6 @@ interface TabBarButtonProps {
   onLongPress: () => void;
   isFocused: boolean;
   routeName: RouteName;
-  color: string;
   label: string;
 }
 
@@ -20,15 +24,17 @@ export default function TabBarButton({
   onLongPress,
   isFocused,
   routeName,
-  color,
   label,
 }: TabBarButtonProps) {
   const scale = useSharedValue(0);
 
   useEffect(() => {
-    scale.value = withSpring(typeof isFocused === 'boolean' ? (isFocused ? 1 : 0) : isFocused, {
-      duration: 350,
-    });
+    scale.value = withSpring(
+      typeof isFocused === "boolean" ? (isFocused ? 1 : 0) : isFocused,
+      {
+        duration: 350,
+      }
+    );
   }, [scale, isFocused]);
 
   const animatedIconStyle = useAnimatedStyle(() => {
@@ -36,11 +42,8 @@ export default function TabBarButton({
     const top = interpolate(scale.value, [0, 1], [0, -30]);
 
     return {
-      transform: [
-        { scale: scaleValue },
-        { translateY: top },
-      ],
-    }
+      transform: [{ scale: scaleValue }, { translateY: top }],
+    };
   });
 
   const animatedTextStyle = useAnimatedStyle(() => {
@@ -48,7 +51,7 @@ export default function TabBarButton({
 
     return {
       opacity,
-    }
+    };
   });
 
   return (
@@ -57,9 +60,7 @@ export default function TabBarButton({
       onLongPress={onLongPress}
       className={`z-20 flex-col flex-1 items-center justify-center gap-1 -top-8`}
     >
-      <Animated.View
-        style={animatedIconStyle}
-      >
+      <Animated.View style={animatedIconStyle}>
         {icon[routeName]({
           size: 30,
           color: isFocused ? colors.gray[500] : colors.gray[600],
@@ -73,5 +74,5 @@ export default function TabBarButton({
         {label}
       </Animated.Text>
     </Pressable>
-  )
+  );
 }

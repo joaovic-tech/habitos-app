@@ -1,7 +1,7 @@
 import { type VariantProps, cva } from 'class-variance-authority';
 import { Text, TouchableOpacity } from 'react-native';
 
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
   'flex flex-row items-center justify-center rounded-md',
@@ -73,3 +73,4 @@ function Button({
 }
 
 export { Button, buttonVariants, buttonTextVariants };
+

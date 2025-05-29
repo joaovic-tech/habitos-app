@@ -15,9 +15,11 @@
       "backgroundColor": "#121214"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.joaovic.habitosapp"
     },
     "android": {
+      "package": "com.joaovic.habitosapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#121214"
@@ -35,6 +37,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a873ec10-ed62-4cf0-8c12-aead23ef42ef"
+      }
     }
   }
 }
