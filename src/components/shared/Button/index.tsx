@@ -1,76 +1,50 @@
-import { type VariantProps, cva } from 'class-variance-authority';
-import { Text, TouchableOpacity } from 'react-native';
+import React from "react";
+import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { colors } from "@/styles/colors";
 
-import { cn } from '@/lib/utils';
-
-const buttonVariants = cva(
-  'flex flex-row items-center justify-center rounded-md',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary',
-        secondary: 'bg-secondary',
-      },
-      size: {
-        default: 'h-10 px-4',
-        sm: 'h-8 px-2',
-        lg: 'h-12 px-8',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
-    },
-  }
-);
-
-const buttonTextVariants = cva('text-center font-medium', {
-  variants: {
-    variant: {
-      default: 'text-gray-500',
-      secondary: 'text-secondary',
-    },
-    size: {
-      default: 'text-base',
-      sm: 'text-sm',
-      lg: 'text-xl',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-    size: 'default',
-  },
-});
-
-interface ButtonProps
-  extends React.ComponentPropsWithoutRef<typeof TouchableOpacity>,
-    VariantProps<typeof buttonVariants> {
+interface ButtonProps extends TouchableOpacityProps {
   label: string;
+  variant?: "primary" | "secondary" | "outline";
   labelClasses?: string;
 }
+
 function Button({
   label,
-  labelClasses,
-  className,
-  variant,
-  size,
+  variant = "primary",
+  labelClasses = "",
+  className = "",
   ...props
 }: ButtonProps) {
+  // Define button styles based on variant
+  const getButtonStyle = () => {
+    switch (variant) {
+      case "primary":
+        return "bg-primary";
+      case "secondary":
+        return "bg-secondary";
+      case "outline":
+        return "bg-transparent border border-primary";
+      default:
+        return "bg-primary";
+    }
+  };
+
+  // Define text styles based on variant
+  const getTextStyle = () => {
+    return variant === "outline" ? "text-primary" : "text-white";
+  };
+
   return (
     <TouchableOpacity
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={`w-full shadow shadow-blue-500 border-2 border-blue-500 py-4 rounded-lg items-center justify-center mb-4 mt-2 ${getButtonStyle()} ${className}`}
+      activeOpacity={0.8}
       {...props}
     >
-      <Text
-        className={cn(
-          buttonTextVariants({ variant, size, className: labelClasses })
-        )}
-      >
+      <Text className={`font-bold text-lg ${getTextStyle()} ${labelClasses}`}>
         {label}
       </Text>
     </TouchableOpacity>
   );
 }
 
-export { Button, buttonVariants, buttonTextVariants };
-
+export { Button };
