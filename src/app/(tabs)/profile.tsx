@@ -7,7 +7,7 @@ const userExists = false; // Simula se o usuário está logado ou não
 
 export default function Tab() {
   return (
-    <ToastProvider position="top">
+    <ToastProvider>
       {!userExists ? (
         <Login />
       ) : (

@@ -6,7 +6,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/hooks/useTheme";
-import { ToastProvider } from "@/components/shared/Toast";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,18 +50,16 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <ToastProvider>
-      <SafeAreaView className="flex-1">
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-              statusBarHidden: false,
-            }}
-          />
-        </Stack>
-      </SafeAreaView>
-    </ToastProvider>
+    <SafeAreaView className="flex-1">
+      <Stack>
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+            statusBarHidden: false,
+          }}
+        />
+      </Stack>
+    </SafeAreaView>
   );
 }

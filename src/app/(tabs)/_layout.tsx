@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import { TabBar } from "@/components/TabBar";
+import { ToastProvider } from "@/components/shared/Toast";
 
 const TABS = ["about", "form", "index", "profile", "settings"] as const;
 
