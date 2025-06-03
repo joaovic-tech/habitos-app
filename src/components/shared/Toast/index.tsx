@@ -44,33 +44,48 @@ function Toast({
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.sequence([
-      Animated.timing(opacity, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }),
-      Animated.timing(progress, {
-        toValue: 1,
-        duration: duration - 1000,
-        useNativeDriver: false,
-      }),
-      Animated.timing(opacity, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }),
-    ]).start(({ finished }) => {
+    // Create separate animation sequences for better control
+    const fadeInAnimation = Animated.timing(opacity, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    });
+
+    const progressAnimation = Animated.timing(progress, {
+      toValue: 1,
+      duration: duration - 1000,
+      useNativeDriver: false, // false because width can't be animated with native driver
+    });
+
+    const fadeOutAnimation = Animated.timing(opacity, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: true,
+    });
+
+    // Create a composed animation
+    const animationSequence = Animated.sequence([
+      fadeInAnimation,
+      progressAnimation,
+      fadeOutAnimation,
+    ]);
+
+    // Start the animation
+    const animationId = animationSequence.start(({ finished }) => {
       if (finished) {
         onHide(id);
       }
     });
 
+    // Clean up animations when component unmounts
     return () => {
       opacity.stopAnimation();
       progress.stopAnimation();
+      if (animationId) {
+        animationId.stop?.();
+      }
     };
-  }, [duration, id, onHide]);
+  }, [duration, id, onHide, opacity, progress]);
 
   return (
     <Animated.View
@@ -105,6 +120,9 @@ function Toast({
                 inputRange: [0, 1],
                 outputRange: ["0%", "100%"],
               }),
+              // Using explicit transforms for properties that work with native driver
+              // and layout properties without native driver
+              transform: [], // Empty array to ensure we're not accidentally using unsupported transforms
             }}
           />
         </View>

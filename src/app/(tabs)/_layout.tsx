@@ -8,9 +8,9 @@ const TABS = ["about", "form", "index", "profile", "settings"] as const;
 export default function TabLayout() {
   return (
     <>
-      <StatusBar style="auto" hideTransitionAnimation="slide"/>
+      <StatusBar style="auto" hideTransitionAnimation="slide" />
       <Tabs
-        initialRouteName="index" // para estilizar (mudar depois pro alert)
+        initialRouteName="index"
         tabBar={(props) => <TabBar {...props} />}
         screenOptions={{
           headerShown: false,

@@ -46,10 +46,6 @@ export const habitsData: HabitsData = {
       description: "Mastigar apenas de um lado da boca"
     },
     {
-      name: "Mordedura de Objetos",
-      description: "Morder canetas, lápis ou outros objetos"
-    },
-    {
       name: "Ranger de Dentes Diurno",
       description: "Ranger os dentes durante o dia"
     }

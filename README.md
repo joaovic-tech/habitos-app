@@ -1,3 +1,54 @@
+# Habits App
+
+Aplicativo de gerenciamento de hábitos desenvolvido com React Native, TypeScript e Expo.
+
+## Tecnologias
+
+- React Native
+- TypeScript
+- Expo
+- NativeWind
+- AsyncStorage
+- Phosphor Icons
+
+## Instalação
+
+1. Clone o repositório
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+3. Execute o projeto:
+   ```bash
+   npx expo start
+   ```
+
+## Funcionalidades
+
+- Seleção de hábitos predefinidos
+- Configuração de horários para alertas
+- Definição de quantidade de alertas diários
+- Armazenamento persistente de hábitos
+- Exclusão de hábitos com animação
+- Suporte a tema claro/escuro
+
+## Estrutura do Projeto
+
+- `/src/app` - Telas do aplicativo
+- `/src/components` - Componentes reutilizáveis
+- `/src/storage` - Gerenciamento de armazenamento
+- `/src/data` - Dados estáticos
+- `/src/utils` - Utilitários e helpers
+
+## Como Usar
+
+1. Na tela inicial, clique em "Adicionar Novo Hábito"
+2. Selecione um hábito da lista e clique em "Continuar"
+3. Configure os horários de início e fim dos alertas
+4. Defina a quantidade de alertas por dia
+5. Clique em "Adicionar Hábito" para salvar
+6. Para excluir um hábito, deslize-o para a esquerda e toque no botão "Excluir"
+
 # 🦷 App de Rastreamento de Hábitos Bucais - UNISAGRADO
 
 Aplicativo mobile desenvolvido para auxiliar pacientes e a comunidade acadêmica da **UNISAGRADO – Centro Universitário Sagrado Coração (Bauru/SP)** no rastreamento e controle de hábitos bucais parafuncionais, como bruxismo, mordida de objetos, entre outros.
@@ -50,7 +101,3 @@ Aplicativo mobile desenvolvido para auxiliar pacientes e a comunidade acadêmica
 ## 🏛️ Instituição
 
 Este projeto é uma iniciativa acadêmica e tecnológica desenvolvida com apoio da: UNISAGRADO – Centro Universitário Sagrado Coração (Bauru/SP) Curso de Odontologia + Núcleo de Inovação em Tecnologia
-
-## Build
-
-🔎 TIP: You are using a build configuration that could benefit from using eas build:dev command. Run it to install and run cached development build, or create a new one if a compatible build doesn't exist yet.

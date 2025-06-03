@@ -1,17 +1,27 @@
 import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity, Animated } from "react-native";
+import { View, Text, TouchableOpacity, Animated, AccessibilityProps } from "react-native";
 import { colors } from "@/styles/colors";
+import { cn } from "@/lib/utils";
 
-type CustomSwitchProps = {
+interface CustomSwitchProps extends AccessibilityProps {
   value: boolean;
-  onValueChange: () => void;
+  onValueChange: (value: boolean) => void;
+  label?: string;
   showLabel?: boolean;
+  disabled?: boolean;
+  className?: string;
+  labelClasses?: string;
 };
 
 export function CustomSwitch({
   value,
   onValueChange,
+  label,
   showLabel = true,
+  disabled = false,
+  className = "",
+  labelClasses = "",
+  ...accessibilityProps
 }: CustomSwitchProps) {
   // Animation value for the thumb position
   const thumbPosition = React.useRef(new Animated.Value(value ? 1 : 0)).current;
@@ -29,47 +39,69 @@ export function CustomSwitch({
   // Interpolate position for the thumb
   const thumbLeft = thumbPosition.interpolate({
     inputRange: [0, 1],
-    outputRange: [4, 48], // Left position when OFF vs ON
+    outputRange: [4, 50], // Left position when OFF vs ON
   });
 
-  return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      onPress={onValueChange}
-      className="justify-center items-center"
-    >
-      <View
-        className={`py-5 rounded justify-center px-12 border-2 ${
-          value ? " border-blue-500 bg-primary" : "border-gray-900 bg-gray-900"
-        }`}
-      >
-        {showLabel && (
-          <Text
-            className="text-xs font-bold absolute"
-            style={{
-              color: "white",
-              left: value ? 8 : "auto",
-              right: value ? "auto" : 8,
-            }}
-          >
-            {value ? "ON" : "OFF"}
-          </Text>
-        )}
+  // Determine custom label text
+  const labelText = () => {
+    if (label) return label;
+    return value ? "ON" : "OFF";
+  };
 
-        <Animated.View
-          className="w-8 h-8 rounded-full bg-white absolute"
-          style={[
-            { left: thumbLeft },
-            {
-              elevation: 2,
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.2,
-              shadowRadius: 2,
-            },
-          ]}
-        />
-      </View>
-    </TouchableOpacity>
+  return (
+    <View className={cn("flex-row items-center", className)}>
+      {label && !showLabel && (
+        <Text
+          className={cn("mr-2 text-sm text-gray-700 dark:text-gray-300", labelClasses)}
+        >
+          {label}
+        </Text>
+      )}
+      
+      <TouchableOpacity
+        activeOpacity={disabled ? 1 : 0.8}
+        onPress={() => !disabled && onValueChange(!value)}
+        className="justify-center items-center"
+        disabled={disabled}
+        accessibilityRole="switch"
+        accessibilityState={{ checked: value, disabled }}
+        accessibilityHint={`Alternar para ${value ? 'desativado' : 'ativado'}`}
+        {...accessibilityProps}
+      >
+        <View
+          className={cn(
+            "py-5 rounded justify-center px-12 border-2",
+            value ? "border-blue-500 bg-primary" : "border-gray-900 bg-gray-900",
+            disabled && "opacity-50"
+          )}
+        >
+          {showLabel && (
+            <Text
+              className={cn("text-xs font-bold absolute text-white", labelClasses)}
+              style={{
+                left: value ? 8 : "auto",
+                right: value ? "auto" : 8,
+              }}
+            >
+              {labelText()}
+            </Text>
+          )}
+
+          <Animated.View
+            className={cn("w-8 h-8 rounded-full bg-white absolute")}
+            style={[
+              { left: thumbLeft },
+              {
+                elevation: 2,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 2,
+              },
+            ]}
+          />
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 }
