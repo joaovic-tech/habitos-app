@@ -70,7 +70,7 @@ export function CustomSwitch({
       <TouchableOpacity
         activeOpacity={disabled ? 1 : 0.8}
         onPress={() => !disabled && onValueChange(!value)}
-        className="justify-center items-center"
+        className="items-center justify-center"
         disabled={disabled}
         accessibilityRole="switch"
         accessibilityState={{ checked: value, disabled }}

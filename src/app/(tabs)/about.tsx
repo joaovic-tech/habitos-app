@@ -9,25 +9,18 @@ import {
   FileText,
   LockKey,
 } from "phosphor-react-native";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
-import Constants from "expo-constants";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const icon = <Info size={20} color={colors.secondary} weight="duotone" />;
 
 export default function InfoScreen() {
-  const statusBarHeight = Constants.statusBarHeight || 0;
-
   const openLink = (url: string) => {
     Linking.openURL(url);
   };
 
   return (
     <SafeAreaProvider>
-      <ScrollView
-        className="flex-1 px-6 bg-gray-200 dark:bg-gray-900"
-        style={{ paddingTop: statusBarHeight }}
-      >
+      <ScrollView className="flex-1 px-6 bg-gray-200 dark:bg-gray-900">
         <Header title="Sobre o App" icon={icon} />
 
         <View className="flex-col gap-4 px-4 py-6 bg-gray-500 shadow dark:bg-gray-800 rounded-2xl shadow-gray-800">

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, SafeAreaView } from "react-native";
+import { useState } from "react";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import { Header } from "@/components/Header";
-import { HabitItem } from "@/components/HabitItem";
 import { Button } from "@/components/shared/Button";
 import { habitsData } from "@/data/HabitsData";
 import { router, Stack } from "expo-router";
@@ -32,7 +32,7 @@ export default function SelectHabitScreen() {
     }
   };
 
-  // Component to render above the list
+  // Header acima da lista
   const ListHeader = () => (
     <View style={{ paddingTop: statusBarHeight }} className="px-6 pt-4">
       <Header backRouter={true} />
@@ -40,6 +40,50 @@ export default function SelectHabitScreen() {
         Selecione seu hábito abaixo:
       </Text>
     </View>
+  );
+
+  // Card do hábito com ícone e estilização
+  const HabitCard = ({
+    name,
+    description,
+    selected,
+    onSelect,
+  }: {
+    name: string;
+    description: string;
+    selected: boolean;
+    onSelect: () => void;
+  }) => (
+    <TouchableOpacity
+      onPress={onSelect}
+      className={`px-2 flex-1 m-4 flex-col justify-center items-center p-4 rounded-2xl border ${
+        selected
+          ? "border-primary bg-blue-50 dark:bg-primary/20 border-collapse"
+          : "dark:border-gray-700 border-gray-200 bg-white dark:bg-gray-800"
+      }`}
+    >
+      <Text
+        className={`text-base font-semibold ${
+          selected
+            ? "text-blue-700 dark:text-blue-300"
+            : "text-gray-900 dark:text-white"
+        }`}
+      >
+        {name}
+      </Text>
+      <Text
+        className={`text-xs ${
+          selected ? "text-blue-600/80 dark:text-blue-200/80" : "text-gray-600"
+        }`}
+      >
+        {description}
+      </Text>
+      {selected && (
+        <View className="absolute items-center justify-center w-6 h-6 ml-2 bg-primary rounded-full -top-2 right-10">
+          <Feather name="check" size={16} color="white" />
+        </View>
+      )}
+    </TouchableOpacity>
   );
 
   return (
@@ -51,11 +95,11 @@ export default function SelectHabitScreen() {
         }}
       />
       <FlatList
-        className="w-full bg-gray-500 dark:bg-gray-900"
+        className="w-full bg-gray-50 dark:bg-gray-900"
         data={habitsData.habitos}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <HabitItem
+          <HabitCard
             name={item.name}
             description={item.description}
             selected={selectedHabit === item.name}
@@ -64,16 +108,23 @@ export default function SelectHabitScreen() {
         )}
         numColumns={2}
         ListHeaderComponent={ListHeader}
-        contentContainerStyle={{ paddingBottom: 24 }}
+        contentContainerStyle={{
+          paddingBottom: 24,
+          paddingTop: 8,
+          paddingHorizontal: 4,
+        }}
+        showsVerticalScrollIndicator={false}
       />
-      <View className="px-6 py-4 bg-gray-500 border-t-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-        <Button
-          label="Continuar"
-          disabled={!selectedHabit}
-          onPress={handleContinue}
-          className={!selectedHabit ? "opacity-50" : "opacity-100"}
-        />
-      </View>
+      {selectedHabit && (
+        <View className="px-6 py-4 bg-gray-500 border-t-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+          <Button
+            label="Continuar"
+            disabled={!selectedHabit}
+            onPress={handleContinue}
+            className={!selectedHabit ? "opacity-50" : "opacity-100"}
+          />
+        </View>
+      )}
     </>
   );
 }

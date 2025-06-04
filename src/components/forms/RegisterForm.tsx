@@ -54,7 +54,7 @@ export default function RegisterForm({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <View className="w-full px-6 bottom-40">
+    <View className="w-full px-6 bottom-36">
       <View className="w-full px-6">
         <View className="items-center gap-4 p-6 bg-gray-500 rounded-xl dark:bg-gray-900">
           {/* Google */}

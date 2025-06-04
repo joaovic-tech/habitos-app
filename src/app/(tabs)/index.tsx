@@ -6,23 +6,17 @@ import { Button } from "@/components/shared/Button";
 import { router } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
-import Constants from "expo-constants";
 
 export default function HomeScreen() {
-  const statusBarHeight = Constants.statusBarHeight || 0;
-
   // Navigate to habit selection screen
   const handleAddHabit = () => {
     router.push("/selectHabit");
   };
 
   return (
-    <SafeAreaView
-      style={{ paddingTop: statusBarHeight }}
-      className="flex-col justify-start px-6 bg-gray-200 h-screen-safe dark:bg-gray-900"
-    >
+    <SafeAreaView className="flex-col justify-start px-6 bg-gray-200 h-screen-safe dark:bg-gray-900">
       <Header
-        title="Meus Hábitos"
+        title="Hábitos+"
         icon={<Feather name="list" size={20} color={colors.secondary} />}
       />
 

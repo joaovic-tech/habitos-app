@@ -9,6 +9,7 @@ export default function TabLayout() {
   return (
     <>
       <StatusBar style="auto" hideTransitionAnimation="slide" />
+
       <Tabs
         initialRouteName="index"
         tabBar={(props) => <TabBar {...props} />}
@@ -17,7 +18,13 @@ export default function TabLayout() {
         }}
       >
         {TABS.map((tab) => (
-          <Tabs.Screen key={tab} name={tab} options={{ headerShown: false }} />
+          <Tabs.Screen
+            key={tab}
+            name={tab}
+            options={{
+              headerShown: false,
+            }}
+          />
         ))}
       </Tabs>
     </>

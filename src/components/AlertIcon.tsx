@@ -2,11 +2,10 @@ import React from "react";
 import { Image } from "react-native";
 import alarmIconLight from "@/assets/alarm.png";
 import alarmIconDark from "@/assets/alarm-dark.png";
+import { BaseIconProps } from "@/constants/icon";
 
-type AlertIconProps = {
-  size?: number;
-  isFocused?: boolean;
-};
+// Using Pick to select only the properties we need from BaseIconProps
+type AlertIconProps = Pick<BaseIconProps, 'size' | 'isFocused'>;
 
 export function AlertIcon({ size = 28, isFocused = false }: AlertIconProps) {
   const iconSource = isFocused ? alarmIconLight : alarmIconDark;

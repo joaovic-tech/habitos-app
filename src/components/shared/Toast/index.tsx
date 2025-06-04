@@ -13,7 +13,7 @@ const toastVariantColors = {
   default: "bg-green-500",
   destructive: "bg-red-600",
   success: "bg-green-500",
-  info: "bg-blue-500",
+  info: "bg-primary",
 };
 
 const toastTextColors = {
@@ -71,7 +71,7 @@ function Toast({
     ]);
 
     // Start the animation
-    const animationId = animationSequence.start(({ finished }) => {
+    animationSequence.start(({ finished }) => {
       if (finished) {
         onHide(id);
       }
@@ -81,9 +81,7 @@ function Toast({
     return () => {
       opacity.stopAnimation();
       progress.stopAnimation();
-      if (animationId) {
-        animationId.stop?.();
-      }
+      // No need to stop animationSequence.start() as it returns void
     };
   }, [duration, id, onHide, opacity, progress]);
 

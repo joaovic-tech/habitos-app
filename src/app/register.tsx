@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import RegisterForm from "@/components/forms/RegisterForm";
 
 interface RegisterProps {
   onBack: () => void;
@@ -8,7 +9,7 @@ interface RegisterProps {
 export default function Register({ onBack }: RegisterProps) {
   return (
     <View className="w-full">
-      <Register onBack={onBack} />
+      <RegisterForm onBack={onBack} />
     </View>
   );
 }
