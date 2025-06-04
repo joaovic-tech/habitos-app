@@ -13,13 +13,13 @@ export default function HomeScreen() {
 
   // Navigate to habit selection screen
   const handleAddHabit = () => {
-    router.push("/select-habit");
+    router.push("/selectHabit");
   };
 
   return (
     <SafeAreaView
       style={{ paddingTop: statusBarHeight }}
-      className="flex-col h-screen-safe justify-start px-6 bg-gray-200 dark:bg-gray-900"
+      className="flex-col justify-start px-6 bg-gray-200 h-screen-safe dark:bg-gray-900"
     >
       <Header
         title="Meus Hábitos"

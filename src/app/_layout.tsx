@@ -13,12 +13,12 @@ import {
 } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { colors } from "@/styles/colors";
-import { 
+import {
   Dosis_400Regular,
   Dosis_500Medium,
   Dosis_600SemiBold,
-  Dosis_700Bold
-} from '@expo-google-fonts/dosis';
+  Dosis_700Bold,
+} from "@expo-google-fonts/dosis";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -30,7 +30,6 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
     Dosis_400Regular,
     Dosis_500Medium,
     Dosis_600SemiBold,
@@ -52,7 +51,7 @@ export default function RootLayout() {
 
   if (!loaded || loading) {
     return (
-      <View className="flex-1 items-center text-center justify-center bg-gray-200 dark:bg-gray-900">
+      <View className="items-center justify-center flex-1 text-center bg-gray-200 dark:bg-gray-900">
         <Image
           source={require("../../assets/images/icon.png")}
           style={{ width: 100, height: 100, marginTop: 20 }}

@@ -1,12 +1,12 @@
-import { Switch } from '@/components/Switch';
-import { Feather } from '@expo/vector-icons';
-import React, { useRef, useEffect } from 'react';
-import { View, Text, Animated, Easing } from 'react-native';
-import { useTheme } from '@/hooks/useTheme';
+import { Switch } from "@/components/Switch";
+import { Feather } from "@expo/vector-icons";
+import React, { useRef, useEffect } from "react";
+import { View, Text, Animated, Easing } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function Tab() {
   const { colorScheme, toggleTheme, loading } = useTheme();
-  const isDarkMode = colorScheme === 'dark';
+  const isDarkMode = colorScheme === "dark";
 
   // Animated value for rotation
   const rotation = useRef(new Animated.Value(0)).current;
@@ -25,7 +25,7 @@ export default function Tab() {
   // Interpolate rotation value to degrees
   const rotate = rotation.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ["0deg", "360deg"],
   });
 
   if (loading) return null; // Evita flicker enquanto carrega o tema salvo
@@ -40,13 +40,13 @@ export default function Tab() {
         )}
       </Animated.View>
 
-      <View className='items-center w-full max-w-md p-6 text-center bg-white rounded-lg shadow-md dark:bg-gray-800'>
+      <View className="items-center w-full max-w-md p-6 text-center bg-gray-500 rounded-lg shadow-md dark:bg-gray-800">
         <Text className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
           Configurações
         </Text>
         <View className="flex-row items-center mb-2">
           <Text className="mr-4 text-lg text-gray-800 dark:text-gray-200">
-            Modo {isDarkMode ? 'escuro' : 'claro'}
+            Modo {isDarkMode ? "escuro" : "claro"}
           </Text>
           <Switch onValueChange={toggleTheme} value={isDarkMode} />
         </View>

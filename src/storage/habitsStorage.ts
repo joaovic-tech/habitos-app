@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Storage key
-export const ITEMS_STORAGE_KEY = '@habits:userHabits';
+export const ITEMS_STORAGE_KEY = "@habits:userHabits";
 
 // Habit type definition
 export interface Habit {
@@ -20,12 +20,9 @@ export interface Habit {
  */
 export async function save(habits: Habit[]): Promise<void> {
   try {
-    await AsyncStorage.setItem(
-      ITEMS_STORAGE_KEY,
-      JSON.stringify(habits)
-    );
+    await AsyncStorage.setItem(ITEMS_STORAGE_KEY, JSON.stringify(habits));
   } catch (error) {
-    console.error('Error saving habits:', error);
+    console.error("Error saving habits:", error);
     throw error;
   }
 }
@@ -40,7 +37,7 @@ export async function add(habit: Habit): Promise<Habit[]> {
     await save(updatedHabits);
     return updatedHabits;
   } catch (error) {
-    console.error('Error adding habit:', error);
+    console.error("Error adding habit:", error);
     throw error;
   }
 }
@@ -51,11 +48,11 @@ export async function add(habit: Habit): Promise<Habit[]> {
 export async function remove(id: string): Promise<Habit[]> {
   try {
     const habits = await getAll();
-    const updatedHabits = habits.filter(habit => habit.id !== id);
+    const updatedHabits = habits.filter((habit) => habit.id !== id);
     await save(updatedHabits);
     return updatedHabits;
   } catch (error) {
-    console.error('Error removing habit:', error);
+    console.error("Error removing habit:", error);
     throw error;
   }
 }
@@ -68,7 +65,7 @@ export async function getAll(): Promise<Habit[]> {
     const data = await AsyncStorage.getItem(ITEMS_STORAGE_KEY);
     return data ? JSON.parse(data) : [];
   } catch (error) {
-    console.error('Error getting habits:', error);
+    console.error("Error getting habits:", error);
     throw error;
   }
 }
@@ -79,14 +76,13 @@ export async function getAll(): Promise<Habit[]> {
 export async function update(updatedHabit: Habit): Promise<Habit[]> {
   try {
     const habits = await getAll();
-    const updatedHabits = habits.map(habit => 
+    const updatedHabits = habits.map((habit) =>
       habit.id === updatedHabit.id ? updatedHabit : habit
     );
     await save(updatedHabits);
     return updatedHabits;
   } catch (error) {
-    console.error('Error updating habit:', error);
+    console.error("Error updating habit:", error);
     throw error;
   }
 }
-

@@ -1,7 +1,7 @@
 import { Text, ScrollView } from "react-native";
 import React from "react";
-import Login from "@/components/forms/Login";
 import { ToastProvider } from "@/components/shared/Toast";
+import Login from "../login";
 
 const userExists = false; // Simula se o usuário está logado ou não
 

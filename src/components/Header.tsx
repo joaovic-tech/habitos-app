@@ -25,14 +25,14 @@ export function Header({ title, icon, backRouter = false }: Props) {
         </TouchableOpacity>
       )}
 
-      <View className="items-center px-6 py-3 m-auto bg-white dark:bg-gray-800 rounded-e-lg">
+      <View className="items-center px-6 py-3 m-auto bg-gray-500 dark:bg-gray-800 rounded-e-lg">
         <Text className="text-xl font-bold text-secondary">Hábitos+</Text>
       </View>
 
       {title && (
         <View className="flex-row items-center m-auto mt-16 mb-12 border-spacing-2">
           {icon && (
-            <View className="p-2 mr-2 bg-white rounded dark:bg-gray-800">
+            <View className="p-2 mr-2 bg-gray-500 rounded dark:bg-gray-800">
               {icon}
             </View>
           )}

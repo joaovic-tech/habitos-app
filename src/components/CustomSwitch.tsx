@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity, Animated, AccessibilityProps } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Animated,
+  AccessibilityProps,
+} from "react-native";
 import { colors } from "@/styles/colors";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +17,7 @@ interface CustomSwitchProps extends AccessibilityProps {
   disabled?: boolean;
   className?: string;
   labelClasses?: string;
-};
+}
 
 export function CustomSwitch({
   value,
@@ -52,12 +58,15 @@ export function CustomSwitch({
     <View className={cn("flex-row items-center", className)}>
       {label && !showLabel && (
         <Text
-          className={cn("mr-2 text-sm text-gray-700 dark:text-gray-300", labelClasses)}
+          className={cn(
+            "mr-2 text-sm text-gray-700 dark:text-gray-300",
+            labelClasses
+          )}
         >
           {label}
         </Text>
       )}
-      
+
       <TouchableOpacity
         activeOpacity={disabled ? 1 : 0.8}
         onPress={() => !disabled && onValueChange(!value)}
@@ -65,19 +74,24 @@ export function CustomSwitch({
         disabled={disabled}
         accessibilityRole="switch"
         accessibilityState={{ checked: value, disabled }}
-        accessibilityHint={`Alternar para ${value ? 'desativado' : 'ativado'}`}
+        accessibilityHint={`Alternar para ${value ? "desativado" : "ativado"}`}
         {...accessibilityProps}
       >
         <View
           className={cn(
             "py-5 rounded justify-center px-12 border-2",
-            value ? "border-blue-500 bg-primary" : "border-gray-900 bg-gray-900",
+            value
+              ? "border-blue-500 bg-primary"
+              : "border-gray-900 bg-gray-900",
             disabled && "opacity-50"
           )}
         >
           {showLabel && (
             <Text
-              className={cn("text-xs font-bold absolute text-white", labelClasses)}
+              className={cn(
+                "text-xs font-bold absolute text-white",
+                labelClasses
+              )}
               style={{
                 left: value ? 8 : "auto",
                 right: value ? "auto" : 8,
@@ -88,7 +102,7 @@ export function CustomSwitch({
           )}
 
           <Animated.View
-            className={cn("w-8 h-8 rounded-full bg-white absolute")}
+            className={cn("w-8 h-8 rounded-full bg-gray-500 absolute")}
             style={[
               { left: thumbLeft },
               {

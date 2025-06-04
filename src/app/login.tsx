@@ -1,8 +1,8 @@
-import { Image, ScrollView, Text, View } from "react-native";
-import { useState } from "react";
-import { Feather } from "@expo/vector-icons";
+import LoginForm from "@/components/forms/LoginForm";
 import { colors } from "@/styles/colors";
-import Form from "./Form";
+import { Feather } from "@expo/vector-icons";
+import { useState } from "react";
+import { Image, Text, View } from "react-native";
 
 export default function Login() {
   const [showRegister, setShowRegister] = useState(false);
@@ -35,7 +35,10 @@ export default function Login() {
         </Text>
       </View>
 
-      <Form showRegister={showRegister} setShowRegister={setShowRegister} />
+      <LoginForm
+        showRegister={showRegister}
+        setShowRegister={setShowRegister}
+      />
     </View>
   );
 }

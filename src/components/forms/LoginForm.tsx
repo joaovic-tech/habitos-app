@@ -3,16 +3,19 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Button } from "@/components/shared/Button";
 import { Checkbox } from "@/components/shared/Checkbox";
 import { useToast } from "@/components/shared/Toast";
-import Register from "@/components/forms/Register";
 import { Input } from "@/components/shared/Input";
 import { validateEmail, validatePassword } from "@/utils/validations";
+import Register from "@/app/register";
 
 interface FormProps {
   showRegister: boolean;
   setShowRegister: (show: boolean) => void;
 }
 
-export default function Form({ showRegister, setShowRegister }: FormProps) {
+export default function LoginForm({
+  showRegister,
+  setShowRegister,
+}: FormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

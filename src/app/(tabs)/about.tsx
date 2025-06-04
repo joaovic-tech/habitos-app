@@ -1,8 +1,15 @@
-import { View, Text, ScrollView, Linking, Pressable } from 'react-native';
-import { Header } from '@/components/Header';
-import { colors } from '@/styles/colors';
-import { Wrench, Info, GithubLogo, Copyright, FileText, LockKey } from 'phosphor-react-native';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/Avatar';
+import { View, Text, ScrollView, Linking, Pressable } from "react-native";
+import { Header } from "@/components/Header";
+import { colors } from "@/styles/colors";
+import {
+  Wrench,
+  Info,
+  GithubLogo,
+  Copyright,
+  FileText,
+  LockKey,
+} from "phosphor-react-native";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import Constants from "expo-constants";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -23,7 +30,7 @@ export default function InfoScreen() {
       >
         <Header title="Sobre o App" icon={icon} />
 
-        <View className="flex-col gap-4 px-4 py-6 bg-white shadow dark:bg-gray-800 rounded-2xl shadow-gray-800">
+        <View className="flex-col gap-4 px-4 py-6 bg-gray-500 shadow dark:bg-gray-800 rounded-2xl shadow-gray-800">
           <View className="flex-col gap-2 text-start">
             <Text className="text-lg font-semibold text-gray-900 dark:text-white">
               Sobre o Hábitos+

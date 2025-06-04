@@ -12,7 +12,7 @@ import * as habitsStorage from "@/storage/habitsStorage";
 import { CustomSwitch } from "@/components/CustomSwitch";
 import { colors } from "@/styles/colors";
 import { router } from "expo-router";
-import { HabitsDataProps } from "@/app/habit-details";
+import { useTheme } from "@/hooks/useTheme";
 
 type HabitsListProps = {
   onHabitsChange?: (habits: habitsStorage.Habit[]) => void;
@@ -26,19 +26,20 @@ export function HabitsList({
   const [habits, setHabits] = useState<habitsStorage.Habit[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingIds, setDeletingIds] = useState<string[]>([]);
+  const isDarkMode = useTheme().colorScheme === "dark";
 
   // Utility function to sort habits by startTime
   const sortHabits = useCallback((habitsToSort: habitsStorage.Habit[]) => {
     return [...habitsToSort].sort((a, b) => {
       // Convert time (HH:MM) to minutes for comparison
       const getMinutesSinceMidnight = (time: string) => {
-        const [hours, minutes] = time.split(':').map(Number);
+        const [hours, minutes] = time.split(":").map(Number);
         return hours * 60 + minutes;
       };
-      
+
       const aTime = getMinutesSinceMidnight(a.startTime);
       const bTime = getMinutesSinceMidnight(b.startTime);
-      
+
       return aTime - bTime; // Sort in ascending order
     });
   }, []);
@@ -48,10 +49,10 @@ export function HabitsList({
     try {
       setLoading(true);
       const storedHabits = await habitsStorage.getAll();
-      
+
       // Sort habits by startTime using the utility function
       const sortedHabits = sortHabits(storedHabits);
-      
+
       setHabits(sortedHabits);
     } catch (error) {
       console.error("Error loading habits:", error);
@@ -91,20 +92,23 @@ export function HabitsList({
     );
   }, []);
 
-  const deleteHabit = useCallback(async (id: string) => {
-    try {
-      // Add to deleting state to prevent interaction
-      setDeletingIds((prev) => [...prev, id]);
+  const deleteHabit = useCallback(
+    async (id: string) => {
+      try {
+        // Add to deleting state to prevent interaction
+        setDeletingIds((prev) => [...prev, id]);
 
-      const updatedHabits = await habitsStorage.remove(id);
-      // Ensure habits remain sorted
-      setHabits(sortHabits(updatedHabits));
-      setDeletingIds((prev) => prev.filter((itemId) => itemId !== id));
-    } catch (error) {
-      console.error("Error deleting habit:", error);
-      setDeletingIds((prev) => prev.filter((itemId) => itemId !== id));
-    }
-  }, [sortHabits]);
+        const updatedHabits = await habitsStorage.remove(id);
+        // Ensure habits remain sorted
+        setHabits(sortHabits(updatedHabits));
+        setDeletingIds((prev) => prev.filter((itemId) => itemId !== id));
+      } catch (error) {
+        console.error("Error deleting habit:", error);
+        setDeletingIds((prev) => prev.filter((itemId) => itemId !== id));
+      }
+    },
+    [sortHabits]
+  );
 
   // Handle habit toggle (enable/disable)
   const toggleHabit = useCallback(
@@ -132,10 +136,10 @@ export function HabitsList({
     [habits, sortHabits]
   );
 
-  // Edita o conteudo do habito
-  const editHabit = (habitsData: HabitsDataProps) => {
+  // Edita o conteúdo do habito
+  const editHabit = (habitsData: habitsStorage.Habit) => {
     router.push({
-      pathname: "/habit-details",
+      pathname: "/habitDetails",
       params: {
         id: habitsData.id,
         name: habitsData.name,
@@ -158,33 +162,33 @@ export function HabitsList({
       return (
         <TouchableOpacity
           onPress={() => editHabit(item)}
-          className={`p-4 rounded-lg bg-gray-800 ${
+          className={`p-4 rounded-lg dark:bg-gray-800 bg-gray-500 ${
             !item.enabled && "opacity-50"
           }`}
         >
-          <View className="flex-row justify-between items-center">
+          <View className="flex-row items-center justify-between">
             <Text className="text-lg font-bold text-gray-800 dark:text-white">
               {item.name}
             </Text>
-            <View className="flex-row items-center">
+            <View className="flex-row items-center p-2 bg-gray-100 border border-gray-200 rounded-lg dark:border-gray-800 dark:bg-gray-700">
               <Feather
                 name="clock"
                 size={14}
-                color={colors.primary}
+                color={isDarkMode ? colors.gray[400] : colors.gray[600]}
                 style={{ marginRight: 4 }}
               />
-              <Text className="text-xs text-primary font-medium">
+              <Text className="text-sm font-bold text-gray-600 dark:text-gray-500">
                 {item.startTime} - {item.endTime}
               </Text>
             </View>
           </View>
 
-          <Text className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-2">
+          <Text className="mt-1 mb-2 text-sm text-gray-600 dark:text-gray-400">
             {item.description}
           </Text>
 
-          <View className="flex-row justify-between items-center">
-            <View className="flex-row items-center bg-gray-900 p-2 rounded">
+          <View className="flex-row items-center justify-between">
+            <View className="flex-row items-center p-2 bg-gray-900 rounded">
               <Feather
                 name="bell"
                 size={14}
@@ -204,7 +208,7 @@ export function HabitsList({
               />
 
               <TouchableOpacity
-                className="w-10 h-10 bg-red-600 rounded-full justify-center items-center"
+                className="items-center justify-center w-10 h-10 bg-red-600 rounded-full"
                 onPress={() => confirmDeleteHabit(item.id, item.name)}
                 disabled={deletingIds.includes(item.id)}
                 accessibilityLabel="Excluir hábito"
@@ -223,9 +227,9 @@ export function HabitsList({
   // Render loading state
   if (loading) {
     return (
-      <View className="justify-center items-center p-4">
+      <View className="items-center justify-center p-4">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text className="text-gray-600 dark:text-gray-400 mt-4">
+        <Text className="mt-4 text-gray-600 dark:text-gray-400">
           Carregando hábitos...
         </Text>
       </View>
@@ -238,15 +242,14 @@ export function HabitsList({
         data={habits}
         keyExtractor={(item) => item.id}
         renderItem={renderHabitItem}
-        showsVerticalScrollIndicator={true}
         ListEmptyComponent={
           listEmptyComponent || (
-            <View className="justify-center items-center p-8">
+            <View className="items-center justify-center p-8">
               <Feather name="clipboard" size={48} color={colors.primary} />
-              <Text className="text-lg font-bold text-gray-800 dark:text-white mt-4 text-center">
+              <Text className="mt-4 text-lg font-bold text-center text-gray-800 dark:text-white">
                 Nenhum hábito encontrado
               </Text>
-              <Text className="text-gray-600 dark:text-gray-400 mt-2 text-center">
+              <Text className="mt-2 text-center text-gray-600 dark:text-gray-400">
                 Adicione um novo hábito para começar a acompanhar seu progresso.
               </Text>
             </View>

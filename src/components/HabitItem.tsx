@@ -40,16 +40,15 @@ export function HabitItem({
       onPress={() => {
         if (onSelect) onSelect();
       }}
-      className={`w-36 h-36 ${selected && "z-50"}`}
-      activeOpacity={0.8}
+      className={`h-36 w-36 m-2 flex-1 ${selected && "z-50"}`}
     >
       <Animated.View
         style={{ transform: [{ scale }] }}
-        className={`flex-1 p-3 rounded-lg ${
+        className={`flex-1 p-3 rounded-lg flex flex-col items-center justify-center ${
           selected
-            ? "border-primary border"
-            : "border border-gray-200 dark:border-gray-700"
-        } flex flex-col items-center justify-center bg-white dark:bg-gray-800`}
+            ? "border-primary border bg-gray-200 dark:bg-gray-800"
+            : "border border-gray-300 dark:border-gray-700"
+        }`}
       >
         {selected && (
           // Icon check
@@ -62,13 +61,13 @@ export function HabitItem({
         )}
 
         <Text
-          className="text-sm font-bold text-gray-800 dark:text-white mb-1 text-center"
+          className="mb-1 text-sm font-bold text-center text-gray-800 dark:text-white"
           numberOfLines={2}
         >
           {name}
         </Text>
         <Text
-          className="text-xs text-gray-600 dark:text-gray-400 text-center"
+          className="text-xs text-center text-gray-600 dark:text-gray-400"
           numberOfLines={3}
         >
           {description}
