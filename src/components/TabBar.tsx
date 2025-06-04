@@ -35,7 +35,12 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   // 🔥 Atualiza o tabPositionX ao abrir a tab inicialmente
   useEffect(() => {
     tabPositionX.value = withSpring(buttonWidth * state.index, {
-      duration: 1500,
+      damping: 15,
+      stiffness: 80,
+      mass: 0.8,
+      overshootClamping: false,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 2,
     });
   }, [buttonWidth, state.index]);
 
@@ -89,7 +94,12 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 
         const onPress = () => {
           tabPositionX.value = withSpring(buttonWidth * index, {
-            duration: 1500,
+            damping: 15,
+            stiffness: 80,
+            mass: 0.8,
+            overshootClamping: false,
+            restDisplacementThreshold: 0.01,
+            restSpeedThreshold: 2,
           });
 
           const event = navigation.emit({
