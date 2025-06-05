@@ -1,9 +1,9 @@
 // Move the existing Checkbox component here
-import React, { useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { cn } from '@/lib/utils';
-import { colors } from '@/styles/colors';
+import React, { useState } from "react";
+import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { cn } from "@/lib/utils";
+import { colors } from "@/styles/colors";
 
 interface CheckboxProps {
   label?: React.ReactNode;
@@ -12,7 +12,12 @@ interface CheckboxProps {
   className?: string;
 }
 
-export function Checkbox({ label, initialValue = false, onChange, className }: CheckboxProps) {
+export function Checkbox({
+  label,
+  initialValue = false,
+  onChange,
+  className,
+}: CheckboxProps) {
   const [checked, setChecked] = useState(initialValue);
 
   const handlePress = () => {
@@ -27,26 +32,22 @@ export function Checkbox({ label, initialValue = false, onChange, className }: C
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={handlePress}
-      className={cn('flex-row items-center', className)}
+      className={cn("flex-row items-center", className)}
     >
       <View
         className={cn(
-          'w-5 h-5 justify-center items-center rounded-md border',
-          checked ? 'bg-primary border-primary' : 'border-gray-400'
+          "w-5 h-5 justify-center items-center rounded-md border",
+          checked ? "bg-primary border-primary" : "border-neutral-400"
         )}
       >
-        {checked && (
-          <Feather
-            name="check"
-            size={14}
-            color={colors.gray[500]}
-          />
-        )}
+        {checked && <Feather name="check" size={14} color={"#FFFAFF"} />}
       </View>
       {label && (
         <View className="ml-2">
-          {typeof label === 'string' ? (
-            <Text className="text-gray-700 dark:text-gray-300 text-sm">{label}</Text>
+          {typeof label === "string" ? (
+            <Text className="text-neutral-700 dark:text-neutral-300 text-sm">
+              {label}
+            </Text>
           ) : (
             label
           )}
@@ -55,4 +56,3 @@ export function Checkbox({ label, initialValue = false, onChange, className }: C
     </TouchableOpacity>
   );
 }
-

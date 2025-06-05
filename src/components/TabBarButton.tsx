@@ -4,6 +4,7 @@ import {
   Pressable,
   useColorScheme,
   LayoutChangeEvent,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { icon } from "../constants/icon";
@@ -14,7 +15,7 @@ import Animated, {
   withSpring,
   Easing,
 } from "react-native-reanimated";
-import { colors } from "@/styles/colors";
+import { getIconSize, isSmallDevice } from "@/utils/responsive";
 
 type RouteName = keyof typeof icon;
 
@@ -36,7 +37,12 @@ export default function TabBarButton({
   const scale = useSharedValue(0);
   const [containerSize, setContainerSize] = useState({ height: 0, width: 0 });
   const containerRef = useRef<View>(null);
-
+  const { width: screenWidth } = Dimensions.get("window");
+  
+  // Tamanhos responsivos baseados no tamanho da tela
+  const iconSize = getIconSize(screenWidth);
+  const isSmallScreen = isSmallDevice();
+  
   const onLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
     setContainerSize({ width, height });
@@ -57,16 +63,18 @@ export default function TabBarButton({
   }, [scale, isFocused]);
 
   const animatedIconStyle = useAnimatedStyle(() => {
-    const scaleValue = interpolate(scale.value, [0, 1], [1, 1.2]);
+    const scaleValue = interpolate(scale.value, [0, 1], [1, isSmallScreen ? 1.15 : 1.2]);
 
-    const yOffset =
-      containerSize.height > 0 ? -(containerSize.height * 0.4) : -30;
+    // Ajusta o offset vertical baseado no tamanho do container e da tela
+    const baseOffset = containerSize.height > 0 ? containerSize.height * 0.47 : 30;
+    const responsiveOffset = isSmallScreen ? Math.min(baseOffset, 25) : baseOffset;
+    const yOffset = -responsiveOffset;
     const top = interpolate(scale.value, [0, 1], [0, yOffset]);
 
     return {
       transform: [{ scale: scaleValue }, { translateY: top }],
     };
-  }, [containerSize.height]);
+  }, [containerSize.height, isSmallScreen]);
 
   const animatedTextStyle = useAnimatedStyle(() => {
     const opacity = interpolate(scale.value, [0, 1], [0, 1]);
@@ -80,23 +88,35 @@ export default function TabBarButton({
     <Pressable
       onPress={onPress}
       onLongPress={onLongPress}
-      className={`z-20 flex-col flex-1 items-center justify-center gap-1 -top-8`}
+      className={`z-20 flex-col flex-1 items-center justify-center ${
+        isSmallScreen ? "gap-0.5" : "gap-1"
+      } top-0 min-h-0`}
       onLayout={onLayout}
       ref={containerRef}
+      style={{ minWidth: isSmallScreen ? 60 : 70 }}
     >
       <Animated.View
         style={animatedIconStyle}
         className="items-center justify-center"
       >
         {icon[routeName]({
-          size: 30,
-          color: isFocused ? colors.gray[500] : colors.gray[600],
+          size: iconSize,
+          color: isFocused ? "#fafafa" : "#6d6e71",
           isFocused,
         })}
       </Animated.View>
       <Animated.Text
         style={[animatedTextStyle]}
-        className="items-center m-auto text-base font-bold -bottom-4 text- text-text-light dark:text-gray-500"
+        className={`items-center m-auto ${
+          isSmallScreen ? "text-xs" : "text-sm"
+        } font-bold top-0 ${
+          isFocused
+            ? "text-primary dark:text-primary"
+            : "text-neutral-500 dark:text-neutral-400"
+        }`}
+        numberOfLines={1}
+        adjustsFontSizeToFit={isSmallScreen}
+        minimumFontScale={0.8}
       >
         {label}
       </Animated.Text>

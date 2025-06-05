@@ -34,7 +34,7 @@ const Input = forwardRef<
         {label && (
           <Text
             className={cn(
-              "text-base text-gray-400 dark:text-gray-500",
+              "text-base text-neutral-600 dark:text-neutral-300",
               labelClasses
             )}
           >
@@ -46,7 +46,7 @@ const Input = forwardRef<
             ref={ref}
             className={cn(
               inputClasses,
-              `border border-gray-400 py-2.5 px-4 dark:text-gray-500 rounded-lg w-full focus:border-primary bg-gray-500 dark:bg-gray-900 font-bold text-lg pr-10`
+              `border border-neutral-300 dark:border-neutral-600 py-2.5 px-4 text-neutral-800 dark:text-neutral-200 rounded-lg w-full focus:border-primary bg-white dark:bg-neutral-800 font-bold text-lg pr-10`
             )}
             {...props}
           />
@@ -56,7 +56,7 @@ const Input = forwardRef<
               className="absolute right-3 top-3"
               hitSlop={10}
             >
-              <Feather name={icon} size={20} color={colors.gray[600]} />
+              <Feather name={icon} size={20} color={colors.primary} />
             </TouchableOpacity>
           )}
         </View>

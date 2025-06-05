@@ -1,6 +1,5 @@
-import { View, type LayoutChangeEvent } from "react-native";
+import { View, type LayoutChangeEvent, Dimensions } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { colors } from "../styles/colors";
 import TabBarButton from "./TabBarButton";
 import { useEffect, useState } from "react";
 import Animated, {
@@ -8,7 +7,8 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { useColorScheme } from "nativewind";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { getTabBarHeight, isSmallDevice } from "@/utils/responsive";
 
 const labels = {
   index: "Alertas",
@@ -19,9 +19,15 @@ const labels = {
 };
 
 export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
-  const [dimensions, setDimensions] = useState({ height: 20, width: 20 });
-  const buttonWidth = dimensions.width / state.routes.length;
-  const { colorScheme } = useColorScheme();
+  const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
+  const insets = useSafeAreaInsets();
+  const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+  
+  // Calcula a largura do botão com base na largura da tela e número de abas
+  // Garante que não seja menor que 60px nem maior que 80px para manter a usabilidade
+  const buttonWidth = dimensions.width
+    ? Math.max(60, Math.min(80, dimensions.width / state.routes.length))
+    : Math.max(60, Math.min(80, screenWidth / state.routes.length));
 
   const onTabbarLayout = (event: LayoutChangeEvent) => {
     setDimensions({
@@ -32,9 +38,12 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 
   const tabPositionX = useSharedValue(0);
 
-  // 🔥 Atualiza o tabPositionX ao abrir a tab inicialmente
   useEffect(() => {
-    tabPositionX.value = withSpring(buttonWidth * state.index, {
+    // Calcula a posição considerando a largura real disponível
+    const availableWidth = dimensions.width || screenWidth;
+    const actualButtonWidth = availableWidth / state.routes.length;
+    
+    tabPositionX.value = withSpring(actualButtonWidth * state.index, {
       damping: 15,
       stiffness: 80,
       mass: 0.8,
@@ -42,58 +51,71 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
       restDisplacementThreshold: 0.01,
       restSpeedThreshold: 2,
     });
-  }, [buttonWidth, state.index]);
+  }, [dimensions.width, state.index, screenWidth]);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: tabPositionX.value,
-        },
-      ],
-    };
-  });
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: tabPositionX.value }],
+  }));
+
+  // Altura responsiva da TabBar usando utilitário
+  const tabBarHeight = getTabBarHeight(screenHeight);
+  const isSmall = isSmallDevice();
+  
+  // Altura total incluindo safe area para dispositivos com notch
+  const totalTabBarHeight = tabBarHeight + insets.bottom;
+  
+  // Tamanhos responsivos para os elementos da TabBar
+  const floatingButtonSize = Math.min(buttonWidth * (isSmall ? 0.85 : 0.9), isSmall ? 56 : 60);
+  const floatingButtonInnerSize = floatingButtonSize - (isSmall ? 14 : 16);
 
   return (
     <View
       onLayout={onTabbarLayout}
-      className="absolute bottom-0 flex-row items-center w-full h-40 text-center bg-gray-500 shadow-lg shadow-gray-600 dark:bg-gray-800 rounded-e-lg"
+      style={{ 
+        height: totalTabBarHeight,
+        paddingBottom: insets.bottom,
+      }}
+      className="absolute bottom-0 flex-row items-center w-full bg-white dark:bg-neutral-800"
     >
+      {/* Fundo do botão central */}
       <Animated.View
-        className="absolute z-10 rounded-full shadow-xl left-[10px] -top-8 bg-primary shadow-primary"
         style={[
           {
-            height: buttonWidth - 20,
-            width: buttonWidth - 20,
+            height: floatingButtonSize,
+            width: floatingButtonSize,
+            top: -(tabBarHeight * 0.45),
+            left: (buttonWidth - floatingButtonSize) / 2,
           },
           animatedStyle,
         ]}
+        className="absolute rounded-full shadow-lg bg-neutral-200 dark:bg-neutral-900"
       />
 
+      {/* Botão azul central */}
       <Animated.View
-        className="absolute bg-gray-200 rounded-full dark:bg-gray-900 -top-10"
         style={[
           {
-            height: buttonWidth,
-            width: buttonWidth,
+            height: floatingButtonInnerSize,
+            width: floatingButtonInnerSize,
+            top: -(tabBarHeight * 0.35),
+            left: (buttonWidth - floatingButtonInnerSize) / 2,
           },
           animatedStyle,
         ]}
+        className="absolute z-10 rounded-full shadow-xl bg-primary shadow-primary/25"
       />
 
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
-
+        const label = options.tabBarLabel ?? options.title ?? route.name;
         const isFocused = state.index === index;
 
         const onPress = () => {
-          tabPositionX.value = withSpring(buttonWidth * index, {
+          // Calcula a posição considerando a largura real disponível
+          const availableWidth = dimensions.width || screenWidth;
+          const actualButtonWidth = availableWidth / state.routes.length;
+          
+          tabPositionX.value = withSpring(actualButtonWidth * index, {
             damping: 15,
             stiffness: 80,
             mass: 0.8,

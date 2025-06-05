@@ -4,5 +4,14 @@
 
 * {
   @apply box-border;
-  @apply bg-black;
+}
+
+@layer base {
+  :root {
+    @apply bg-white text-neutral-900;
+  }
+
+  .dark {
+    @apply bg-neutral-900 text-neutral-50;
+  }
 }

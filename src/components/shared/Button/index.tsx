@@ -36,7 +36,7 @@ function Button({
 
   return (
     <TouchableOpacity
-      className={`w-full shadow shadow-blue-500 border-2 border-blue-500 py-4 rounded-lg items-center justify-center mb-4 mt-2 ${getButtonStyle()} ${className}`}
+      className={`w-full shadow-sm dark:shadow-none border-2 border-blue-500 py-4 rounded-lg items-center justify-center mb-4 mt-2 ${getButtonStyle()} ${className}`}
       activeOpacity={0.8}
       {...props}
     >

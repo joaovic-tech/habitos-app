@@ -5,14 +5,14 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as habitsStorage from "@/storage/habitsStorage";
 import { CustomSwitch } from "@/components/CustomSwitch";
 import { colors } from "@/styles/colors";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useTheme } from "@/hooks/useTheme";
+import { useToast } from "@/components/shared/Toast";
 
 type HabitsListProps = {
   onHabitsChange?: (habits: habitsStorage.Habit[]) => void;
@@ -27,6 +27,7 @@ export function HabitsList({
   const [loading, setLoading] = useState(true);
   const [deletingIds, setDeletingIds] = useState<string[]>([]);
   const isDarkMode = useTheme().colorScheme === "dark";
+  const { toast } = useToast();
 
   // Utility function to sort habits by startTime
   const sortHabits = useCallback((habitsToSort: habitsStorage.Habit[]) => {
@@ -66,6 +67,13 @@ export function HabitsList({
     loadHabits();
   }, [loadHabits]);
 
+  // Reload habits when screen comes into focus (handles updates from other screens)
+  useFocusEffect(
+    useCallback(() => {
+      loadHabits();
+    }, [loadHabits])
+  );
+
   // Notify parent component when habits change
   useEffect(() => {
     if (onHabitsChange && !loading) {
@@ -75,25 +83,12 @@ export function HabitsList({
 
   // Handle habit deletion
   const confirmDeleteHabit = useCallback((id: string, name: string) => {
-    Alert.alert(
-      "Excluir hábito",
-      `Tem certeza que deseja excluir o hábito "${name}"?`,
-      [
-        {
-          text: "Cancelar",
-          style: "cancel",
-        },
-        {
-          text: "Excluir",
-          style: "destructive",
-          onPress: () => deleteHabit(id),
-        },
-      ]
-    );
+    // Diretamente exclui o hábito e mostra toast de confirmação
+    deleteHabit(id, name);
   }, []);
 
   const deleteHabit = useCallback(
-    async (id: string) => {
+    async (id: string, name?: string) => {
       try {
         // Add to deleting state to prevent interaction
         setDeletingIds((prev) => [...prev, id]);
@@ -102,12 +97,16 @@ export function HabitsList({
         // Ensure habits remain sorted
         setHabits(sortHabits(updatedHabits));
         setDeletingIds((prev) => prev.filter((itemId) => itemId !== id));
+        
+        // Show success toast
+        toast(`Hábito "${name || 'Hábito'}" excluído com sucesso!`, "success");
       } catch (error) {
         console.error("Error deleting habit:", error);
         setDeletingIds((prev) => prev.filter((itemId) => itemId !== id));
+        toast("Erro ao excluir hábito. Tente novamente.", "destructive");
       }
     },
-    [sortHabits]
+    [sortHabits, toast]
   );
 
   // Handle habit toggle (enable/disable)
@@ -162,51 +161,50 @@ export function HabitsList({
       return (
         <TouchableOpacity
           onPress={() => editHabit(item)}
-          className={`p-4 rounded-lg dark:bg-gray-800 bg-gray-500 ${
-            !item.enabled && "opacity-50"
+          className={`p-4 rounded-xl bg-white dark:bg-neutral-800 shadow ${
+            !item.enabled && "opacity-60"
           }`}
         >
           <View className="flex-row items-center justify-between">
-            <Text className="text-lg font-bold text-gray-800 dark:text-white">
+            <Text className="text-lg font-bold text-neutral-900 dark:text-white">
               {item.name}
             </Text>
-            <View className="flex-row items-center p-2 bg-gray-100 border border-gray-200 rounded-lg dark:border-gray-800 dark:bg-gray-700">
+            <View className="flex-row items-center p-2 bg-neutral-100 border border-neutral-200 rounded-lg dark:border-neutral-700 dark:bg-neutral-700">
               <Feather
                 name="clock"
                 size={14}
-                color={isDarkMode ? colors.gray[400] : colors.gray[600]}
+                color={isDarkMode ? "#A1A1AA" : "#52525B"}
                 style={{ marginRight: 4 }}
               />
-              <Text className="text-sm font-bold text-gray-600 dark:text-gray-500">
+              <Text className="text-sm font-bold text-neutral-700 dark:text-neutral-300">
                 {item.startTime} - {item.endTime}
               </Text>
             </View>
           </View>
 
-          <Text className="mt-1 mb-2 text-sm text-gray-600 dark:text-gray-400">
+          <Text className="mt-1 mb-2 text-sm text-neutral-600 dark:text-neutral-300">
             {item.description}
           </Text>
 
           <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center p-2 bg-gray-900 rounded">
+            <View className="flex-row items-center p-2 bg-neutral-100 rounded dark:bg-neutral-700">
               <Feather
                 name="bell"
                 size={14}
-                color={colors.gray[500]}
+                color={isDarkMode ? "#E5E7EB" : "#52525B"}
                 style={{ marginRight: 4 }}
               />
-              <Text className="text-sm text-gray-500">
-                {item.alertsPerDay} aletas por dia
+              <Text className="text-sm text-neutral-700 dark:text-neutral-300">
+                {item.alertsPerDay} alertas por dia
               </Text>
             </View>
 
             <View className="flex-row items-center gap-4">
               <CustomSwitch
                 value={item.enabled}
-                onValueChange={(newValue) => toggleHabit(item.id)}
+                onValueChange={() => toggleHabit(item.id)}
                 disabled={deletingIds.includes(item.id)}
               />
-
               <TouchableOpacity
                 className="items-center justify-center w-10 h-10 bg-red-600 rounded-full"
                 onPress={() => confirmDeleteHabit(item.id, item.name)}
@@ -221,7 +219,7 @@ export function HabitsList({
         </TouchableOpacity>
       );
     },
-    [deleteHabit, toggleHabit, confirmDeleteHabit, deletingIds]
+    [deleteHabit, toggleHabit, confirmDeleteHabit, deletingIds, isDarkMode]
   );
 
   // Render loading state
@@ -229,7 +227,7 @@ export function HabitsList({
     return (
       <View className="items-center justify-center p-4">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text className="mt-4 text-gray-600 dark:text-gray-400">
+        <Text className="mt-4 text-neutral-600 dark:text-neutral-400">
           Carregando hábitos...
         </Text>
       </View>
@@ -246,10 +244,10 @@ export function HabitsList({
           listEmptyComponent || (
             <View className="items-center justify-center p-8">
               <Feather name="clipboard" size={48} color={colors.primary} />
-              <Text className="mt-4 text-lg font-bold text-center text-gray-800 dark:text-white">
+              <Text className="mt-4 text-lg font-bold text-center text-neutral-800 dark:text-white">
                 Nenhum hábito encontrado
               </Text>
-              <Text className="mt-2 text-center text-gray-600 dark:text-gray-400">
+              <Text className="mt-2 text-center text-neutral-600 dark:text-neutral-400">
                 Adicione um novo hábito para começar a acompanhar seu progresso.
               </Text>
             </View>

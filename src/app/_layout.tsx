@@ -19,6 +19,7 @@ import {
   Dosis_600SemiBold,
   Dosis_700Bold,
 } from "@expo-google-fonts/dosis";
+import { ToastProvider } from "@/components/shared/Toast";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -51,13 +52,15 @@ export default function RootLayout() {
 
   if (!loaded || loading) {
     return (
-      <View className="items-center justify-center flex-1 text-center bg-gray-200 dark:bg-gray-900">
+      <View className="items-center justify-center flex-1 text-center bg-neutral-100 dark:bg-neutral-900">
         <Image
           source={require("../../assets/images/icon.png")}
           style={{ width: 100, height: 100, marginTop: 20 }}
         />
         <ActivityIndicator size={50} color={colors.primary} className="mt-28" />
-        <Text className="text-gray-700 dark:text-gray-300">Loading...</Text>
+        <Text className="text-neutral-700 dark:text-neutral-200">
+          Loading...
+        </Text>
       </View>
     );
   }
@@ -66,17 +69,23 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const { loading, colorScheme } = useTheme();
+
   return (
-    <SafeAreaView className="flex-1">
-      <Stack>
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-            statusBarHidden: false,
-          }}
-        />
-      </Stack>
-    </SafeAreaView>
+    <ToastProvider>
+      <SafeAreaView className="flex-1 bg-neutral-100 dark:bg-neutral-900">
+        <Stack>
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+              statusBarHidden: false,
+              statusBarStyle: colorScheme === "dark" ? "light" : "dark",
+              statusBarBackgroundColor: "transparent",
+            }}
+          />
+        </Stack>
+      </SafeAreaView>
+    </ToastProvider>
   );
 }

@@ -56,29 +56,29 @@ export default function RegisterForm({ onBack }: { onBack: () => void }) {
   return (
     <View className="w-full px-6 bottom-36">
       <View className="w-full px-6">
-        <View className="items-center gap-4 p-6 bg-gray-500 rounded-xl dark:bg-gray-900">
+        <View className="items-center gap-4 p-6 bg-white rounded-xl dark:bg-neutral-800">
           {/* Google */}
           <TouchableOpacity
             onPress={() => console.log("Sign up with Google")}
-            className="flex-row items-center justify-center w-full py-3 bg-gray-500 border border-gray-300 rounded-lg"
+            className="flex-row items-center justify-center w-full py-3 bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-lg"
           >
             <Image
               source={require("@/assets/google.png")}
               style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
-            <Text className="ml-2 font-medium text-gray-700">
+            <Text className="ml-2 font-medium text-neutral-700 dark:text-neutral-200">
               Continue com o Google
             </Text>
           </TouchableOpacity>
 
           {/* Divider */}
           <View className="flex-row items-center justify-between w-full my-2">
-            <View className="flex-1 h-px bg-gray-200" />
-            <Text className="mx-2 text-sm text-gray-600">
+            <View className="flex-1 h-px bg-neutral-200 dark:bg-neutral-600" />
+            <Text className="mx-2 text-sm text-neutral-600 dark:text-neutral-400">
               ou use seu e-mail
             </Text>
-            <View className="flex-1 h-px bg-gray-200" />
+            <View className="flex-1 h-px bg-neutral-200 dark:bg-neutral-600" />
           </View>
 
           {/* Form Fields */}
@@ -135,7 +135,7 @@ export default function RegisterForm({ onBack }: { onBack: () => void }) {
           <View className="w-full mt-2">
             <Checkbox
               label={
-                <Text className="text-sm text-gray-600">
+                <Text className="text-sm text-neutral-600 dark:text-neutral-300">
                   Concordo com os{" "}
                   <Text className="text-primary">Termos de Uso</Text> e{" "}
                   <Text className="text-primary">Política de Privacidade</Text>

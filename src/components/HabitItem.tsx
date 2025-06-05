@@ -54,10 +54,10 @@ export function HabitItem({
     >
       <Animated.View
         style={{ transform: [{ scale }] }}
-        className={`flex-1 p-3 rounded-2xl flex flex-col items-center justify-center border-2 transition-all duration-200 bg-white dark:bg-gray-800 ${
+        className={`flex-1 p-3 rounded-2xl flex flex-col items-center justify-center border-2 transition-all duration-200 bg-white dark:bg-neutral-800 ${
           selected
             ? "border-primary ring-2 ring-primary/30"
-            : "border-gray-200 dark:border-gray-700"
+            : "border-neutral-200 dark:border-neutral-700"
         }`}
       >
         {selected && (
@@ -68,10 +68,10 @@ export function HabitItem({
             className="absolute top-2 right-2"
           />
         )}
-        <Text className="mb-1 text-base font-bold text-center text-gray-900 dark:text-white">
+        <Text className="mb-1 text-base font-bold text-center text-neutral-900 dark:text-white">
           {name}
         </Text>
-        <Text className="text-xs text-center text-gray-500 dark:text-gray-400">
+        <Text className="text-xs text-center text-neutral-600 dark:text-neutral-300">
           {description}
         </Text>
       </Animated.View>

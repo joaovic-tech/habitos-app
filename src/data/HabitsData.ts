@@ -1,5 +1,3 @@
-import { FeatherIconName } from "@/types/feather-icons";
-
 interface Habit {
   name: string;
   description: string;

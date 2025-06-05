@@ -3,6 +3,13 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Info, NotePencil } from "phosphor-react-native";
 import { AlertIcon } from "@/components/AlertIcon";
 
+// Tipo base para props de ícones
+export interface BaseIconProps {
+  size?: number;
+  color?: string;
+  isFocused?: boolean;
+}
+
 export const icon = {
   about: (props: any) => <Info size={props.size} {...props} weight="duotone" />,
   form: (props: any) => <NotePencil size={props.size} {...props} />,

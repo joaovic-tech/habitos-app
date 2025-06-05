@@ -14,19 +14,21 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-col justify-start px-6 bg-gray-200 h-screen-safe dark:bg-gray-900">
-      <Header
-        title="Hábitos+"
-        icon={<Feather name="list" size={20} color={colors.secondary} />}
-      />
+    <SafeAreaView className="flex-1 bg-neutral-200 dark:bg-neutral-900">
+      <View className="flex-1 px-6 pb-24">
+        <Header
+          title="Hábitos+"
+          icon={<Feather name="list" size={20} color={colors.secondary} />}
+        />
 
-      <HabitsList />
+        <HabitsList />
 
-      <Button
-        label="Adicionar Novo Hábito"
-        onPress={handleAddHabit}
-        variant="primary"
-      />
+        <Button
+          label="Adicionar Novo Hábito"
+          onPress={handleAddHabit}
+          variant="primary"
+        />
+      </View>
     </SafeAreaView>
   );
 }

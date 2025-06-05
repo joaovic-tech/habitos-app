@@ -13,7 +13,7 @@ const toastVariantColors = {
   default: "bg-green-500",
   destructive: "bg-red-600",
   success: "bg-green-500",
-  info: "bg-primary",
+  info: "bg-blue-500",
 };
 
 const toastTextColors = {
@@ -44,46 +44,33 @@ function Toast({
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Create separate animation sequences for better control
-    const fadeInAnimation = Animated.timing(opacity, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    });
-
-    const progressAnimation = Animated.timing(progress, {
-      toValue: 1,
-      duration: duration - 1000,
-      useNativeDriver: false, // false because width can't be animated with native driver
-    });
-
-    const fadeOutAnimation = Animated.timing(opacity, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: true,
-    });
-
-    // Create a composed animation
-    const animationSequence = Animated.sequence([
-      fadeInAnimation,
-      progressAnimation,
-      fadeOutAnimation,
-    ]);
-
-    // Start the animation
-    animationSequence.start(({ finished }) => {
+    Animated.sequence([
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(progress, {
+        toValue: 1,
+        duration: duration - 1000,
+        useNativeDriver: false,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start(({ finished }) => {
       if (finished) {
         onHide(id);
       }
     });
 
-    // Clean up animations when component unmounts
     return () => {
       opacity.stopAnimation();
       progress.stopAnimation();
-      // No need to stop animationSequence.start() as it returns void
     };
-  }, [duration, id, onHide, opacity, progress]);
+  }, [duration, id, onHide]);
 
   return (
     <Animated.View
@@ -110,17 +97,14 @@ function Toast({
       </Text>
 
       {showProgress && (
-        <View className="h-2 mt-2 overflow-hidden rounded bg-gray-900/10">
+        <View className="h-2 mt-2 overflow-hidden rounded bg-neutral-800/25">
           <Animated.View
-            className="h-full bg-gray-500 rounded"
+            className="h-full rounded bg-neutral-50"
             style={{
               width: progress.interpolate({
                 inputRange: [0, 1],
                 outputRange: ["0%", "100%"],
               }),
-              // Using explicit transforms for properties that work with native driver
-              // and layout properties without native driver
-              transform: [], // Empty array to ensure we're not accidentally using unsupported transforms
             }}
           />
         </View>

@@ -1,59 +1,170 @@
 import { Switch } from "@/components/Switch";
-import { Feather } from "@expo/vector-icons";
-import React, { useRef, useEffect } from "react";
-import { View, Text, Animated, Easing } from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Animated,
+  Easing,
+  Pressable,
+  Alert,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { useTheme } from "@/hooks/useTheme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { clearHabits, ITEMS_STORAGE_KEY } from "@/storage/habitsStorage";
+import { colors } from "@/styles/colors";
+import { useToast } from "@/components/shared/Toast";
+import { Header } from "@/components/Header";
+import { Gear } from "phosphor-react-native";
+import { Feather } from "@expo/vector-icons";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+const icon = <Gear size={20} color={colors.secondary} weight="duotone" />;
 
 export default function Tab() {
   const { colorScheme, toggleTheme, loading } = useTheme();
   const isDarkMode = colorScheme === "dark";
+  const { toast } = useToast();
 
-  // Animated value for rotation
+  // Animation for icon
   const rotation = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(1)).current;
 
-  // Animate rotation when colorScheme changes
   useEffect(() => {
     rotation.setValue(0);
-    Animated.timing(rotation, {
-      toValue: 1,
-      duration: 1200,
-      easing: Easing.out(Easing.ease),
-      useNativeDriver: true,
-    }).start();
+    scale.setValue(0.85);
+    Animated.parallel([
+      Animated.timing(rotation, {
+        toValue: 1,
+        duration: 900,
+        easing: Easing.out(Easing.exp),
+        useNativeDriver: true,
+      }),
+      Animated.spring(scale, {
+        toValue: 1,
+        friction: 5,
+        tension: 80,
+        useNativeDriver: true,
+      }),
+    ]).start();
   }, [colorScheme]);
 
-  // Interpolate rotation value to degrees
   const rotate = rotation.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "360deg"],
   });
 
-  if (loading) return null; // Evita flicker enquanto carrega o tema salvo
+  // Estado para feedback de exclusão
+  const [deleting, setDeleting] = useState(false);
+
+  // Função para excluir todos os hábitos
+  const handleDeleteAllHabits = async () => {
+    const storedHabits = await AsyncStorage.getItem(ITEMS_STORAGE_KEY);
+    if (!storedHabits || JSON.parse(storedHabits).length === 0) {
+      toast("Nenhum hábito encontrado para excluir.", "info");
+      return;
+    }
+
+    Alert.alert(
+      "Excluir todos os hábitos",
+      "Tem certeza que deseja excluir todos os seus hábitos? Esta ação não pode ser desfeita.",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: async () => {
+            setDeleting(true);
+            try {
+              const success = await clearHabits();
+              if (success) {
+                setTimeout(() => {
+                  toast(
+                    "Todos os hábitos foram excluídos com sucesso!",
+                    "success"
+                  );
+                }, 1000);
+              } else {
+                setTimeout(() => {
+                  toast(
+                    "Ocorreu um erro ao excluir os hábitos. Tente novamente.",
+                    "destructive"
+                  );
+                }, 1000);
+              }
+            } catch (error) {
+              console.error("Erro ao excluir hábitos:", error);
+              setTimeout(() => {
+                toast(
+                  "Ocorreu um erro inesperado. Tente novamente.",
+                  "destructive"
+                );
+              }, 1000);
+            } finally {
+              setTimeout(() => {
+                setDeleting(false);
+              }, 1000);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  if (loading) return null;
 
   return (
-    <View className="items-center justify-center flex-1 px-6 bg-gray-200 gap-14 dark:bg-gray-900">
-      <Animated.View style={{ transform: [{ rotate }] }}>
-        {isDarkMode ? (
-          <Feather name="moon" size={100} color="white" />
-        ) : (
-          <Feather name="sun" size={100} color="black" />
-        )}
-      </Animated.View>
+    <SafeAreaProvider>
+      <ScrollView className="flex-1 px-6 shadow bg-neutral-200 dark:bg-neutral-900">
+        <Header title="Configurações" icon={icon} />
 
-      <View className="items-center w-full max-w-md p-6 text-center bg-gray-500 rounded-lg shadow-md dark:bg-gray-800">
-        <Text className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
-          Configurações
-        </Text>
-        <View className="flex-row items-center mb-2">
-          <Text className="mr-4 text-lg text-gray-800 dark:text-gray-200">
-            Modo {isDarkMode ? "escuro" : "claro"}
+        <Animated.View
+          style={{
+            transform: [{ rotate }, { scale }],
+          }}
+          className="items-center justify-center p-6 mb-10"
+        >
+          <Feather
+            name={isDarkMode ? "moon" : "sun"}
+            size={100}
+            weight="duotone"
+            color={isDarkMode ? colors.moonIcon : colors.sunIcon}
+          />
+        </Animated.View>
+
+        <View className="items-center w-full max-w-md p-6 shadow-lg rounded-2xl bg-white/80 dark:bg-neutral-800/90">
+          <Text className="mb-4 text-2xl font-extrabold text-neutral-900 dark:text-white">
+            Configurações
           </Text>
-          <Switch onValueChange={toggleTheme} value={isDarkMode} />
+          <View className="flex-row items-center mb-4">
+            <Text className="mr-4 text-lg font-semibold text-neutral-800 dark:text-neutral-200">
+              Modo {isDarkMode ? "escuro" : "claro"}
+            </Text>
+            <Switch onValueChange={toggleTheme} value={isDarkMode} />
+          </View>
+          <Text className="mb-6 text-center text-neutral-600 dark:text-neutral-400">
+            Altere o tema do aplicativo entre claro e escuro para sua
+            preferência.
+          </Text>
+
+          <Pressable
+            onPress={handleDeleteAllHabits}
+            disabled={deleting}
+            className={`w-full py-3 rounded-lg items-center justify-center mt-2 border-2 ${
+              deleting ? "opacity-60" : "bg-red-600 border-red-500"
+            }`}
+          >
+            <Text className="text-base font-bold text-white">
+              {!deleting ? (
+                "Excluir todos os hábitos"
+              ) : (
+                <ActivityIndicator size="small" color="#fff" />
+              )}
+            </Text>
+          </Pressable>
         </View>
-        <Text className="text-center text-gray-600 dark:text-gray-400">
-          Altere o tema do aplicativo entre claro e escuro.
-        </Text>
-      </View>
-    </View>
+      </ScrollView>
+    </SafeAreaProvider>
   );
 }

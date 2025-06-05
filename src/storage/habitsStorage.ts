@@ -57,6 +57,16 @@ export async function remove(id: string): Promise<Habit[]> {
   }
 }
 
+export async function clearHabits(): Promise<boolean> {
+  try {
+    await AsyncStorage.removeItem(ITEMS_STORAGE_KEY);
+    return true;
+  } catch (error) {
+    console.error("Error clearing habits:", error);
+    return false;
+  }
+}
+
 /**
  * Gets all habits from storage
  */

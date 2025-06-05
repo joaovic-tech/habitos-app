@@ -59,7 +59,7 @@ export function CustomSwitch({
       {label && !showLabel && (
         <Text
           className={cn(
-            "mr-2 text-sm text-gray-700 dark:text-gray-300",
+            "mr-2 text-sm text-neutral-700 dark:text-neutral-300",
             labelClasses
           )}
         >
@@ -82,7 +82,7 @@ export function CustomSwitch({
             "py-5 rounded justify-center px-12 border-2",
             value
               ? "border-blue-500 bg-primary"
-              : "border-gray-900 bg-gray-900",
+              : "border-neutral-900 bg-neutral-900",
             disabled && "opacity-50"
           )}
         >
@@ -102,7 +102,7 @@ export function CustomSwitch({
           )}
 
           <Animated.View
-            className={cn("w-8 h-8 rounded-full bg-gray-500 absolute")}
+            className={cn("w-8 h-8 rounded-full bg-neutral-50 absolute")}
             style={[
               { left: thumbLeft },
               {
