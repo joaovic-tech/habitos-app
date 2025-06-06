@@ -73,15 +73,13 @@ function RootLayoutNav() {
 
   return (
     <ToastProvider>
-      <SafeAreaView className="flex-1 bg-neutral-100 dark:bg-neutral-900">
+      <SafeAreaView className="flex-1 bg-neutral-200 dark:bg-neutral-800">
         <Stack>
           <Stack.Screen
             name="(tabs)"
             options={{
               headerShown: false,
-              statusBarHidden: false,
               statusBarStyle: colorScheme === "dark" ? "light" : "dark",
-              statusBarBackgroundColor: "transparent",
             }}
           />
         </Stack>

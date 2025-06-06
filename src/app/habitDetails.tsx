@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -12,11 +12,11 @@ import * as habitsStorage from "@/storage/habitsStorage";
 import { Feather } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { convertTime } from "@/utils/convertTime";
-import { habitsData } from "@/data/HabitsData";
-import { colors } from "@/styles/colors";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/shared/Button";
 import { useToast } from "@/components/shared/Toast";
+import { icon } from "@/constants/icon";
+import { Trash } from "phosphor-react-native";
 
 const DEFAULT_ALERTS_PER_DAY = [1, 2, 3, 4, 5, 6];
 
@@ -72,9 +72,17 @@ export default function HabitDetailsScreen() {
       return;
     }
 
-    try {
-      setIsSubmitting(true);
+    // Verificação: horário de término deve ser maior que o de início
+    if (endTime <= startTime) {
+      toast(
+        "O horário de término deve ser maior que o de início.",
+        "destructive"
+      );
+      return;
+    }
 
+    setIsSubmitting(true);
+    try {
       if (isEditMode && params.id) {
         const currentHabits = await habitsStorage.getAll();
         const existingHabit = currentHabits.find(
@@ -91,8 +99,17 @@ export default function HabitDetailsScreen() {
             alertsPerDay: alertsPerDay,
           };
 
-          await habitsStorage.update(updatedHabit);
-          showSuccessToast("Hábito atualizado com sucesso!");
+          try {
+            await habitsStorage.update(updatedHabit);
+            toast("Hábito atualizado com sucesso!", "success");
+            setTimeout(() => {
+              router.push("/(tabs)");
+            }, 1500);
+            return;
+          } catch (error) {
+            console.error("Error updating habit:", error);
+            toast("Ocorreu um erro ao atualizar o hábito.", "destructive");
+          }
         }
       } else {
         const newHabit: habitsStorage.Habit = {
@@ -107,7 +124,10 @@ export default function HabitDetailsScreen() {
         };
 
         await habitsStorage.add(newHabit);
-        showSuccessToast("Hábito adicionado com sucesso!");
+        toast("Hábito adicionado com sucesso!", "success");
+        setTimeout(() => {
+          router.push("/(tabs)");
+        }, 1500);
       }
     } catch (error) {
       console.error("Error saving habit:", error);
@@ -124,15 +144,21 @@ export default function HabitDetailsScreen() {
     }, 1500);
   };
 
-  // Buscar o hábito selecionado para pegar o ícone
-  const selectedHabit = habitsData.habitos.find(
-    (habit) => habit.name === params.name
-  );
+  const handleRemoveHabit = async (id: string) => {
+    try {
+      await habitsStorage.remove(id);
+      showSuccessToast("Hábito removido com sucesso!");
+      return;
+    } catch (error) {
+      console.error("Error removing habit:", error);
+      toast("Ocorreu um erro ao remover o hábito.", "destructive");
+    }
+  };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 bg-white dark:bg-neutral-900"
+      className="flex-1 bg-neutral-200 dark:bg-neutral-900"
     >
       <Stack.Screen options={{ headerShown: false }} />
 
@@ -145,7 +171,7 @@ export default function HabitDetailsScreen() {
           />
 
           {/* Habit Card */}
-          <View className="p-6 mb-6 bg-blue-50 rounded-2xl dark:bg-neutral-800">
+          <View className="p-6 mb-6 border-2 border-blue-900 border-dotted bg-blue-50 rounded-2xl dark:bg-blue-900/30">
             <View className="items-center mb-4">
               <Text className="text-xl font-bold text-center text-neutral-900 dark:text-white">
                 {params.name}
@@ -224,7 +250,7 @@ export default function HabitDetailsScreen() {
                     onPress={() => handleAlertsChange(count)}
                     className={`items-center justify-center w-12 h-12 rounded-xl ${
                       alertsPerDay === count
-                        ? "bg-primary"
+                        ? "bg-blue-600"
                         : "bg-white border border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
                     }`}
                   >
@@ -249,6 +275,17 @@ export default function HabitDetailsScreen() {
             onPress={handleSaveHabit}
             disabled={isSubmitting}
           />
+
+          {/* Delete button */}
+
+          {isEditMode && (
+            <Button
+              label="Excluir Hábito"
+              variant="destructive"
+              icon={<Trash size={24} weight="bold" color="white" />}
+              onPress={() => handleRemoveHabit(params.id!)}
+            />
+          )}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

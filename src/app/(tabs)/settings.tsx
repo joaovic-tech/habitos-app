@@ -19,6 +19,7 @@ import { Header } from "@/components/Header";
 import { Gear } from "phosphor-react-native";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Button } from "@/components/shared/Button";
 
 const icon = <Gear size={20} color={colors.secondary} weight="duotone" />;
 
@@ -148,21 +149,17 @@ export default function Tab() {
             preferência.
           </Text>
 
-          <Pressable
-            onPress={handleDeleteAllHabits}
-            disabled={deleting}
-            className={`w-full py-3 rounded-lg items-center justify-center mt-2 border-2 ${
-              deleting ? "opacity-60" : "bg-red-600 border-red-500"
-            }`}
-          >
-            <Text className="text-base font-bold text-white">
-              {!deleting ? (
+          <Button
+            label={
+              !deleting ? (
                 "Excluir todos os hábitos"
               ) : (
                 <ActivityIndicator size="small" color="#fff" />
-              )}
-            </Text>
-          </Pressable>
+              )
+            }
+            variant="ghost"
+            onPress={handleDeleteAllHabits}
+          />
         </View>
       </ScrollView>
     </SafeAreaProvider>

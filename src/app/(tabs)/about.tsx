@@ -78,20 +78,19 @@ export default function InfoScreen() {
 
           <View className="flex-col items-center gap-8">
             <View className="flex-row items-center">
-              <Copyright size={12} color={"#64748b"} weight="bold" />
+              <Copyright size={12} color={"#155DFC"} weight="duotone" />
               <Text className="text-xs text-neutral-400">
                 {new Date().getFullYear()} UNISAGRADO. Todos os direitos
                 reservados.
               </Text>
             </View>
-
             <View className="flex-row items-center justify-around w-full">
               <Pressable
                 className="flex-row items-center"
                 onPress={() => openLink("https://seusite.com/termos-de-uso")}
               >
-                <FileText size={24} color={"#64748b"} weight="duotone" />
-                <Text className="text-base text-blue-700 underline dark:text-blue-400">
+                <FileText size={24} color="#155DFC" weight="duotone" />
+                <Text className="text-sm text-blue-700 underline dark:text-blue-500">
                   Termos de Uso
                 </Text>
               </Pressable>
@@ -102,8 +101,8 @@ export default function InfoScreen() {
                   openLink("https://seusite.com/politica-de-privacidade")
                 }
               >
-                <LockKey size={24} color={"#64748b"} weight="duotone" />
-                <Text className="text-base text-blue-700 underline dark:text-blue-400">
+                <LockKey size={24} color="#155DFC" weight="duotone" />
+                <Text className="text-sm text-blue-700 underline dark:text-blue-500">
                   Privacidade
                 </Text>
               </Pressable>

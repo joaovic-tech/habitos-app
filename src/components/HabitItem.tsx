@@ -56,7 +56,7 @@ export function HabitItem({
         style={{ transform: [{ scale }] }}
         className={`flex-1 p-3 rounded-2xl flex flex-col items-center justify-center border-2 transition-all duration-200 bg-white dark:bg-neutral-800 ${
           selected
-            ? "border-primary ring-2 ring-primary/30"
+            ? "border-blue-600 ring-2 ring-blue-600/30"
             : "border-neutral-200 dark:border-neutral-700"
         }`}
       >

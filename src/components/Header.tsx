@@ -19,7 +19,7 @@ export function Header({ title, icon, backRouter = false }: Props) {
       {backRouter && (
         <TouchableOpacity
           onPress={() => router.back()}
-          className="absolute flex-row gap-4 p-3 top-3"
+          className="absolute flex-row gap-4 p-3"
         >
           <Feather name="arrow-left" size={25} color={colors.secondary} />
           <Text className="text-lg font-medium text-neutral-700 dark:text-neutral-200">
@@ -28,7 +28,7 @@ export function Header({ title, icon, backRouter = false }: Props) {
         </TouchableOpacity>
       )}
 
-      <View className="flex-row items-center gap-4 p-2 mx-auto mb-12 bg-neutral-100 rounded dark:bg-neutral-800">
+      <View className="flex-row items-center gap-4 p-2 mx-auto mb-12 rounded bg-neutral-100 dark:bg-neutral-800">
         {icon && icon}
         <Text className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">
           {title ? title : "Hábitos+"}

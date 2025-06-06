@@ -37,7 +37,7 @@ export function Checkbox({
       <View
         className={cn(
           "w-5 h-5 justify-center items-center rounded-md border",
-          checked ? "bg-primary border-primary" : "border-neutral-400"
+          checked ? "bg-blue-600 border-blue-600" : "border-neutral-400"
         )}
       >
         {checked && <Feather name="check" size={14} color={"#FFFAFF"} />}

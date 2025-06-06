@@ -77,15 +77,3 @@ export const isAndroid = Platform.OS === 'android';
 
 // Helper para verificar se é iOS
 export const isIOS = Platform.OS === 'ios';
-
-// Configurações específicas de status bar
-export const getStatusBarConfig = (colorScheme: 'light' | 'dark' | null | undefined) => {
-  const isDark = colorScheme === 'dark';
-  
-  return {
-    style: (isDark ? 'light' : 'dark') as 'light' | 'dark',
-    backgroundColor: isAndroid ? (isDark ? '#171717' : '#ffffff') : undefined,
-    translucent: false,
-  } as const;
-};
-

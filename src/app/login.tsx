@@ -14,7 +14,7 @@ export default function Login() {
       {/* Top */}
       <View
         style={{ paddingTop: statusBarHeight }}
-        className="flex items-center justify-start w-full gap-4 pt-5 text-center h-80 bg-primary"
+        className="flex items-center justify-start w-full gap-4 pt-5 text-center h-80 bg-blue-600"
       >
         <Image source={require("@/assets/Star.png")} className="absolute" />
 

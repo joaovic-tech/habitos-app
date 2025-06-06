@@ -81,7 +81,7 @@ export function CustomSwitch({
           className={cn(
             "py-5 rounded justify-center px-12 border-2",
             value
-              ? "border-blue-500 bg-primary"
+              ? "border-blue-500 bg-blue-600"
               : "border-neutral-900 bg-neutral-900",
             disabled && "opacity-50"
           )}

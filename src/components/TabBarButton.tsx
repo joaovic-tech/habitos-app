@@ -38,11 +38,11 @@ export default function TabBarButton({
   const [containerSize, setContainerSize] = useState({ height: 0, width: 0 });
   const containerRef = useRef<View>(null);
   const { width: screenWidth } = Dimensions.get("window");
-  
+
   // Tamanhos responsivos baseados no tamanho da tela
   const iconSize = getIconSize(screenWidth);
   const isSmallScreen = isSmallDevice();
-  
+
   const onLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
     setContainerSize({ width, height });
@@ -63,11 +63,18 @@ export default function TabBarButton({
   }, [scale, isFocused]);
 
   const animatedIconStyle = useAnimatedStyle(() => {
-    const scaleValue = interpolate(scale.value, [0, 1], [1, isSmallScreen ? 1.15 : 1.2]);
+    const scaleValue = interpolate(
+      scale.value,
+      [0, 1],
+      [1, isSmallScreen ? 1.15 : 1.2]
+    );
 
     // Ajusta o offset vertical baseado no tamanho do container e da tela
-    const baseOffset = containerSize.height > 0 ? containerSize.height * 0.47 : 30;
-    const responsiveOffset = isSmallScreen ? Math.min(baseOffset, 25) : baseOffset;
+    const baseOffset =
+      containerSize.height > 0 ? containerSize.height * 0.47 : 30;
+    const responsiveOffset = isSmallScreen
+      ? Math.min(baseOffset, 25)
+      : baseOffset;
     const yOffset = -responsiveOffset;
     const top = interpolate(scale.value, [0, 1], [0, yOffset]);
 
@@ -111,7 +118,7 @@ export default function TabBarButton({
           isSmallScreen ? "text-xs" : "text-sm"
         } font-bold top-0 ${
           isFocused
-            ? "text-primary dark:text-primary"
+            ? "text-blue-600 dark:text-blue-600"
             : "text-neutral-500 dark:text-neutral-400"
         }`}
         numberOfLines={1}

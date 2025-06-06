@@ -44,7 +44,7 @@ export default function LoginForm({
   };
 
   if (showRegister) {
-    return <Register onBack={() => setShowRegister(false)} />;
+    return <Register />;
   }
 
   return (
@@ -53,7 +53,7 @@ export default function LoginForm({
         {/* Social Login Buttons */}
         <TouchableOpacity
           onPress={() => console.log("Login with Google")}
-          className="flex-row items-center justify-center w-full py-3 bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-lg"
+          className="flex-row items-center justify-center w-full py-3 bg-white border rounded-lg dark:bg-neutral-700 border-neutral-200 dark:border-neutral-600"
         >
           <Image
             source={require("@/assets/google.png")}
@@ -103,7 +103,7 @@ export default function LoginForm({
             onChange={setRememberMe}
           />
           <TouchableOpacity>
-            <Text className="text-sm font-medium text-primary">
+            <Text className="text-sm font-medium text-blue-600">
               Esqueceu sua senha?
             </Text>
           </TouchableOpacity>
@@ -120,7 +120,7 @@ export default function LoginForm({
             Não tem uma conta?{" "}
           </Text>
           <TouchableOpacity onPress={() => setShowRegister(true)}>
-            <Text className="text-sm font-semibold text-primary">
+            <Text className="text-sm font-semibold text-blue-600">
               Registre-se
             </Text>
           </TouchableOpacity>
@@ -128,8 +128,8 @@ export default function LoginForm({
 
         <Text className="text-xs text-center text-neutral-500 dark:text-neutral-400">
           Ao se inscrever, você concorda com os{" "}
-          <Text className="text-primary">Termos de Serviço</Text> e o{" "}
-          <Text className="text-primary">
+          <Text className="text-blue-600">Termos de Serviço</Text> e o{" "}
+          <Text className="text-blue-600">
             Contrato de Processamento de Dados
           </Text>
         </Text>

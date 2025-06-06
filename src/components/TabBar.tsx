@@ -22,7 +22,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
   const insets = useSafeAreaInsets();
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-  
+
   // Calcula a largura do botão com base na largura da tela e número de abas
   // Garante que não seja menor que 60px nem maior que 80px para manter a usabilidade
   const buttonWidth = dimensions.width
@@ -42,7 +42,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
     // Calcula a posição considerando a largura real disponível
     const availableWidth = dimensions.width || screenWidth;
     const actualButtonWidth = availableWidth / state.routes.length;
-    
+
     tabPositionX.value = withSpring(actualButtonWidth * state.index, {
       damping: 15,
       stiffness: 80,
@@ -60,18 +60,21 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   // Altura responsiva da TabBar usando utilitário
   const tabBarHeight = getTabBarHeight(screenHeight);
   const isSmall = isSmallDevice();
-  
+
   // Altura total incluindo safe area para dispositivos com notch
   const totalTabBarHeight = tabBarHeight + insets.bottom;
-  
+
   // Tamanhos responsivos para os elementos da TabBar
-  const floatingButtonSize = Math.min(buttonWidth * (isSmall ? 0.85 : 0.9), isSmall ? 56 : 60);
+  const floatingButtonSize = Math.min(
+    buttonWidth * (isSmall ? 0.85 : 0.9),
+    isSmall ? 56 : 60
+  );
   const floatingButtonInnerSize = floatingButtonSize - (isSmall ? 14 : 16);
 
   return (
     <View
       onLayout={onTabbarLayout}
-      style={{ 
+      style={{
         height: totalTabBarHeight,
         paddingBottom: insets.bottom,
       }}
@@ -88,7 +91,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           },
           animatedStyle,
         ]}
-        className="absolute rounded-full shadow-lg bg-neutral-200 dark:bg-neutral-900"
+        className="absolute rounded-full bg-neutral-200 dark:bg-neutral-900"
       />
 
       {/* Botão azul central */}
@@ -102,7 +105,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           },
           animatedStyle,
         ]}
-        className="absolute z-10 rounded-full shadow-xl bg-primary shadow-primary/25"
+        className="absolute z-10 bg-blue-600 rounded-full shadow-xl shadow-blue-600/25"
       />
 
       {state.routes.map((route, index) => {
@@ -114,7 +117,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           // Calcula a posição considerando a largura real disponível
           const availableWidth = dimensions.width || screenWidth;
           const actualButtonWidth = availableWidth / state.routes.length;
-          
+
           tabPositionX.value = withSpring(actualButtonWidth * index, {
             damping: 15,
             stiffness: 80,

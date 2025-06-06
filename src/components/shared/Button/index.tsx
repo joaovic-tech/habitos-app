@@ -1,50 +1,62 @@
 import React from "react";
 import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
-import { colors } from "@/styles/colors";
 
 interface ButtonProps extends TouchableOpacityProps {
-  label: string;
-  variant?: "primary" | "secondary" | "outline";
+  label: string | React.ReactNode;
+  variant?: "primary" | "secondary" | "outline" | "destructive" | "ghost";
   labelClasses?: string;
+  className?: string;
+  icon?: any;
 }
 
-function Button({
+export function Button({
   label,
   variant = "primary",
   labelClasses = "",
   className = "",
+  icon,
   ...props
 }: ButtonProps) {
   // Define button styles based on variant
   const getButtonStyle = () => {
     switch (variant) {
       case "primary":
-        return "bg-primary";
+        return "bg-blue-600 border-2 border-blue-500";
       case "secondary":
         return "bg-secondary";
       case "outline":
-        return "bg-transparent border border-primary";
+        return "bg-transparent border border-blue-600";
+      case "destructive":
+        return "bg-red-600 border border-red-400";
+      case "ghost":
+        return "bg-neutral-800 dark:bg-neutral-200";
       default:
-        return "bg-primary";
+        return "bg-blue-600";
     }
   };
 
   // Define text styles based on variant
   const getTextStyle = () => {
-    return variant === "outline" ? "text-primary" : "text-white";
+    switch (variant) {
+      case "outline":
+        return "text-blue-600";
+      case "ghost":
+        return "text-neutral-200 dark:text-neutral-800";
+      default:
+        return "text-white";
+    }
   };
 
   return (
     <TouchableOpacity
-      className={`w-full shadow-sm dark:shadow-none border-2 border-blue-500 py-4 rounded-lg items-center justify-center mb-4 mt-2 ${getButtonStyle()} ${className}`}
+      className={`w-full shadow-sm flex-row dark:shadow-none py-3 rounded-lg items-center justify-center mb-4 mt-2 gap-4 ${getButtonStyle()} ${className}`}
       activeOpacity={0.8}
       {...props}
     >
       <Text className={`font-bold text-lg ${getTextStyle()} ${labelClasses}`}>
         {label}
       </Text>
+      {icon && <>{icon}</>}
     </TouchableOpacity>
   );
 }
-
-export { Button };

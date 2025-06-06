@@ -6,7 +6,7 @@ import { useToast } from "@/components/shared/Toast";
 import { Input } from "@/components/shared/Input";
 import { validateRegisterForm } from "@/utils/validations";
 
-export default function RegisterForm({ onBack }: { onBack: () => void }) {
+export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -54,13 +54,13 @@ export default function RegisterForm({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <View className="w-full px-6 bottom-36">
+    <View className="w-full px-6 bottom-40">
       <View className="w-full px-6">
         <View className="items-center gap-4 p-6 bg-white rounded-xl dark:bg-neutral-800">
           {/* Google */}
           <TouchableOpacity
             onPress={() => console.log("Sign up with Google")}
-            className="flex-row items-center justify-center w-full py-3 bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-lg"
+            className="flex-row items-center justify-center w-full py-3 bg-white border rounded-lg dark:bg-neutral-700 border-neutral-200 dark:border-neutral-600"
           >
             <Image
               source={require("@/assets/google.png")}
@@ -137,8 +137,8 @@ export default function RegisterForm({ onBack }: { onBack: () => void }) {
               label={
                 <Text className="text-sm text-neutral-600 dark:text-neutral-300">
                   Concordo com os{" "}
-                  <Text className="text-primary">Termos de Uso</Text> e{" "}
-                  <Text className="text-primary">Política de Privacidade</Text>
+                  <Text className="text-blue-600">Termos de Uso</Text> e{" "}
+                  <Text className="text-blue-600">Política de Privacidade</Text>
                 </Text>
               }
               initialValue={termsAccepted}

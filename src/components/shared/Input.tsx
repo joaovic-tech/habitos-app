@@ -1,34 +1,34 @@
-import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { cn } from "@/lib/utils";
+import { forwardRef } from "react";
+import { Text, TextInput, View, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
+import { useTheme } from "@/hooks/useTheme";
 
-const Input = forwardRef<
-  ElementRef<typeof TextInput>,
-  ComponentPropsWithoutRef<typeof TextInput> & {
-    icon?: keyof typeof Feather.glyphMap;
-    onIconPress?: () => void;
-    isRequired?: boolean;
-    placeholderClassName?: string;
-    label?: string;
-    labelClasses?: string;
-    inputClasses?: string;
-  }
->(
+export interface InputProps
+  extends React.ComponentPropsWithoutRef<typeof TextInput> {
+  label?: string;
+  labelClasses?: string;
+  inputClasses?: string;
+  icon?: keyof typeof Feather.glyphMap;
+  onIconPress?: () => void;
+}
+const Input = forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
   (
     {
       className,
-      placeholderClassName,
-      icon,
       label,
       labelClasses,
       inputClasses,
+      icon,
       onIconPress,
       ...props
     },
     ref
   ) => {
+    const { colorScheme } = useTheme();
+    const isDarkMode = colorScheme === "dark";
+
     return (
       <View className={cn("flex flex-col gap-1.5 w-full", className)}>
         {label && (
@@ -44,6 +44,7 @@ const Input = forwardRef<
         <View className="relative">
           <TextInput
             ref={ref}
+            placeholderTextColor={isDarkMode ? colors.white : colors.gray}
             className={cn(
               inputClasses,
               `border border-neutral-300 dark:border-neutral-600 py-2.5 px-4 text-neutral-800 dark:text-neutral-200 rounded-lg w-full focus:border-primary bg-white dark:bg-neutral-800 font-bold text-lg pr-10`
@@ -64,7 +65,5 @@ const Input = forwardRef<
     );
   }
 );
-
-Input.displayName = "Input";
 
 export { Input };
