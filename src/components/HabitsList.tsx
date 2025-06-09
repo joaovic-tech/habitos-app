@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import { colors } from "@/styles/colors";
 import { router, useFocusEffect } from "expo-router";
 import { useTheme } from "@/hooks/useTheme";
 import { useToast } from "@/components/shared/Toast";
+import { ClipboardText } from "phosphor-react-native";
 
 type HabitsListProps = {
   onHabitsChange?: (habits: habitsStorage.Habit[]) => void;
@@ -187,7 +188,7 @@ export function HabitsList({
   if (loading) {
     return (
       <View className="items-center justify-center p-4">
-        <ActivityIndicator size="large" color={colors.blue - 600} />
+        <ActivityIndicator size="large" color={colors.primary} />
         <Text className="mt-4 text-neutral-600 dark:text-neutral-400">
           Carregando hábitos...
         </Text>
@@ -204,7 +205,11 @@ export function HabitsList({
         ListEmptyComponent={
           listEmptyComponent || (
             <View className="items-center justify-center p-8">
-              <Feather name="clipboard" size={48} color={colors.blue - 600} />
+              <ClipboardText
+                size={48}
+                color={colors.secondary}
+                weight="duotone"
+              />
               <Text className="mt-4 text-lg font-bold text-center text-neutral-800 dark:text-white">
                 Nenhum hábito encontrado
               </Text>

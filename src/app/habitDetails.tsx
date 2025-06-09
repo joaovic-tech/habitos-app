@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -15,8 +15,8 @@ import { convertTime } from "@/utils/convertTime";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/shared/Button";
 import { useToast } from "@/components/shared/Toast";
-import { icon } from "@/constants/icon";
 import { Trash } from "phosphor-react-native";
+import Constants from "expo-constants";
 
 const DEFAULT_ALERTS_PER_DAY = [1, 2, 3, 4, 5, 6];
 
@@ -24,6 +24,7 @@ const dateTimeStart = new Date().setHours(8, 0, 0, 0);
 const dateTimeEnd = new Date().setHours(21, 0, 0, 0);
 
 export default function HabitDetailsScreen() {
+  const statusBarHeight = Constants.statusBarHeight || 0;
   const params = useLocalSearchParams<{
     id?: string;
     name: string;
@@ -43,6 +44,7 @@ export default function HabitDetailsScreen() {
     params.alertsPerDay ? parseInt(params.alertsPerDay) : 2
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const showTimePicker = (time: string) => {
     time === "startTime"
@@ -67,6 +69,7 @@ export default function HabitDetailsScreen() {
   };
 
   const handleSaveHabit = async () => {
+    setIsSubmitting(true);
     if (!alertsPerDay || alertsPerDay < 1) {
       toast("Defina pelo menos 1 alerta por dia", "destructive");
       return;
@@ -81,7 +84,6 @@ export default function HabitDetailsScreen() {
       return;
     }
 
-    setIsSubmitting(true);
     try {
       if (isEditMode && params.id) {
         const currentHabits = await habitsStorage.getAll();
@@ -132,8 +134,6 @@ export default function HabitDetailsScreen() {
     } catch (error) {
       console.error("Error saving habit:", error);
       toast("Ocorreu um erro ao salvar o hábito.", "destructive");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -145,6 +145,7 @@ export default function HabitDetailsScreen() {
   };
 
   const handleRemoveHabit = async (id: string) => {
+    setIsDeleting(true);
     try {
       await habitsStorage.remove(id);
       showSuccessToast("Hábito removido com sucesso!");
@@ -156,8 +157,8 @@ export default function HabitDetailsScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <View
+      style={{ paddingTop: statusBarHeight }}
       className="flex-1 bg-neutral-200 dark:bg-neutral-900"
     >
       <Stack.Screen options={{ headerShown: false }} />
@@ -274,6 +275,7 @@ export default function HabitDetailsScreen() {
             label={isSubmitting ? "Salvando..." : "Salvar Hábito"}
             onPress={handleSaveHabit}
             disabled={isSubmitting}
+            className={`${isSubmitting && "pointer-events-none opacity-50"}`}
           />
 
           {/* Delete button */}
@@ -284,10 +286,12 @@ export default function HabitDetailsScreen() {
               variant="destructive"
               icon={<Trash size={24} weight="bold" color="white" />}
               onPress={() => handleRemoveHabit(params.id!)}
+              disabled={isDeleting}
+              className={`${isDeleting && "pointer-events-none opacity-50"}`}
             />
           )}
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 }

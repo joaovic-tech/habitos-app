@@ -1,21 +1,37 @@
-import { useState } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { useCallback, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/shared/Button";
 import { habitsData } from "@/data/HabitsData";
-import { router, Stack } from "expo-router";
+import { router, Stack, useFocusEffect } from "expo-router";
 import Constants from "expo-constants";
+import { colors } from "@/styles/colors";
 
 export default function SelectHabitScreen() {
   const statusBarHeight = Constants.statusBarHeight || 0;
   const [selectedHabit, setSelectedHabit] = useState<string | null>(null);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const handleSelectHabit = (habitName: string) => {
     setSelectedHabit(habitName === selectedHabit ? null : habitName);
   };
 
+  // Reseta isDisabled para false toda vez que a tela ganhar foco
+  useFocusEffect(
+    useCallback(() => {
+      setIsDisabled(false);
+    }, [])
+  );
+
   const handleContinue = () => {
+    setIsDisabled(true);
     if (selectedHabit) {
       const habitDetails = habitsData.habitos.find(
         (habit) => habit.name === selectedHabit
@@ -120,10 +136,16 @@ export default function SelectHabitScreen() {
       {selectedHabit && (
         <View className="px-6 py-4 bg-white border-t border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700">
           <Button
-            label="Continuar"
-            disabled={!selectedHabit}
+            disabled={isDisabled}
+            className={`${isDisabled && "pointer-events-none opacity-50"}`}
+            label={
+              !isDisabled ? (
+                "Adicionar Hábito"
+              ) : (
+                <ActivityIndicator size="small" color={colors.white} />
+              )
+            }
             onPress={handleContinue}
-            className={!selectedHabit ? "opacity-50" : "opacity-100"}
           />
         </View>
       )}

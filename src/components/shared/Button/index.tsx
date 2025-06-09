@@ -52,6 +52,7 @@ export function Button({
       className={`w-full shadow-sm flex-row dark:shadow-none py-3 rounded-lg items-center justify-center mb-4 mt-2 gap-4 ${getButtonStyle()} ${className}`}
       activeOpacity={0.8}
       {...props}
+      disabled={props.disabled}
     >
       <Text className={`font-bold text-lg ${getTextStyle()} ${labelClasses}`}>
         {label}

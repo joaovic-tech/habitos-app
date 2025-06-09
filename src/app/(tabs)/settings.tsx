@@ -1,11 +1,10 @@
 import { Switch } from "@/components/Switch";
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
   Animated,
   Easing,
-  Pressable,
   Alert,
   ScrollView,
   ActivityIndicator,
@@ -61,9 +60,11 @@ export default function Tab() {
 
   // Função para excluir todos os hábitos
   const handleDeleteAllHabits = async () => {
+    setDeleting(true);
     const storedHabits = await AsyncStorage.getItem(ITEMS_STORAGE_KEY);
     if (!storedHabits || JSON.parse(storedHabits).length === 0) {
       toast("Nenhum hábito encontrado para excluir.", "info");
+      setDeleting(false);
       return;
     }
 
@@ -71,12 +72,15 @@ export default function Tab() {
       "Excluir todos os hábitos",
       "Tem certeza que deseja excluir todos os seus hábitos? Esta ação não pode ser desfeita.",
       [
-        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Cancelar",
+          style: "cancel",
+          onPress: () => setDeleting(false),
+        },
         {
           text: "Excluir",
           style: "destructive",
           onPress: async () => {
-            setDeleting(true);
             try {
               const success = await clearHabits();
               if (success) {
@@ -159,6 +163,8 @@ export default function Tab() {
             }
             variant="ghost"
             onPress={handleDeleteAllHabits}
+            disabled={deleting}
+            className={`${deleting && "pointer-events-none opacity-50"}`}
           />
         </View>
       </ScrollView>
