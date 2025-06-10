@@ -72,6 +72,7 @@ export default function HabitDetailsScreen() {
     setIsSubmitting(true);
     if (!alertsPerDay || alertsPerDay < 1) {
       toast("Defina pelo menos 1 alerta por dia", "destructive");
+      setIsSubmitting(false);
       return;
     }
 
@@ -81,6 +82,7 @@ export default function HabitDetailsScreen() {
         "O horário de término deve ser maior que o de início.",
         "destructive"
       );
+      setIsSubmitting(false);
       return;
     }
 
@@ -107,11 +109,17 @@ export default function HabitDetailsScreen() {
             setTimeout(() => {
               router.push("/(tabs)");
             }, 1500);
+            // setIsSubmitting(false) will be called in finally
             return;
           } catch (error) {
             console.error("Error updating habit:", error);
             toast("Ocorreu um erro ao atualizar o hábito.", "destructive");
+            // setIsSubmitting(false) will be called in finally
           }
+        } else {
+          // Habit to edit was not found
+          toast("Hábito para editar não encontrado.", "destructive");
+          // setIsSubmitting(false) will be called in finally
         }
       } else {
         const newHabit: habitsStorage.Habit = {
@@ -130,10 +138,13 @@ export default function HabitDetailsScreen() {
         setTimeout(() => {
           router.push("/(tabs)");
         }, 1500);
+        // setIsSubmitting(false) will be called in finally
       }
     } catch (error) {
       console.error("Error saving habit:", error);
       toast("Ocorreu um erro ao salvar o hábito.", "destructive");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -149,10 +160,13 @@ export default function HabitDetailsScreen() {
     try {
       await habitsStorage.remove(id);
       showSuccessToast("Hábito removido com sucesso!");
+      // setIsDeleting(false) will be called in finally
       return;
     } catch (error) {
       console.error("Error removing habit:", error);
       toast("Ocorreu um erro ao remover o hábito.", "destructive");
+    } finally {
+      setIsDeleting(false);
     }
   };
 

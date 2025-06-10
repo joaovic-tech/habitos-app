@@ -15,7 +15,7 @@ export function Header({ title, icon, backRouter = false }: Props) {
   const statusBarHeight = Constants.statusBarHeight || 0;
 
   return (
-    <View style={{ paddingTop: statusBarHeight }} className="relative">
+    <View style={{ paddingTop: statusBarHeight }} className="relative z-50">
       {backRouter && (
         <TouchableOpacity
           onPress={() => router.back()}
@@ -30,7 +30,7 @@ export function Header({ title, icon, backRouter = false }: Props) {
 
       <View className="flex-row items-center gap-4 p-2 mx-auto mb-12 rounded bg-neutral-100 dark:bg-neutral-800">
         {icon && icon}
-        <Text className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">
+        <Text className="text-lg font-semibold text-secondary">
           {title ? title : "Hábitos+"}
         </Text>
       </View>

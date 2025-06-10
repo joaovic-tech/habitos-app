@@ -49,7 +49,7 @@ export function Button({
 
   return (
     <TouchableOpacity
-      className={`w-full shadow-sm flex-row dark:shadow-none py-3 rounded-lg items-center justify-center mb-4 mt-2 gap-4 ${getButtonStyle()} ${className}`}
+      className={`w-full shadow-sm flex-row dark:shadow-none py-3 rounded-lg items-center justify-center gap-4 ${getButtonStyle()} ${className}`}
       activeOpacity={0.8}
       {...props}
       disabled={props.disabled}
