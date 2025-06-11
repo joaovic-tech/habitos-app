@@ -19,6 +19,7 @@ export default function Tab() {
   const getInitials = (name: string) => {
     if (!name) return "";
     const parts = name.split(" ").filter(Boolean);
+    
     if (parts.length === 0) return "";
     const firstInitial = parts[0][0]?.toUpperCase() || "";
     if (parts.length === 1) return firstInitial;

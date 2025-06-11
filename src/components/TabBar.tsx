@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getTabBarHeight, isSmallDevice } from "@/utils/responsive";
+import { isNativePlatformSupported } from "react-native-screens/lib/typescript/core";
 
 const labels = {
   index: "Alertas",
@@ -65,11 +66,11 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const totalTabBarHeight = tabBarHeight + insets.bottom;
 
   // Tamanhos responsivos para os elementos da TabBar
-  const floatingButtonSize = Math.min(
+  const floatingButtonInnerSize = Math.min(
     buttonWidth * (isSmall ? 0.85 : 0.9),
     isSmall ? 56 : 60
   );
-  const floatingButtonInnerSize = floatingButtonSize - (isSmall ? 14 : 16);
+  const floatingButtonSize = floatingButtonInnerSize * 1.3;
 
   return (
     <View
@@ -106,11 +107,8 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           animatedStyle,
         ]}
         className="absolute z-10 bg-blue-600 rounded-full shadow-xl shadow-blue-600/25"
-      />
-
+      ></Animated.View>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label = options.tabBarLabel ?? options.title ?? route.name;
         const isFocused = state.index === index;
 
         const onPress = () => {
@@ -145,18 +143,13 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           });
         };
 
-        const text = labels[label as keyof typeof labels] || label;
-
         return (
           <TabBarButton
             key={route.name}
             onPress={onPress}
             onLongPress={onLongPress}
             isFocused={isFocused}
-            routeName={
-              route.name as "about" | "form" | "index" | "profile" | "settings"
-            }
-            label={text as string}
+            routeName={route.name as keyof typeof labels}
           />
         );
       })}

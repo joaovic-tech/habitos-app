@@ -284,26 +284,28 @@ export default function HabitDetailsScreen() {
             </View>
           </View>
 
-          {/* Save Button */}
-          <Button
-            label={isSubmitting ? "Salvando..." : "Salvar Hábito"}
-            onPress={handleSaveHabit}
-            disabled={isSubmitting}
-            className={`${isSubmitting && "pointer-events-none opacity-50"}`}
-          />
-
-          {/* Delete button */}
-
-          {isEditMode && (
+          <View className="flex-col gap-4">
+            {/* Save Button */}
             <Button
-              label="Excluir Hábito"
-              variant="destructive"
-              icon={<Trash size={24} weight="bold" color="white" />}
-              onPress={() => handleRemoveHabit(params.id!)}
-              disabled={isDeleting}
-              className={`${isDeleting && "pointer-events-none opacity-50"}`}
+              label={isSubmitting ? "Salvando..." : "Salvar Hábito"}
+              onPress={handleSaveHabit}
+              disabled={isSubmitting}
+              className={`${isSubmitting && "pointer-events-none opacity-50"}`}
             />
-          )}
+
+            {/* Delete button */}
+
+            {isEditMode && (
+              <Button
+                label="Excluir Hábito"
+                variant="destructive"
+                icon={<Trash size={24} weight="bold" color="white" />}
+                onPress={() => handleRemoveHabit(params.id!)}
+                disabled={isDeleting}
+                className={`${isDeleting && "pointer-events-none opacity-50"}`}
+              />
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>

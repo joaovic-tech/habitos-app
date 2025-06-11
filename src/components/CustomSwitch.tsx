@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -30,7 +30,7 @@ export function CustomSwitch({
   ...accessibilityProps
 }: CustomSwitchProps) {
   // Animation value for the thumb position
-  const thumbPosition = React.useRef(new Animated.Value(value ? 1 : 0)).current;
+  const thumbPosition = useRef(new Animated.Value(value ? 1 : 0)).current;
 
   // Update animation when value changes
   useEffect(() => {

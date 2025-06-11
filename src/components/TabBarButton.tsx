@@ -13,7 +13,6 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-  Easing,
 } from "react-native-reanimated";
 import { getIconSize, isSmallDevice } from "@/utils/responsive";
 
@@ -24,7 +23,6 @@ interface TabBarButtonProps {
   onLongPress: () => void;
   isFocused: boolean;
   routeName: RouteName;
-  label: string;
 }
 
 export default function TabBarButton({
@@ -32,7 +30,6 @@ export default function TabBarButton({
   onLongPress,
   isFocused,
   routeName,
-  label,
 }: TabBarButtonProps) {
   const scale = useSharedValue(0);
   const [containerSize, setContainerSize] = useState({ height: 0, width: 0 });
@@ -83,50 +80,24 @@ export default function TabBarButton({
     };
   }, [containerSize.height, isSmallScreen]);
 
-  const animatedTextStyle = useAnimatedStyle(() => {
-    const opacity = interpolate(scale.value, [0, 1], [0, 1]);
-
-    return {
-      opacity,
-    };
-  });
-
   return (
     <Pressable
       onPress={onPress}
       onLongPress={onLongPress}
-      className={`z-20 flex-col flex-1 items-center justify-center ${
-        isSmallScreen ? "gap-0.5" : "gap-1"
-      } top-0 min-h-0`}
+      className={`z-20 flex-col flex-1 items-center justify-center ${isFocused && '-top-3'} min-h-0`}
       onLayout={onLayout}
       ref={containerRef}
-      style={{ minWidth: isSmallScreen ? 60 : 70 }}
     >
       <Animated.View
         style={animatedIconStyle}
         className="items-center justify-center"
       >
         {icon[routeName]({
-          size: iconSize,
+          size: isFocused ? iconSize * 1.3 : iconSize,
           color: isFocused ? "#fafafa" : "#6d6e71",
           isFocused,
         })}
       </Animated.View>
-      <Animated.Text
-        style={[animatedTextStyle]}
-        className={`items-center m-auto ${
-          isSmallScreen ? "text-xs" : "text-sm"
-        } font-bold top-0 ${
-          isFocused
-            ? "text-blue-600 dark:text-blue-600"
-            : "text-neutral-500 dark:text-neutral-400"
-        }`}
-        numberOfLines={1}
-        adjustsFontSizeToFit={isSmallScreen}
-        minimumFontScale={0.8}
-      >
-        {label}
-      </Animated.Text>
     </Pressable>
   );
 }
