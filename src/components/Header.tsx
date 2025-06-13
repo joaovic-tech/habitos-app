@@ -1,21 +1,42 @@
+import { icon } from "@/constants/icon";
 import { colors } from "@/styles/colors";
 import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { useRouter, useSegments } from "expo-router";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import Constants from "expo-constants";
+import { Text, TouchableOpacity, View, ViewProps } from "react-native";
 
-type Props = {
+type Props = ViewProps & {
   title?: string;
-  icon?: React.ReactElement;
+  otherIcon?: React.ReactElement;
   backRouter?: boolean;
 };
 
-export function Header({ title, icon, backRouter = false }: Props) {
-  const statusBarHeight = Constants.statusBarHeight || 0;
+type AppRouteName =
+  | "about"
+  | "form"
+  | "index"
+  | "profile"
+  | "settings"
+  | "habitDetails"
+  | "login"
+  | "register"
+  | "selectHabit"
+  | "_sitemap"
+  | "(tabs)";
+
+export function Header({ title, otherIcon, backRouter = false }: Props) {
+  const router = useRouter();
+  const segments = useSegments();
+  let currentRouteName: AppRouteName = segments[
+    segments.length - 1
+  ] as AppRouteName;
+
+  if (currentRouteName === "(tabs)") {
+    currentRouteName = "index";
+  }
 
   return (
-    <View style={{ paddingTop: statusBarHeight }} className="relative z-50">
+    <View className="relative z-50">
       {backRouter && (
         <TouchableOpacity
           onPress={() => router.back()}
@@ -29,7 +50,15 @@ export function Header({ title, icon, backRouter = false }: Props) {
       )}
 
       <View className="flex-row items-center gap-4 p-2 mx-auto mb-12 rounded bg-neutral-100 dark:bg-neutral-800">
-        {icon && icon}
+        {otherIcon ??
+          (icon[currentRouteName as keyof typeof icon] // Garante que a chave é compatível com as chaves do objeto 'icon'
+            ? icon[currentRouteName as keyof typeof icon]({
+                size: 28,
+                color: colors.secondary,
+                isFocused: false,
+                isIconHeader: currentRouteName === "index",
+              })
+            : null)}
         <Text className="text-lg font-semibold text-secondary">
           {title ? title : "Hábitos+"}
         </Text>

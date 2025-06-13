@@ -1,9 +1,14 @@
-import { View, Text } from "react-native";
+import { Text } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function Tab() {
   return (
-    <View className="items-center justify-center flex-1 bg-neutral-200 dark:bg-neutral-900">
-      <Text className="text-purple-600">Form Screen</Text>
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView className="flex-1 px-6 bg-neutral-200 dark:bg-neutral-900">
+        <Text className="p-2 mx-auto text-center text-white bg-purple-600 rounded-lg">
+          Form Screen
+        </Text>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

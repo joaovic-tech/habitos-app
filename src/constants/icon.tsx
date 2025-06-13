@@ -6,13 +6,20 @@ export interface BaseIconProps {
   size?: number;
   color?: string;
   isFocused?: boolean;
+  isIconHeader?: boolean;
 }
 
 export const icon = {
   about: (props: any) => <Info size={props.size} {...props} weight="duotone" />,
-  form: (props: any) => <NotePencil size={props.size} {...props} weight="duotone" />,
+  form: (props: any) => (
+    <NotePencil size={props.size} {...props} weight="duotone" />
+  ),
   index: (props: any) => (
-    <AlertIcon isFocused={props.isFocused} size={props.size} />
+    <AlertIcon
+      isFocused={props.isFocused}
+      size={props.size}
+      isIconHeader={props.isIconHeader}
+    />
   ),
   profile: (props: any) => (
     <User size={props.size} {...props} weight="duotone" />

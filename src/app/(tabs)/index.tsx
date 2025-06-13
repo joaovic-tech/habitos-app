@@ -1,11 +1,13 @@
-import { View, SafeAreaView, ActivityIndicator } from "react-native";
 import { HabitsList } from "@/components/HabitsList";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/shared/Button";
-import { router, useFocusEffect } from "expo-router";
-import { Feather } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
+import { Feather } from "@expo/vector-icons";
+import { router, useFocusEffect } from "expo-router";
+import { PlusCircle } from "phosphor-react-native";
 import { useCallback, useState } from "react";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,7 +18,7 @@ export default function HomeScreen() {
     router.push("/selectHabit");
   };
 
-  // Reseta estados
+  // Reset estados
   useFocusEffect(
     useCallback(() => {
       setIsSubmitting(false);
@@ -24,29 +26,22 @@ export default function HomeScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-neutral-200 dark:bg-neutral-900">
-      <View className="flex-1 px-6 pb-24">
-        <Header
-          title="Hábitos+"
-          icon={<Feather name="list" size={20} color={colors.secondary} />}
-        />
+    <SafeAreaProvider>
+      <SafeAreaView className="px-6 h-screen-safe-offset-10 bg-neutral-200 dark:bg-neutral-900">
+        <Header title="Hábitos+" />
+
+        <TouchableOpacity
+          onPress={handleAddHabit}
+          disabled={isSubmitting}
+          className={`${
+            isSubmitting && "pointer-events-none opacity-50"
+          } ml-auto mb-4`}
+        >
+          <PlusCircle size={48} color={colors.secondary} weight="duotone" />
+        </TouchableOpacity>
 
         <HabitsList />
-
-        <Button
-          label={
-            !isSubmitting ? (
-              "Adicionar Hábito"
-            ) : (
-              <ActivityIndicator size="small" color={colors.white} />
-            )
-          }
-          onPress={handleAddHabit}
-          variant="primary"
-          disabled={isSubmitting}
-          className={`${isSubmitting && "pointer-events-none opacity-50"}`}
-        />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

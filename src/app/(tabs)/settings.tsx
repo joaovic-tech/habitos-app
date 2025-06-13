@@ -17,10 +17,8 @@ import { useToast } from "@/components/shared/Toast";
 import { Header } from "@/components/Header";
 import { Gear } from "phosphor-react-native";
 import { Feather } from "@expo/vector-icons";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/shared/Button";
-
-const icon = <Gear size={20} color={colors.secondary} weight="duotone" />;
 
 export default function Tab() {
   const { colorScheme, toggleTheme, loading } = useTheme();
@@ -121,8 +119,8 @@ export default function Tab() {
 
   return (
     <SafeAreaProvider>
-      <ScrollView className="flex-1 px-6 shadow bg-neutral-200 dark:bg-neutral-900">
-        <Header title="Configurações" icon={icon} />
+      <SafeAreaView className="flex-1 px-6 bg-neutral-200 dark:bg-neutral-900">
+        <Header title="Configurações" />
 
         <Animated.View
           style={{
@@ -167,7 +165,7 @@ export default function Tab() {
             className={`${deleting && "pointer-events-none opacity-50"}`}
           />
         </View>
-      </ScrollView>
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 }

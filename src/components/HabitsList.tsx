@@ -12,23 +12,17 @@ import { CustomSwitch } from "@/components/CustomSwitch";
 import { colors } from "@/styles/colors";
 import { router, useFocusEffect } from "expo-router";
 import { useTheme } from "@/hooks/useTheme";
-import { useToast } from "@/components/shared/Toast";
-import { ClipboardText } from "phosphor-react-native";
+import { ClipboardText, PlusCircle } from "phosphor-react-native";
 
 type HabitsListProps = {
   onHabitsChange?: (habits: habitsStorage.Habit[]) => void;
-  listEmptyComponent?: React.ReactElement;
 };
 
-export function HabitsList({
-  onHabitsChange,
-  listEmptyComponent,
-}: HabitsListProps) {
+export function HabitsList({ onHabitsChange }: HabitsListProps) {
   const [habits, setHabits] = useState<habitsStorage.Habit[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingIds, setDeletingIds] = useState<string[]>([]);
   const isDarkMode = useTheme().colorScheme === "dark";
-  const { toast } = useToast();
 
   // Utility function to sort habits by startTime
   const sortHabits = useCallback((habitsToSort: habitsStorage.Habit[]) => {
@@ -196,29 +190,25 @@ export function HabitsList({
     );
   }
 
+  const listEmptyComponent = () => (
+    <View className="items-center justify-center p-8">
+      <ClipboardText size={48} color={colors.secondary} weight="duotone" />
+      <Text className="mt-4 text-lg font-bold text-center text-neutral-800 dark:text-white">
+        Nenhum hábito encontrado
+      </Text>
+      <Text className="items-center justify-center text-center text-neutral-600 dark:text-neutral-400">
+        Adicione um novo hábito clicando no ícone de (+) acima..
+      </Text>
+    </View>
+  );
+
   return (
-    <View className="h-[30rem]">
+    <View className="max-h-[75%] pb-8 relative">
       <FlatList
         data={habits}
         keyExtractor={(item) => item.id}
         renderItem={renderHabitItem}
-        ListEmptyComponent={
-          listEmptyComponent || (
-            <View className="items-center justify-center p-8">
-              <ClipboardText
-                size={48}
-                color={colors.secondary}
-                weight="duotone"
-              />
-              <Text className="mt-4 text-lg font-bold text-center text-neutral-800 dark:text-white">
-                Nenhum hábito encontrado
-              </Text>
-              <Text className="mt-2 text-center text-neutral-600 dark:text-neutral-400">
-                Adicione um novo hábito para começar a acompanhar seu progresso.
-              </Text>
-            </View>
-          )
-        }
+        ListEmptyComponent={listEmptyComponent}
         ItemSeparatorComponent={() => <View className="my-2" />}
       />
     </View>

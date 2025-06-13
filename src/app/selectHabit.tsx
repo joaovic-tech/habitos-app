@@ -11,11 +11,12 @@ import { Header } from "@/components/Header";
 import { Button } from "@/components/shared/Button";
 import { habitsData } from "@/data/HabitsData";
 import { router, Stack, useFocusEffect } from "expo-router";
-import Constants from "expo-constants";
 import { colors } from "@/styles/colors";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { colorScheme } from "nativewind";
+import StackScreen from "@/components/StackScreen";
 
 export default function SelectHabitScreen() {
-  const statusBarHeight = Constants.statusBarHeight || 0;
   const [selectedHabit, setSelectedHabit] = useState<string | null>(null);
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -47,16 +48,6 @@ export default function SelectHabitScreen() {
       }
     }
   };
-
-  // Header acima da lista
-  const ListHeader = () => (
-    <View style={{ paddingTop: statusBarHeight }} className="px-6 pt-4">
-      <Header backRouter={true} />
-      <Text className="mt-8 mb-6 text-xl font-bold text-neutral-800 dark:text-white">
-        Selecione seu hábito abaixo:
-      </Text>
-    </View>
-  );
 
   // Card do hábito com ícone e estilização
   const HabitCard = ({
@@ -105,50 +96,47 @@ export default function SelectHabitScreen() {
   );
 
   return (
-    <>
-      <Stack.Screen
-        options={{
-          headerShown: false,
-          animation: "slide_from_right",
-        }}
-      />
-      <FlatList
-        className="w-full bg-neutral-200 dark:bg-neutral-900"
-        data={habitsData.habitos}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => (
-          <HabitCard
-            name={item.name}
-            description={item.description}
-            selected={selectedHabit === item.name}
-            onSelect={() => handleSelectHabit(item.name)}
-          />
+    <SafeAreaProvider>
+      <SafeAreaView className="flex-1 bg-neutral-200 dark:bg-neutral-900">
+        <StackScreen title="Selecionar Hábito" />
+
+        <FlatList
+          className="w-full px-6 bg-neutral-200 dark:bg-neutral-900"
+          data={habitsData.habitos}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => (
+            <HabitCard
+              name={item.name}
+              description={item.description}
+              selected={selectedHabit === item.name}
+              onSelect={() => handleSelectHabit(item.name)}
+            />
+          )}
+          numColumns={2}
+          contentContainerStyle={{
+            paddingBottom: 24,
+            paddingTop: 8,
+            paddingHorizontal: 4,
+          }}
+          showsVerticalScrollIndicator={false}
+        />
+        {selectedHabit && (
+          <View className="px-6 py-4 bg-white border-t border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700">
+            <Button
+              disabled={isDisabled}
+              className={`${isDisabled && "pointer-events-none opacity-50"}`}
+              label={
+                !isDisabled ? (
+                  "Adicionar Hábito"
+                ) : (
+                  <ActivityIndicator size="small" color={colors.white} />
+                )
+              }
+              onPress={handleContinue}
+            />
+          </View>
         )}
-        numColumns={2}
-        ListHeaderComponent={ListHeader}
-        contentContainerStyle={{
-          paddingBottom: 24,
-          paddingTop: 8,
-          paddingHorizontal: 4,
-        }}
-        showsVerticalScrollIndicator={false}
-      />
-      {selectedHabit && (
-        <View className="px-6 py-4 bg-white border-t border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700">
-          <Button
-            disabled={isDisabled}
-            className={`${isDisabled && "pointer-events-none opacity-50"}`}
-            label={
-              !isDisabled ? (
-                "Adicionar Hábito"
-              ) : (
-                <ActivityIndicator size="small" color={colors.white} />
-              )
-            }
-            onPress={handleContinue}
-          />
-        </View>
-      )}
-    </>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
