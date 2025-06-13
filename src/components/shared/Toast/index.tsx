@@ -89,7 +89,7 @@ function Toast({
     >
       <Text
         className={cn(
-          "text-base font-bold text-left",
+          "text-base font-dosis-bold text-left",
           toastTextColors[variant]
         )}
       >

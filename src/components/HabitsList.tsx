@@ -13,6 +13,7 @@ import { colors } from "@/styles/colors";
 import { router, useFocusEffect } from "expo-router";
 import { useTheme } from "@/hooks/useTheme";
 import { ClipboardText, PlusCircle } from "phosphor-react-native";
+import { cn } from "@/lib/utils";
 
 type HabitsListProps = {
   onHabitsChange?: (habits: habitsStorage.Habit[]) => void;
@@ -133,23 +134,23 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
           }`}
         >
           <View className="flex-row items-center justify-between">
-            <Text className="text-lg font-bold text-neutral-900 dark:text-white">
+            <Text className="text-lg font-dosis-bold text-neutral-900 dark:text-white">
               {item.name}
             </Text>
             <View className="flex-row items-center p-2 border rounded-lg bg-neutral-100 border-neutral-200 dark:border-neutral-700 dark:bg-neutral-700">
               <Feather
                 name="clock"
                 size={14}
-                color={isDarkMode ? "#A1A1AA" : "#52525B"}
+                color={isDarkMode ? colors.white : colors.black}
                 style={{ marginRight: 4 }}
               />
-              <Text className="text-sm font-bold text-neutral-700 dark:text-neutral-300">
+              <Text className="text-sm font-dosis-medium text-neutral-700 dark:text-neutral-300">
                 {item.startTime} - {item.endTime}
               </Text>
             </View>
           </View>
 
-          <Text className="mt-1 mb-2 text-sm text-neutral-600 dark:text-neutral-300">
+          <Text className="mt-1 mb-2 text-sm text-neutral-600 font-dosis-semibold dark:text-neutral-300">
             {item.description}
           </Text>
 
@@ -158,10 +159,10 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
               <Feather
                 name="bell"
                 size={14}
-                color={isDarkMode ? "#E5E7EB" : "#52525B"}
+                color={isDarkMode ? colors.white : colors.black}
                 style={{ marginRight: 4 }}
               />
-              <Text className="text-sm text-neutral-700 dark:text-neutral-300">
+              <Text className="text-sm font-dosis-semibold text-neutral-700 dark:text-neutral-300">
                 {item.alertsPerDay} alertas por dia
               </Text>
             </View>
@@ -183,7 +184,7 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
     return (
       <View className="items-center justify-center p-4">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text className="mt-4 text-neutral-600 dark:text-neutral-400">
+        <Text className="mt-4 text-neutral-600 dark:text-neutral-400 font-dosis-bold">
           Carregando hábitos...
         </Text>
       </View>
@@ -193,10 +194,10 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
   const listEmptyComponent = () => (
     <View className="items-center justify-center p-8">
       <ClipboardText size={48} color={colors.secondary} weight="duotone" />
-      <Text className="mt-4 text-lg font-bold text-center text-neutral-800 dark:text-white">
+      <Text className="mt-4 text-lg text-center font-dosis-bold text-neutral-800 dark:text-white">
         Nenhum hábito encontrado
       </Text>
-      <Text className="items-center justify-center text-center text-neutral-600 dark:text-neutral-400">
+      <Text className="items-center justify-center text-center text-neutral-600 dark:text-neutral-400 font-dosis-medium">
         Adicione um novo hábito clicando no ícone de (+) acima..
       </Text>
     </View>

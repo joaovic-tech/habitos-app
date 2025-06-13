@@ -36,7 +36,7 @@ export default function Tab() {
       totalHabits: userHabits.length,
     },
     avatarUrl: "https://avatars.githubusercontent.com/u/123456789?v=4",
-    token: true,
+    token: null, // Simulated token for authentication
   };
 
   const getHabits = async () => {
@@ -77,16 +77,16 @@ export default function Tab() {
                       uri: `${user.avatarUrl}`,
                     }}
                   />
-                  <AvatarFallback textClassname="text-2xl font-medium text-white">
+                  <AvatarFallback textClassname="text-2xl font-dosis-medium text-white">
                     {getInitials(user.name)}
                   </AvatarFallback>
                 </Avatar>
 
                 <View className="items-center gap-2">
-                  <Text className="text-3xl font-bold text-neutral-800 dark:text-neutral-100">
+                  <Text className="text-3xl font-dosis-bold text-neutral-800 dark:text-neutral-100">
                     {user.name}
                   </Text>
-                  <Text className="text-lg text-neutral-600 dark:text-neutral-400">
+                  <Text className="text-lg font-dosis-semibold text-neutral-600 dark:text-neutral-400">
                     {user.email}
                   </Text>
                 </View>
@@ -94,35 +94,35 @@ export default function Tab() {
 
               {user.habits.totalHabits > 0 && (
                 <View className="p-6 bg-white shadow-md rounded-xl dark:bg-neutral-800">
-                  <Text className="mb-5 text-xl font-semibold text-center text-neutral-700 dark:text-neutral-200">
+                  <Text className="mb-5 text-xl text-center font-dosis-semibold text-neutral-700 dark:text-neutral-200">
                     Progresso dos Hábitos
                   </Text>
                   <View className="flex-row justify-around">
                     <View className="items-center">
-                      <Text className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                      <Text className="text-4xl text-blue-600 font-dosis-bold dark:text-blue-400">
                         {user.habits.activeHabits.length}
                       </Text>
-                      <Text className="mt-1 text-sm text-neutral-500 dark:text-neutral-300">
+                      <Text className="mt-1 text-sm text-neutral-500 font-dosis-semibold dark:text-neutral-300">
                         Ativos
                       </Text>
                     </View>
 
                     {user.habits.inactiveHabits.length > 0 && (
                       <View className="items-center opacity-70">
-                        <Text className="text-4xl font-bold text-neutral-500 dark:text-neutral-400">
+                        <Text className="text-4xl font-dosis-bold text-neutral-500 dark:text-neutral-400">
                           {user.habits.inactiveHabits.length}
                         </Text>
-                        <Text className="mt-1 text-sm text-neutral-500 dark:text-neutral-300">
+                        <Text className="mt-1 text-sm text-neutral-500 font-dosis-semibold dark:text-neutral-300">
                           Inativos
                         </Text>
                       </View>
                     )}
 
                     <View className="items-center">
-                      <Text className="text-4xl font-bold text-green-500 dark:text-green-400">
+                      <Text className="text-4xl text-green-500 font-dosis-bold dark:text-green-400">
                         {user.habits.totalHabits}
                       </Text>
-                      <Text className="mt-1 text-sm text-neutral-500 dark:text-neutral-300">
+                      <Text className="mt-1 text-sm font-dosis-semibold text-neutral-500 dark:text-neutral-300">
                         Total
                       </Text>
                     </View>

@@ -137,16 +137,16 @@ export default function Tab() {
         </Animated.View>
 
         <View className="items-center w-full max-w-md p-6 shadow-lg rounded-2xl bg-white/80 dark:bg-neutral-800/90">
-          <Text className="mb-4 text-2xl font-extrabold text-neutral-900 dark:text-white">
+          <Text className="mb-4 text-2xl font-dosis-bold text-neutral-900 dark:text-white">
             Configurações
           </Text>
           <View className="flex-row items-center mb-4">
-            <Text className="mr-4 text-lg font-semibold text-neutral-800 dark:text-neutral-200">
+            <Text className="mr-4 text-lg font-dosis-semibold text-neutral-800 dark:text-neutral-200">
               Modo {isDarkMode ? "escuro" : "claro"}
             </Text>
             <Switch onValueChange={toggleTheme} value={isDarkMode} />
           </View>
-          <Text className="mb-6 text-center text-neutral-600 dark:text-neutral-400">
+          <Text className="mb-6 text-center text-neutral-600 font-dosis-regular dark:text-neutral-400">
             Altere o tema do aplicativo entre claro e escuro para sua
             preferência.
           </Text>

@@ -60,7 +60,7 @@ export default function LoginForm({
             style={{ width: 20, height: 20 }}
             resizeMode="contain"
           />
-          <Text className="ml-2 font-medium text-neutral-700 dark:text-neutral-200">
+          <Text className="ml-2 font-dosis-bold text-neutral-700 dark:text-neutral-200">
             Continue com o Google
           </Text>
         </TouchableOpacity>
@@ -68,7 +68,7 @@ export default function LoginForm({
         {/* Divider */}
         <View className="flex-row items-center justify-between w-full my-2">
           <View className="flex-1 h-px bg-neutral-200 dark:bg-neutral-600" />
-          <Text className="mx-2 text-sm text-neutral-500 dark:text-neutral-400">
+          <Text className="mx-2 text-base font-dosis-regular text-neutral-500 dark:text-neutral-400">
             ou faça login com
           </Text>
           <View className="flex-1 h-px bg-neutral-200 dark:bg-neutral-600" />
@@ -103,7 +103,7 @@ export default function LoginForm({
             onChange={setRememberMe}
           />
           <TouchableOpacity>
-            <Text className="text-sm font-medium text-blue-600">
+            <Text className="text-sm text-blue-600 font-dosis-medium">
               Esqueceu sua senha?
             </Text>
           </TouchableOpacity>
@@ -116,20 +116,23 @@ export default function LoginForm({
         />
 
         <View className="flex-row justify-center mt-2">
-          <Text className="text-sm text-neutral-600 dark:text-neutral-300">
+          <Text className="text-sm font-dosis-semibold text-neutral-600 dark:text-neutral-300">
             Não tem uma conta?{" "}
           </Text>
           <TouchableOpacity onPress={() => setShowRegister(true)}>
-            <Text className="text-sm font-semibold text-blue-600">
+            <Text className="text-sm text-blue-600 font-dosis-semibold">
               Registre-se
             </Text>
           </TouchableOpacity>
         </View>
 
-        <Text className="text-xs text-center text-neutral-500 dark:text-neutral-400">
+        <Text className="text-sm text-center font-dosis-regular text-neutral-500 dark:text-neutral-400">
           Ao se inscrever, você concorda com os{" "}
-          <Text className="text-blue-600">Termos de Serviço</Text> e o{" "}
-          <Text className="text-blue-600">
+          <Text className="text-blue-600 font-dosis-medium">
+            Termos de Serviço
+          </Text>{" "}
+          e o{" "}
+          <Text className="text-blue-600 font-dosis-medium">
             Contrato de Processamento de Dados
           </Text>
         </Text>

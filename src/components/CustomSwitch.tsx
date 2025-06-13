@@ -59,7 +59,7 @@ export function CustomSwitch({
       {label && !showLabel && (
         <Text
           className={cn(
-            "mr-2 text-sm text-neutral-700 dark:text-neutral-300",
+            "mr-2 text-sm font-dosis-semibold text-neutral-700 dark:text-neutral-300",
             labelClasses
           )}
         >
@@ -89,7 +89,7 @@ export function CustomSwitch({
           {showLabel && (
             <Text
               className={cn(
-                "text-xs font-bold absolute text-white",
+                "text-xs font-dosis-bold absolute text-white",
                 labelClasses
               )}
               style={{

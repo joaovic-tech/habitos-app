@@ -54,7 +54,9 @@ export function Button({
       {...props}
       disabled={props.disabled}
     >
-      <Text className={`font-bold text-lg ${getTextStyle()} ${labelClasses}`}>
+      <Text
+        className={`font-dosis-bold text-lg ${getTextStyle()} ${labelClasses}`}
+      >
         {label}
       </Text>
       {icon && <>{icon}</>}

@@ -12,6 +12,8 @@ import { Trash } from "phosphor-react-native";
 import { set } from "zod";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import StackScreen from "@/components/StackScreen";
+import { colors } from "@/styles/colors";
+import { colorScheme } from "nativewind";
 
 const DEFAULT_ALERTS_PER_DAY = [1, 2, 3, 4, 5, 6];
 
@@ -163,6 +165,8 @@ export default function HabitDetailsScreen() {
     }
   };
 
+  const isDarkMode = colorScheme.get() === "dark";
+
   return (
     <SafeAreaProvider>
       <StackScreen title={isEditMode ? "Editar Hábito" : "Criar Hábito"} />
@@ -170,10 +174,10 @@ export default function HabitDetailsScreen() {
         {/* Habit Card */}
         <View className="p-6 my-6 bg-blue-100 border-2 border-blue-600 border-dotted rounded-2xl dark:bg-blue-600/30">
           <View className="items-center mb-4">
-            <Text className="text-xl font-bold text-center text-blue-900 dark:text-white">
+            <Text className="text-xl text-center text-blue-900 font-dosis-bold dark:text-white">
               {params.name}
             </Text>
-            <Text className="mt-1 italic text-center text-blue-950 dark:text-neutral-300">
+            <Text className="mt-1 text-center font-dosis-medium text-blue-950 dark:text-neutral-300">
               ({params.description})
             </Text>
           </View>
@@ -181,23 +185,27 @@ export default function HabitDetailsScreen() {
 
         {/* Time Selection */}
         <View className="mb-8">
-          <Text className="mb-4 text-lg font-semibold text-neutral-900 dark:text-white">
+          <Text className="mb-4 text-lg font-dosis-semibold text-neutral-900 dark:text-white">
             Horário dos Lembretes
           </Text>
 
           <View className="flex-row justify-between mb-4">
             <View className="flex-1 mr-3">
-              <Text className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              <Text className="mb-2 text-sm font-dosis-medium text-neutral-700 dark:text-neutral-300">
                 Início
               </Text>
               <TouchableOpacity
                 onPress={() => showTimePicker("startTime")}
                 className="flex-row items-center justify-between px-4 py-3 bg-white border border-neutral-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700"
               >
-                <Text className="text-base font-medium text-neutral-900 dark:text-white">
+                <Text className="text-base font-dosis-semibold text-neutral-900 dark:text-white">
                   {convertTime(startTime)}
                 </Text>
-                <Feather name="clock" size={20} color={"#6D6E71"} />
+                <Feather
+                  name="clock"
+                  size={20}
+                  color={isDarkMode ? colors.white : colors.gray}
+                />
               </TouchableOpacity>
               {showStartTimePicker && (
                 <DateTimePicker
@@ -211,17 +219,21 @@ export default function HabitDetailsScreen() {
             </View>
 
             <View className="flex-1">
-              <Text className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              <Text className="mb-2 text-sm font-dosis-medium text-neutral-700 dark:text-neutral-300">
                 Término
               </Text>
               <TouchableOpacity
                 onPress={() => showTimePicker("endTime")}
                 className="flex-row items-center justify-between px-4 py-3 bg-white border border-neutral-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700"
               >
-                <Text className="text-base font-medium text-neutral-900 dark:text-white">
+                <Text className="text-base font-dosis-medium text-neutral-900 dark:text-white">
                   {convertTime(endTime)}
                 </Text>
-                <Feather name="clock" size={20} color={"#6D6E71"} />
+                <Feather
+                  name="clock"
+                  size={20}
+                  color={isDarkMode ? colors.white : colors.gray}
+                />
               </TouchableOpacity>
               {showEndTimePicker && (
                 <DateTimePicker
@@ -237,7 +249,7 @@ export default function HabitDetailsScreen() {
 
           {/* Alerts per day */}
           <View className="mt-6">
-            <Text className="mb-3 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            <Text className="mb-3 text-sm font-dosis-medium text-neutral-700 dark:text-neutral-300">
               Alertas por dia
             </Text>
             <View className="flex-row flex-wrap gap-3">
@@ -252,7 +264,7 @@ export default function HabitDetailsScreen() {
                   }`}
                 >
                   <Text
-                    className={`text-base font-medium ${
+                    className={`text-base font-dosis-bold ${
                       alertsPerDay === count
                         ? "text-white"
                         : "text-neutral-900 dark:text-white"

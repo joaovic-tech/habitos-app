@@ -1,8 +1,7 @@
 import { colors } from "@/styles/colors";
 import { Feather } from "@expo/vector-icons";
-import { FeatherIconName } from "@/types/feather-icons";
-import React from "react";
-import { TouchableOpacity, Text, View, Animated } from "react-native";
+import { useEffect, useRef } from "react";
+import { TouchableOpacity, Text, Animated } from "react-native";
 
 type HabitItemProps = {
   name: string;
@@ -17,9 +16,9 @@ export function HabitItem({
   selected = false,
   onSelect,
 }: HabitItemProps) {
-  const scale = React.useRef(new Animated.Value(1)).current;
+  const scale = useRef(new Animated.Value(1)).current;
 
-  React.useEffect(() => {
+  useEffect(() => {
     try {
       const animation = Animated.spring(scale, {
         toValue: selected ? 1 : 1,
@@ -64,14 +63,14 @@ export function HabitItem({
           <Feather
             name="check"
             size={32}
-            color={colors.primary}
+            color={colors.black}
             className="absolute top-2 right-2"
           />
         )}
-        <Text className="mb-1 text-base font-bold text-center text-neutral-900 dark:text-white">
+        <Text className="mb-1 text-base text-center font-dosis-bold text-neutral-900 dark:text-white">
           {name}
         </Text>
-        <Text className="text-xs text-center text-neutral-600 dark:text-neutral-300">
+        <Text className="text-xs text-center font-dosis-semibold text-neutral-600 dark:text-neutral-300">
           {description}
         </Text>
       </Animated.View>

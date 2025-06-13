@@ -67,7 +67,7 @@ export default function RegisterForm() {
               style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
-            <Text className="ml-2 font-medium text-neutral-700 dark:text-neutral-200">
+            <Text className="ml-2 font-dosis-bold text-neutral-700 dark:text-neutral-200">
               Continue com o Google
             </Text>
           </TouchableOpacity>
@@ -75,7 +75,7 @@ export default function RegisterForm() {
           {/* Divider */}
           <View className="flex-row items-center justify-between w-full my-2">
             <View className="flex-1 h-px bg-neutral-200 dark:bg-neutral-600" />
-            <Text className="mx-2 text-sm text-neutral-600 dark:text-neutral-400">
+            <Text className="mx-2 text-sm font-dosis-semibold text-neutral-600 dark:text-neutral-400">
               ou use seu e-mail
             </Text>
             <View className="flex-1 h-px bg-neutral-200 dark:bg-neutral-600" />
@@ -90,7 +90,6 @@ export default function RegisterForm() {
                 label={"Nome"}
                 value={name}
                 onChangeText={setName}
-                isRequired
               />
               <Input
                 className="flex-1"
@@ -98,7 +97,6 @@ export default function RegisterForm() {
                 placeholder="Ex: Silva"
                 value={surname}
                 onChangeText={setSurname}
-                isRequired
               />
             </View>
 
@@ -108,7 +106,6 @@ export default function RegisterForm() {
               icon="calendar"
               value={birthDate}
               onChangeText={(value) => formatDisplayDate(value)}
-              isRequired
               maxLength={10}
             />
 
@@ -118,7 +115,6 @@ export default function RegisterForm() {
               autoCapitalize="none"
               value={email}
               onChangeText={setEmail}
-              isRequired
             />
 
             <Input
@@ -128,17 +124,21 @@ export default function RegisterForm() {
               onIconPress={() => setShowPassword(!showPassword)}
               value={password}
               onChangeText={setPassword}
-              isRequired
             />
           </View>
 
           <View className="w-full mt-2">
             <Checkbox
               label={
-                <Text className="text-sm text-neutral-600 dark:text-neutral-300">
+                <Text className="text-sm font-dosis-regular text-neutral-600 dark:text-neutral-300">
                   Concordo com os{" "}
-                  <Text className="text-blue-600">Termos de Uso</Text> e{" "}
-                  <Text className="text-blue-600">Política de Privacidade</Text>
+                  <Text className="text-blue-600 font-dosis-medium">
+                    Termos de Uso
+                  </Text>{" "}
+                  e{" "}
+                  <Text className="text-blue-600 font-dosis-medium">
+                    Política de Privacidade
+                  </Text>
                 </Text>
               }
               initialValue={termsAccepted}

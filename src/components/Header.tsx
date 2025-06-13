@@ -43,7 +43,7 @@ export function Header({ title, otherIcon, backRouter = false }: Props) {
           className="absolute flex-row gap-4 p-3"
         >
           <Feather name="arrow-left" size={25} color={colors.secondary} />
-          <Text className="text-lg font-medium text-neutral-700 dark:text-neutral-200">
+          <Text className="text-lg font-dosis-medium text-neutral-700 dark:text-neutral-200">
             Voltar
           </Text>
         </TouchableOpacity>
@@ -59,7 +59,7 @@ export function Header({ title, otherIcon, backRouter = false }: Props) {
                 isIconHeader: currentRouteName === "index",
               })
             : null)}
-        <Text className="text-lg font-semibold text-secondary">
+        <Text className="text-lg font-dosis-semibold text-secondary">
           {title ? title : "Hábitos+"}
         </Text>
       </View>

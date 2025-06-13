@@ -70,7 +70,7 @@ export default function SelectHabitScreen() {
       }`}
     >
       <Text
-        className={`text-base font-semibold ${
+        className={`text-base font-dosis-bold ${
           selected
             ? "text-blue-700 dark:text-blue-300"
             : "text-neutral-900 dark:text-white"
@@ -79,7 +79,7 @@ export default function SelectHabitScreen() {
         {name}
       </Text>
       <Text
-        className={`text-xs ${
+        className={`text-xs font-dosis-semibold ${
           selected
             ? "text-blue-600/80 dark:text-blue-200/80"
             : "text-neutral-600"

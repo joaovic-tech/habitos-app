@@ -8,6 +8,12 @@ module.exports = {
   theme: {
     extend: {
       colors,
+      fontFamily: {
+        'dosis-regular': ["Dosis_400Regular"],
+        'dosis-medium': ["Dosis_500Medium"],
+        'dosis-semibold': ["Dosis_600SemiBold"],
+        'dosis-bold': ["Dosis_700Bold"],
+      },
     },
   },
   plugins: [],

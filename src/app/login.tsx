@@ -33,11 +33,11 @@ export default function Login() {
             </View>
           )}
 
-          <Text className="text-4xl font-bold text-center text-neutral-800 dark:text-white">
+          <Text className="text-4xl text-center font-dosis-bold text-neutral-800 dark:text-white">
             {showRegister ? "Registre-se" : "Entre na sua\nconta"}
           </Text>
 
-          <Text className="text-base text-neutral-600 dark:text-neutral-400">
+          <Text className="text-base font-dosis-semibold text-neutral-600 dark:text-neutral-400">
             {showRegister
               ? "Preencha seus dados para criar uma conta"
               : "Digite seu e-mail e senha para fazer login"}

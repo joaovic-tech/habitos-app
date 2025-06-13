@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { colors } from "@/styles/colors";
 import { Info, Copyright, FileText, LockKey } from "phosphor-react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { colorScheme } from "nativewind";
 
 export default function InfoScreen() {
   const openLink = (url: string) => {
@@ -16,10 +17,10 @@ export default function InfoScreen() {
 
         <View className="flex-col gap-4 px-4 py-6 bg-white shadow-xl dark:bg-neutral-800 rounded-2xl">
           <View className="flex-col gap-2 text-start">
-            <Text className="text-lg font-semibold text-neutral-900 dark:text-white">
+            <Text className="text-lg font-dosis-bold text-neutral-900 dark:text-white">
               Sobre o Hábitos+
             </Text>
-            <Text className="text-base leading-6 text-neutral-700 dark:text-neutral-300">
+            <Text className="text-base leading-6 font-dosis-regular text-neutral-700 dark:text-neutral-300">
               Aplicativo desenvolvido para auxiliar na identificação e redução
               de hábitos prejudiciais à saúde e bem-estar, promovendo uma vida
               mais equilibrada e saudável.
@@ -31,7 +32,7 @@ export default function InfoScreen() {
           {/* <View className="flex-col gap-2 dark:border-neutral-800">
           <View className="flex-row items-center gap-2">
             <Wrench size={20} color={colors.secondary} weight="duotone" />
-            <Text className="font-semibold text-neutral-800 dark:text-neutral-200">Desenvolvido por:</Text>
+            <Text className="font-dosis-semibold text-neutral-800 dark:text-neutral-200">Desenvolvido por:</Text>
           </View>
 
           <View className="flex-row items-center gap-2">
@@ -44,7 +45,7 @@ export default function InfoScreen() {
               <AvatarFallback>JV</AvatarFallback>
             </Avatar>
             <View className='flex-1'>
-              <Text className="font-medium text-neutral-900 dark:text-white">João Victor Carvalho Alves</Text>
+              <Text className="font-dosis-medium text-neutral-900 dark:text-white">João Victor Carvalho Alves</Text>
               <View className='flex-row items-center justify-start gap-4'>
                 <Text className="text-sm text-neutral-400">Desenvolvedor</Text>
                 <Pressable
@@ -60,10 +61,10 @@ export default function InfoScreen() {
         </View> */}
 
           <View className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl ">
-            <Text className="text-sm text-blue-700 dark:text-blue-300">
-              <Text className="font-semibold">Versão:</Text> 1.0.0
+            <Text className="text-sm text-blue-700 font-dosis-medium dark:text-blue-300">
+              <Text className="font-dosis-semibold">Versão:</Text> 1.0.0
             </Text>
-            <Text className="mt-1 text-xs text-blue-700/80 dark:text-blue-300/80">
+            <Text className="mt-1 text-xs font-dosis-medium text-blue-700/80 dark:text-blue-300/80">
               Projeto desenvolvido para o Centro Universitário Sagrado Coração –
               UNISAGRADO (Bauru/SP).
             </Text>
@@ -71,8 +72,14 @@ export default function InfoScreen() {
 
           <View className="flex-col items-center gap-8">
             <View className="flex-row items-center">
-              <Copyright size={12} color={"#155DFC"} weight="duotone" />
-              <Text className="text-xs text-neutral-400">
+              <Copyright
+                size={12}
+                color={
+                  colorScheme.get() === "dark" ? colors.white : colors.black
+                }
+                weight="duotone"
+              />
+              <Text className="text-xs font-dosis-bold text-neutral-400">
                 {new Date().getFullYear()} UNISAGRADO. Todos os direitos
                 reservados.
               </Text>
@@ -83,7 +90,7 @@ export default function InfoScreen() {
                 onPress={() => openLink("https://seusite.com/termos-de-uso")}
               >
                 <FileText size={24} color="#155DFC" weight="duotone" />
-                <Text className="text-sm text-blue-700 underline dark:text-blue-500">
+                <Text className="text-sm text-blue-700 underline font-dosis-semibold dark:text-blue-500">
                   Termos de Uso
                 </Text>
               </Pressable>
@@ -95,7 +102,7 @@ export default function InfoScreen() {
                 }
               >
                 <LockKey size={24} color="#155DFC" weight="duotone" />
-                <Text className="text-sm text-blue-700 underline dark:text-blue-500">
+                <Text className="text-sm text-blue-700 underline font-dosis-semibold dark:text-blue-500">
                   Privacidade
                 </Text>
               </Pressable>

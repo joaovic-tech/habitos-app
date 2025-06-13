@@ -45,7 +45,7 @@ export function Checkbox({
       {label && (
         <View className="ml-2">
           {typeof label === "string" ? (
-            <Text className="text-neutral-700 dark:text-neutral-300 text-sm">
+            <Text className="text-sm text-neutral-700 font-dosis-semibold dark:text-neutral-300">
               {label}
             </Text>
           ) : (

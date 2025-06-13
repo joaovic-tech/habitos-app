@@ -58,7 +58,7 @@ export default function RootLayout() {
           style={{ width: 100, height: 100, marginTop: 20 }}
         />
         <ActivityIndicator size={50} color={colors.primary} className="mt-28" />
-        <Text className="text-neutral-700 dark:text-neutral-200">
+        <Text className="text-neutral-700 dark:text-neutral-200 font-dosis-bold">
           Loading...
         </Text>
       </View>

@@ -34,7 +34,7 @@ const Input = forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
         {label && (
           <Text
             className={cn(
-              "text-base text-neutral-600 dark:text-neutral-300",
+              "text-base text-neutral-600 dark:text-neutral-300 font-dosis-bold",
               labelClasses
             )}
           >
@@ -47,7 +47,7 @@ const Input = forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
             placeholderTextColor={isDarkMode ? colors.white : colors.gray}
             className={cn(
               inputClasses,
-              `border border-neutral-300 dark:border-neutral-600 py-2.5 px-4 text-neutral-800 dark:text-neutral-200 rounded-lg w-full focus:border-primary bg-white dark:bg-neutral-800 font-bold text-lg pr-10`
+              `border border-neutral-300 dark:border-neutral-600 py-2.5 px-4 text-neutral-800 dark:text-neutral-200 rounded-lg w-full focus:border-primary bg-white dark:bg-neutral-800 font-dosis-bold text-lg pr-10`
             )}
             {...props}
           />

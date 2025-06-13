@@ -1,7 +1,7 @@
 export const colors = {
   // colors of the app
-  white: "#f0f0f0",
-  black: "#000",
+  white: "#FFF",
+  black: "#171717",
   gray: "#2c2c2c",
   primary: "#155DFC",
   secondary: "#03A9F4",
