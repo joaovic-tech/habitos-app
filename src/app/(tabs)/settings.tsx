@@ -119,14 +119,14 @@ export default function Tab() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView className="flex-1 px-6 bg-neutral-200 dark:bg-neutral-900">
+      <SafeAreaView className="flex-1 px-6 pt-safe bg-neutral-200 dark:bg-neutral-900">
         <Header title="Configurações" />
 
         <Animated.View
           style={{
             transform: [{ rotate }, { scale }],
           }}
-          className="items-center justify-center p-6 mb-10"
+          className="items-center justify-center p-6"
         >
           <Feather
             name={isDarkMode ? "moon" : "sun"}
@@ -136,7 +136,7 @@ export default function Tab() {
           />
         </Animated.View>
 
-        <View className="items-center w-full max-w-md p-6 shadow-lg rounded-2xl bg-white/80 dark:bg-neutral-800/90">
+        <View className="items-center w-full p-6 shadow-lg rounded-2xl bg-white/80 dark:bg-neutral-800/90">
           <Text className="mb-4 text-2xl font-dosis-bold text-neutral-900 dark:text-white">
             Configurações
           </Text>

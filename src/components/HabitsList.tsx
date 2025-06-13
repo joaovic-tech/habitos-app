@@ -12,8 +12,8 @@ import { CustomSwitch } from "@/components/CustomSwitch";
 import { colors } from "@/styles/colors";
 import { router, useFocusEffect } from "expo-router";
 import { useTheme } from "@/hooks/useTheme";
-import { ClipboardText, PlusCircle } from "phosphor-react-native";
-import { cn } from "@/lib/utils";
+import { ClipboardText } from "phosphor-react-native";
+import { getScreenCategory } from "@/utils/screenUtils";
 
 type HabitsListProps = {
   onHabitsChange?: (habits: habitsStorage.Habit[]) => void;
@@ -24,6 +24,7 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
   const [loading, setLoading] = useState(true);
   const [deletingIds, setDeletingIds] = useState<string[]>([]);
   const isDarkMode = useTheme().colorScheme === "dark";
+  const screenWidth = getScreenCategory();
 
   // Utility function to sort habits by startTime
   const sortHabits = useCallback((habitsToSort: habitsStorage.Habit[]) => {
@@ -129,32 +130,15 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
       return (
         <TouchableOpacity
           onPress={() => editHabit(item)}
-          className={`p-4 rounded-xl bg-white dark:bg-neutral-800 shadow-md ${
-            !item.enabled && "opacity-60"
+          className={`p-4 flex-col gap-2.5 rounded-xl bg-white dark:bg-neutral-800 ${
+            !item.enabled && "opacity-30"
           }`}
         >
           <View className="flex-row items-center justify-between">
             <Text className="text-lg font-dosis-bold text-neutral-900 dark:text-white">
               {item.name}
             </Text>
-            <View className="flex-row items-center p-2 border rounded-lg bg-neutral-100 border-neutral-200 dark:border-neutral-700 dark:bg-neutral-700">
-              <Feather
-                name="clock"
-                size={14}
-                color={isDarkMode ? colors.white : colors.black}
-                style={{ marginRight: 4 }}
-              />
-              <Text className="text-sm font-dosis-medium text-neutral-700 dark:text-neutral-300">
-                {item.startTime} - {item.endTime}
-              </Text>
-            </View>
-          </View>
 
-          <Text className="mt-1 mb-2 text-sm text-neutral-600 font-dosis-semibold dark:text-neutral-300">
-            {item.description}
-          </Text>
-
-          <View className="flex-row items-center justify-between">
             <View className="flex-row items-center p-2 rounded bg-neutral-100 dark:bg-neutral-700">
               <Feather
                 name="bell"
@@ -166,7 +150,14 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
                 {item.alertsPerDay} alertas por dia
               </Text>
             </View>
+          </View>
 
+          <View className="flex-row items-center justify-between">
+            <View className="flex-row items-center p-2 bg-white rounded-lg dark:bg-neutral-900">
+              <Text className="text-xl font-dosis-medium text-neutral-700 dark:text-white">
+                {item.startTime} - {item.endTime}
+              </Text>
+            </View>
             <CustomSwitch
               value={item.enabled}
               onValueChange={() => toggleHabit(item.id)}
@@ -204,14 +195,17 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
   );
 
   return (
-    <View className="max-h-[75%] pb-8 relative">
-      <FlatList
-        data={habits}
-        keyExtractor={(item) => item.id}
-        renderItem={renderHabitItem}
-        ListEmptyComponent={listEmptyComponent}
-        ItemSeparatorComponent={() => <View className="my-2" />}
-      />
-    </View>
+    <FlatList
+      className="max-h-[75%] relative"
+      data={habits}
+      keyExtractor={(item) => item.id}
+      renderItem={renderHabitItem}
+      ListEmptyComponent={listEmptyComponent}
+      ItemSeparatorComponent={() => <View className="my-2" />}
+      indicatorClassName="bg-neutral-800"
+      contentContainerStyle={{
+        paddingBottom: screenWidth === "small" ? 65 : 40,
+      }}
+    />
   );
 }

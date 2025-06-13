@@ -6,7 +6,7 @@ import {
   LayoutChangeEvent,
   Dimensions,
 } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { icon } from "../constants/icon";
 import Animated, {
   interpolate,
@@ -14,7 +14,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { getIconSize, isSmallDevice } from "@/utils/responsive";
+import { getIconSize, isSmallDevice } from "@/utils/screenUtils";
 
 type RouteName = keyof typeof icon;
 
@@ -84,7 +84,9 @@ export default function TabBarButton({
     <Pressable
       onPress={onPress}
       onLongPress={onLongPress}
-      className={`z-20 flex-col flex-1 items-center justify-center ${isFocused && '-top-3'} min-h-0`}
+      className={`z-20 flex-col flex-1 items-center justify-center ${
+        isFocused && "-top-3"
+      } min-h-0`}
       onLayout={onLayout}
       ref={containerRef}
     >

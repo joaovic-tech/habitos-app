@@ -8,8 +8,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getTabBarHeight, isSmallDevice } from "@/utils/responsive";
-import { isNativePlatformSupported } from "react-native-screens/lib/typescript/core";
+import { getTabBarHeight, isSmallDevice } from "@/utils/screenUtils";
 
 const labels = {
   index: "Alertas",
@@ -70,7 +69,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
     buttonWidth * (isSmall ? 0.85 : 0.9),
     isSmall ? 56 : 60
   );
-  const floatingButtonSize = floatingButtonInnerSize * 1.3;
+  const floatingButtonSize = floatingButtonInnerSize * 1.5;
 
   return (
     <View
@@ -79,7 +78,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
         height: totalTabBarHeight,
         paddingBottom: insets.bottom,
       }}
-      className="absolute bottom-0 flex-row items-center w-full bg-white dark:bg-neutral-800"
+      className="bottom-0 flex-row items-center w-full bg-white dark:bg-neutral-800"
     >
       {/* Fundo do botão central */}
       <Animated.View
@@ -87,12 +86,12 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           {
             height: floatingButtonSize,
             width: floatingButtonSize,
-            top: -(tabBarHeight * 0.45),
+            top: -(tabBarHeight * 0.5),
             left: (buttonWidth - floatingButtonSize) / 2,
           },
           animatedStyle,
         ]}
-        className="absolute rounded-full bg-neutral-200 dark:bg-neutral-900"
+        className="absolute bg-white border-t-8 border-white rounded-full border-x-8 dark:border-neutral-800 dark:bg-neutral-800"
       />
 
       {/* Botão azul central */}
@@ -106,7 +105,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           },
           animatedStyle,
         ]}
-        className="absolute z-10 bg-blue-600 rounded-full shadow-xl shadow-blue-600/25"
+        className="absolute z-10 bg-blue-600 rounded-full shadow-blue-600/25"
       ></Animated.View>
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;

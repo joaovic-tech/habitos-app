@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Button } from "@/components/shared/Button";
 import { Checkbox } from "@/components/shared/Checkbox";

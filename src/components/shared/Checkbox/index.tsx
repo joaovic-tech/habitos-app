@@ -1,9 +1,8 @@
 // Move the existing Checkbox component here
-import React, { useState } from "react";
+import { useState } from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { cn } from "@/lib/utils";
-import { colors } from "@/styles/colors";
 
 interface CheckboxProps {
   label?: React.ReactNode;

@@ -28,7 +28,7 @@ export default function StackScreen({ title }: StackScreenProps) {
         animation: animationType,
         statusBarStyle: colorScheme.get() === "dark" ? "light" : "dark",
         headerBackground: () => (
-          <View className="flex-1 p-safe-offset-4 bg-neutral-200 dark:bg-neutral-900">
+          <View className="flex-1 pt-safe-offset-4 bg-neutral-200 dark:bg-neutral-900">
             <Header backRouter={true} title={title} otherIcon={icon} />
           </View>
         ),

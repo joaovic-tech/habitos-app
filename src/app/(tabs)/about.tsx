@@ -1,7 +1,7 @@
-import { View, Text, ScrollView, Linking, Pressable } from "react-native";
+import { View, Text, Linking, Pressable } from "react-native";
 import { Header } from "@/components/Header";
 import { colors } from "@/styles/colors";
-import { Info, Copyright, FileText, LockKey } from "phosphor-react-native";
+import { Copyright, FileText, LockKey } from "phosphor-react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { colorScheme } from "nativewind";
 
@@ -12,8 +12,8 @@ export default function InfoScreen() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView className="flex-1 px-6 bg-neutral-200 dark:bg-neutral-900">
-        <Header title="Sobre o App" />
+      <SafeAreaView className="flex-1 gap-4 px-6 pt-safe bg-neutral-200 dark:bg-neutral-900">
+        <Header title="Informações" />
 
         <View className="flex-col gap-4 px-4 py-6 bg-white shadow-xl dark:bg-neutral-800 rounded-2xl">
           <View className="flex-col gap-2 text-start">

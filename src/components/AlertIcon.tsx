@@ -1,4 +1,3 @@
-import React from "react";
 import { Image } from "react-native";
 import alarmIconLight from "@/assets/alarm.png";
 import alarmIconDark from "@/assets/alarm-dark.png";

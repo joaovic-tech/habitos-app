@@ -1,8 +1,7 @@
-import React from "react";
 import { Tabs } from "expo-router";
 import { TabBar } from "@/components/TabBar";
 
-const TABS = ["about", "form", "index", "profile", "settings"] as const;
+const TABS = ["about", "form", "index", "profile", "settings"];
 
 export default function TabLayout() {
   return (

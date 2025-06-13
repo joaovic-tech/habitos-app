@@ -2,7 +2,6 @@ import { icon } from "@/constants/icon";
 import { colors } from "@/styles/colors";
 import { Feather } from "@expo/vector-icons";
 import { useRouter, useSegments } from "expo-router";
-import React from "react";
 import { Text, TouchableOpacity, View, ViewProps } from "react-native";
 
 type Props = ViewProps & {
@@ -49,7 +48,7 @@ export function Header({ title, otherIcon, backRouter = false }: Props) {
         </TouchableOpacity>
       )}
 
-      <View className="flex-row items-center gap-4 p-2 mx-auto mb-12 rounded bg-neutral-100 dark:bg-neutral-800">
+      <View className="flex-row items-center gap-4 p-2 mx-auto rounded bg-neutral-100 dark:bg-neutral-800">
         {otherIcon ??
           (icon[currentRouteName as keyof typeof icon] // Garante que a chave é compatível com as chaves do objeto 'icon'
             ? icon[currentRouteName as keyof typeof icon]({
@@ -59,9 +58,11 @@ export function Header({ title, otherIcon, backRouter = false }: Props) {
                 isIconHeader: currentRouteName === "index",
               })
             : null)}
-        <Text className="text-lg font-dosis-semibold text-secondary">
-          {title ? title : "Hábitos+"}
-        </Text>
+        {title && (
+          <Text className="text-lg font-dosis-semibold text-secondary">
+            {title}
+          </Text>
+        )}
       </View>
     </View>
   );

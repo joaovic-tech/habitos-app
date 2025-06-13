@@ -7,13 +7,11 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { Header } from "@/components/Header";
 import { Button } from "@/components/shared/Button";
 import { habitsData } from "@/data/HabitsData";
-import { router, Stack, useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { colors } from "@/styles/colors";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { colorScheme } from "nativewind";
 import StackScreen from "@/components/StackScreen";
 
 export default function SelectHabitScreen() {
