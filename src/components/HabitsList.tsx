@@ -8,12 +8,13 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as habitsStorage from "@/storage/habitsStorage";
-import { CustomSwitch } from "@/components/CustomSwitch";
+import { CustomSwitch } from "@/components/shared/CustomSwitch";
 import { colors } from "@/styles/colors";
 import { router, useFocusEffect } from "expo-router";
-import { useTheme } from "@/hooks/useTheme";
 import { ClipboardText } from "phosphor-react-native";
 import { getScreenCategory } from "@/utils/screenUtils";
+import { useToast } from "./shared/Toast";
+import { useTheme } from "@/hooks/useTheme";
 
 type HabitsListProps = {
   onHabitsChange?: (habits: habitsStorage.Habit[]) => void;
@@ -23,48 +24,30 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
   const [habits, setHabits] = useState<habitsStorage.Habit[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingIds, setDeletingIds] = useState<string[]>([]);
-  const isDarkMode = useTheme().colorScheme === "dark";
+  const { colorScheme } = useTheme();
+  const isDarkMode = colorScheme === "dark";
   const screenWidth = getScreenCategory();
-
-  // Utility function to sort habits by startTime
-  const sortHabits = useCallback((habitsToSort: habitsStorage.Habit[]) => {
-    return [...habitsToSort].sort((a, b) => {
-      // Convert time (HH:MM) to minutes for comparison
-      const getMinutesSinceMidnight = (time: string) => {
-        const [hours, minutes] = time.split(":").map(Number);
-        return hours * 60 + minutes;
-      };
-
-      const aTime = getMinutesSinceMidnight(a.startTime);
-      const bTime = getMinutesSinceMidnight(b.startTime);
-
-      return aTime - bTime; // Sort in ascending order
-    });
-  }, []);
+  const { toast } = useToast();
 
   // Load habits from storage
   const loadHabits = useCallback(async () => {
     try {
       setLoading(true);
-      const storedHabits = await habitsStorage.getAll();
-
-      // Sort habits by startTime using the utility function
-      const sortedHabits = sortHabits(storedHabits);
-
-      setHabits(sortedHabits);
+      const habits = await habitsStorage.getAll();
+      setHabits(habits); // <-- Atualiza o estado corretamente
     } catch (error) {
       console.error("Error loading habits:", error);
     } finally {
       setLoading(false);
     }
-  }, [sortHabits]);
+  }, []);
 
   // Initialize on mount
   useEffect(() => {
     loadHabits();
   }, [loadHabits]);
 
-  // Reload habits when screen comes into focus (handles updates from other screens)
+  // Reload habits when screen comes into focus (handles updates from other (tabs))
   useFocusEffect(
     useCallback(() => {
       loadHabits();
@@ -82,27 +65,26 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
   const toggleHabit = useCallback(
     async (id: string) => {
       try {
-        // Find the habit to toggle
         const habitToToggle = habits.find((habit) => habit.id === id);
 
         if (habitToToggle) {
-          // Create updated habit with toggled enabled state
           const updatedHabit = {
             ...habitToToggle,
-            enabled: !habitToToggle.enabled,
+            status: !habitToToggle.status, // Corrigido de 'enabled' para 'status'
           };
-
-          // Update in storage
           const updatedHabits = await habitsStorage.update(updatedHabit);
-          // Ensure habits remain sorted after toggle
-          setHabits(sortHabits(updatedHabits));
+
+          setHabits(updatedHabits);
         }
       } catch (error) {
+        toast("Erro ao atualizar o hábito. Tente novamente.", "destructive");
         console.error("Error toggling habit:", error);
+        // Considere se a navegação aqui é realmente necessária em caso de erro de toggle
+        // router.push("/(tabs)");
       }
     },
-    [habits, sortHabits]
-  );
+    [habits, toast]
+  ); // Adicionado 'habits' e 'toast' ao array de dependências do useCallback
 
   // Edita o conteúdo do habito
   const editHabit = (habitsData: habitsStorage.Habit) => {
@@ -131,7 +113,7 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
         <TouchableOpacity
           onPress={() => editHabit(item)}
           className={`p-4 flex-col gap-2.5 rounded-xl bg-white dark:bg-neutral-800 ${
-            !item.enabled && "opacity-30"
+            !item.status && "opacity-30"
           }`}
         >
           <View className="flex-row items-center justify-between">
@@ -159,7 +141,7 @@ export function HabitsList({ onHabitsChange }: HabitsListProps) {
               </Text>
             </View>
             <CustomSwitch
-              value={item.enabled}
+              value={item.status}
               onValueChange={() => toggleHabit(item.id)}
               disabled={deletingIds.includes(item.id)}
             />

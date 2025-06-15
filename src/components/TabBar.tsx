@@ -3,12 +3,16 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import TabBarButton from "./TabBarButton";
 import { useEffect, useState } from "react";
 import Animated, {
+  ReduceMotion,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  type SharedValue,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getTabBarHeight, isSmallDevice } from "@/utils/screenUtils";
+import { CONFIG_STORAGE_KEY, ConfigUser } from "@/storage/configStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const labels = {
   index: "Alertas",
@@ -18,13 +22,34 @@ const labels = {
   settings: "Ajustes",
 };
 
-export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+export function TabBar({ state, navigation }: BottomTabBarProps) {
   const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
   const insets = useSafeAreaInsets();
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+  const [animationEnabled, setAnimationEnabled] = useState<boolean>();
 
-  // Calcula a largura do botão com base na largura da tela e número de abas
-  // Garante que não seja menor que 60px nem maior que 80px para manter a usabilidade
+  const updateTabPosition = (
+    targetIndex: number,
+    availableWidth: number,
+    numberOfRoutes: number,
+    tabPositionX: SharedValue<number>
+  ) => {
+    Promise.resolve(AsyncStorage.getItem(CONFIG_STORAGE_KEY)).then((value) => {
+      const config: ConfigUser = value ? JSON.parse(value) : {};
+      setAnimationEnabled(config.animation);
+    });
+
+    const actualButtonWidth = availableWidth / numberOfRoutes;
+    tabPositionX.value = withSpring(actualButtonWidth * targetIndex, {
+      duration: animationEnabled ? 4000 : 0,
+      dampingRatio: 0.5,
+      stiffness: 100,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    });
+  };
+
   const buttonWidth = dimensions.width
     ? Math.max(60, Math.min(80, dimensions.width / state.routes.length))
     : Math.max(60, Math.min(80, screenWidth / state.routes.length));
@@ -39,19 +64,20 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const tabPositionX = useSharedValue(0);
 
   useEffect(() => {
-    // Calcula a posição considerando a largura real disponível
     const availableWidth = dimensions.width || screenWidth;
-    const actualButtonWidth = availableWidth / state.routes.length;
-
-    tabPositionX.value = withSpring(actualButtonWidth * state.index, {
-      damping: 15,
-      stiffness: 80,
-      mass: 0.8,
-      overshootClamping: false,
-      restDisplacementThreshold: 0.01,
-      restSpeedThreshold: 2,
-    });
-  }, [dimensions.width, state.index, screenWidth]);
+    updateTabPosition(
+      state.index,
+      availableWidth,
+      state.routes.length,
+      tabPositionX
+    );
+  }, [
+    dimensions.width,
+    state.index,
+    screenWidth,
+    state.routes.length,
+    tabPositionX,
+  ]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: tabPositionX.value }],
@@ -111,18 +137,13 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
         const isFocused = state.index === index;
 
         const onPress = () => {
-          // Calcula a posição considerando a largura real disponível
           const availableWidth = dimensions.width || screenWidth;
-          const actualButtonWidth = availableWidth / state.routes.length;
-
-          tabPositionX.value = withSpring(actualButtonWidth * index, {
-            damping: 15,
-            stiffness: 80,
-            mass: 0.8,
-            overshootClamping: false,
-            restDisplacementThreshold: 0.01,
-            restSpeedThreshold: 2,
-          });
+          updateTabPosition(
+            index,
+            availableWidth,
+            state.routes.length,
+            tabPositionX
+          );
 
           const event = navigation.emit({
             type: "tabPress",

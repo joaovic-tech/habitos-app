@@ -1,9 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Storage key
 export const ITEMS_STORAGE_KEY = "@habits:userHabits";
 
-// Habit type definition
 export interface Habit {
   id: string;
   name: string;
@@ -12,39 +10,57 @@ export interface Habit {
   endTime: string;
   alertsPerDay: number;
   createdAt: number;
-  enabled: boolean;
+  status: boolean;
 }
 
-/**
- * Saves habits array to AsyncStorage
- */
-export async function save(habits: Habit[]): Promise<void> {
+async function habitNameExists(habit: Habit): Promise<boolean> {
+  const habits = await getAll();
+
+  const habitNameExists = habits.some(
+    (h) => h.name.toLowerCase() === habit.name.toLowerCase()
+  );
+
+  return habitNameExists;
+}
+
+function sortHabits(habits: Habit[]): Habit[] {
+  habits.sort((a: Habit, b: Habit) => {
+    return a.startTime.localeCompare(b.startTime);
+  });
+
+  console.table(habits);
+
+  return habits;
+}
+
+async function save(habits: Habit[]): Promise<void> {
+  const newHabits = sortHabits(habits);
+
   try {
-    await AsyncStorage.setItem(ITEMS_STORAGE_KEY, JSON.stringify(habits));
+    await AsyncStorage.setItem(ITEMS_STORAGE_KEY, JSON.stringify(newHabits));
   } catch (error) {
-    console.error("Error saving habits:", error);
     throw error;
   }
 }
 
-/**
- * Adds a new habit to storage
- */
 export async function add(habit: Habit): Promise<Habit[]> {
   try {
     const habits = await getAll();
+
+    const habitExists = await habitNameExists(habit);
+
+    if (habitExists) {
+      throw new Error("Já existe um hábito com este nome.");
+    }
+
     const updatedHabits = [...habits, habit];
     await save(updatedHabits);
     return updatedHabits;
   } catch (error) {
-    console.error("Error adding habit:", error);
-    throw error;
+    throw error; // Re-throw para ser tratado na UI
   }
 }
 
-/**
- * Removes a habit from storage by id
- */
 export async function remove(id: string): Promise<Habit[]> {
   try {
     const habits = await getAll();
@@ -67,9 +83,6 @@ export async function clearHabits(): Promise<boolean> {
   }
 }
 
-/**
- * Gets all habits from storage
- */
 export async function getAll(): Promise<Habit[]> {
   try {
     const data = await AsyncStorage.getItem(ITEMS_STORAGE_KEY);
@@ -80,12 +93,21 @@ export async function getAll(): Promise<Habit[]> {
   }
 }
 
-/**
- * Updates an existing habit
- */
 export async function update(updatedHabit: Habit): Promise<Habit[]> {
   try {
     const habits = await getAll();
+
+    // Verifica se já existe OUTRO hábito com o mesmo nome
+    const habitNameExists = habits.some(
+      (h) =>
+        h.name.toLowerCase() === updatedHabit.name.toLowerCase() &&
+        h.id !== updatedHabit.id // Exclui o próprio hábito da verificação
+    );
+
+    if (habitNameExists) {
+      throw new Error("Já existe um hábito com este nome.");
+    }
+
     const updatedHabits = habits.map((habit) =>
       habit.id === updatedHabit.id ? updatedHabit : habit
     );
@@ -93,6 +115,6 @@ export async function update(updatedHabit: Habit): Promise<Habit[]> {
     return updatedHabits;
   } catch (error) {
     console.error("Error updating habit:", error);
-    throw error;
+    throw error; // Re-throw para ser tratado na UI
   }
 }

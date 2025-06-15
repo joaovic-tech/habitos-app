@@ -1,27 +1,33 @@
-import { Switch } from "@/components/Switch";
-import { useRef, useEffect, useState, useCallback } from "react";
+import { Switch } from "@/components/shared/Switch";
+import { useRef, useEffect, useState } from "react";
 import {
   View,
   Text,
   Animated,
   Easing,
   Alert,
-  ScrollView,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { clearHabits, ITEMS_STORAGE_KEY } from "@/storage/habitsStorage";
 import { colors } from "@/styles/colors";
 import { useToast } from "@/components/shared/Toast";
-import { Header } from "@/components/Header";
-import { Gear } from "phosphor-react-native";
+import { Header } from "@/components/shared/Header";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/shared/Button";
+import { router } from "expo-router";
 
 export default function Tab() {
-  const { colorScheme, toggleTheme, loading } = useTheme();
+  const {
+    colorScheme,
+    toggleTheme,
+    loading,
+    isAnimationEnabled, // Obter do hook
+    toggleAnimation, // Obter do hook
+  } = useTheme();
   const isDarkMode = colorScheme === "dark";
   const { toast } = useToast();
 
@@ -30,6 +36,12 @@ export default function Tab() {
   const scale = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
+    if (!isAnimationEnabled) {
+      // Usar isAnimationEnabled do hook
+      rotation.setValue(1);
+      scale.setValue(1);
+      return;
+    }
     rotation.setValue(0);
     scale.setValue(0.85);
     Animated.parallel([
@@ -46,7 +58,7 @@ export default function Tab() {
         useNativeDriver: true,
       }),
     ]).start();
-  }, [colorScheme]);
+  }, [colorScheme, isAnimationEnabled, rotation, scale]); // Adicionar isAnimationEnabled, rotation e scale às dependências
 
   const rotate = rotation.interpolate({
     inputRange: [0, 1],
@@ -117,9 +129,20 @@ export default function Tab() {
 
   if (loading) return null;
 
+  const starImageSource =
+    colorScheme === "dark"
+      ? require("@/assets/Star.png")
+      : require("@/assets/Star-dark.png");
+
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 px-6 pt-safe bg-neutral-200 dark:bg-neutral-900">
+        <Image
+          source={starImageSource}
+          className="absolute top-0 right-0 w-screen h-screen"
+          resizeMode="stretch"
+        />
+
         <Header title="Configurações" />
 
         <Animated.View
@@ -136,20 +159,28 @@ export default function Tab() {
           />
         </Animated.View>
 
-        <View className="items-center w-full p-6 shadow-lg rounded-2xl bg-white/80 dark:bg-neutral-800/90">
-          <Text className="mb-4 text-2xl font-dosis-bold text-neutral-900 dark:text-white">
+        <View className="relative flex-col items-center w-full gap-8 p-6 bg-white shadow-lg rounded-2xl dark:bg-neutral-800">
+          <Text className="text-2xl font-dosis-bold text-neutral-900 dark:text-white">
             Configurações
           </Text>
-          <View className="flex-row items-center mb-4">
-            <Text className="mr-4 text-lg font-dosis-semibold text-neutral-800 dark:text-neutral-200">
-              Modo {isDarkMode ? "escuro" : "claro"}
-            </Text>
-            <Switch onValueChange={toggleTheme} value={isDarkMode} />
+          <View className="w-full border-2 bg-neutral-200 dark:bg-neutral-900 border-neutral-400 dark:border-neutral-600 rounded-xl">
+            <View className="flex-row items-center justify-between w-full p-4 rounded-xl">
+              <Text className="text-lg font-dosis-semibold text-neutral-800 dark:text-neutral-200">
+                Modo {isDarkMode ? "Escuro" : "Claro"}
+              </Text>
+              <Switch onValueChange={toggleTheme} value={isDarkMode} />
+            </View>
+            <View className="w-full h-1 bg-neutral-400 dark:bg-neutral-600" />
+            <View className="flex-row items-center justify-between w-full p-4 rounded-xl">
+              <Text className="text-lg font-dosis-semibold text-neutral-800 dark:text-neutral-200">
+                Animações
+              </Text>
+              <Switch
+                onValueChange={toggleAnimation}
+                value={isAnimationEnabled}
+              />
+            </View>
           </View>
-          <Text className="mb-6 text-center text-neutral-600 font-dosis-regular dark:text-neutral-400">
-            Altere o tema do aplicativo entre claro e escuro para sua
-            preferência.
-          </Text>
 
           <Button
             label={

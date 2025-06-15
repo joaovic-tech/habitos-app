@@ -1,37 +1,59 @@
 import { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColorScheme as useNativeWindColorScheme } from "nativewind";
-
-const STORAGE_KEY = "user-theme";
+import * as configStorage from "@/storage/configStorage";
+import { router } from "expo-router";
 
 export function useTheme() {
   const { colorScheme, setColorScheme } = useNativeWindColorScheme();
   const [loading, setLoading] = useState(true);
+  const [isAnimationEnabled, setIsAnimationEnabled] = useState(
+    configStorage.DEFAULT_CONFIG.animation // Valor inicial padrão
+  );
 
-  // Carrega o tema salvo ou define dark como padrão
   useEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEY).then((stored) => {
-      setColorScheme(stored === "light" ? "light" : "dark");
+    async function loadSettings() {
+      setLoading(true);
+      const storedConfig = await configStorage.getConfig();
+      const themeToApply = storedConfig.theme === "light" ? "light" : "dark";
+      setColorScheme(themeToApply);
+      setIsAnimationEnabled(storedConfig.animation); // Carrega a preferência de animação
       setLoading(false);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    }
+    loadSettings();
+  }, []); // Alterado para [] para garantir execução única no mount
 
-  // Troca e salva o tema
-  const toggleTheme = useCallback(() => {
-    const next = colorScheme === "dark" ? "light" : "dark";
-    setColorScheme(next);
-    AsyncStorage.setItem(STORAGE_KEY, next);
+  const toggleTheme = useCallback(async () => {
+    const nextTheme = colorScheme === "dark" ? "light" : "dark";
+    setColorScheme(nextTheme);
+    const currentConfig = await configStorage.getConfig();
+    await configStorage.saveConfig({ ...currentConfig, theme: nextTheme });
   }, [colorScheme, setColorScheme]);
 
-  // Seta o tema diretamente e salva
   const setTheme = useCallback(
-    (theme: "light" | "dark") => {
+    async (theme: "light" | "dark") => {
       setColorScheme(theme);
-      AsyncStorage.setItem(STORAGE_KEY, theme);
+      const currentConfig = await configStorage.getConfig();
+      await configStorage.saveConfig({ ...currentConfig, theme: theme });
     },
     [setColorScheme]
   );
 
-  return { colorScheme, setColorScheme: setTheme, toggleTheme, loading };
+  const toggleAnimation = useCallback(async () => {
+    const newAnimationValue = !isAnimationEnabled;
+    setIsAnimationEnabled(newAnimationValue); // Atualiza o estado local
+    const currentConfig = await configStorage.getConfig();
+    await configStorage.saveConfig({
+      ...currentConfig,
+      animation: newAnimationValue, // Salva a nova preferência
+    });
+  }, [isAnimationEnabled]);
+
+  return {
+    colorScheme,
+    setColorScheme: setTheme,
+    toggleTheme,
+    loading,
+    isAnimationEnabled, // Exporta o estado da animação
+    toggleAnimation, // Exporta a função para alternar a animação
+  };
 }

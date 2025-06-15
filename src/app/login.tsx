@@ -21,8 +21,8 @@ export default function Login() {
       >
         <Image
           source={starImageSource}
-          className="absolute top-0 left-0"
-          resizeMode="repeat"
+          className="absolute top-0 right-0 w-screen h-screen"
+          resizeMode="stretch"
         />
         <ScrollView className="relative h-40">
           <View className="flex items-center justify-start w-full gap-4 text-center h-80">

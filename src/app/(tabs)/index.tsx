@@ -1,19 +1,11 @@
 import { HabitsList } from "@/components/HabitsList";
-import { Header } from "@/components/Header";
-import { Button } from "@/components/shared/Button";
+import { Header } from "@/components/shared/Header";
 import { colors } from "@/styles/colors";
-import { Feather } from "@expo/vector-icons";
-import { router, useFocusEffect } from "expo-router";
+import { router, Stack, useFocusEffect } from "expo-router";
 import { colorScheme } from "nativewind";
-import { Plus, PlusCircle, PlusSquare } from "phosphor-react-native";
+import { PlusCircle } from "phosphor-react-native";
 import { useCallback, useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -44,8 +36,8 @@ export default function HomeScreen() {
       <SafeAreaView className="px-6 h-screen-safe-offset-10 pt-safe bg-neutral-200 dark:bg-neutral-900">
         <Image
           source={starImageSource}
-          className="absolute top-0 left-0 w-full h-[350px] opacity-30 dark:opacity-20 -z-10"
-          resizeMode="contain"
+          className="absolute top-0 right-0 w-screen h-screen"
+          resizeMode="stretch"
         />
         <Header title="Hábitos" />
 

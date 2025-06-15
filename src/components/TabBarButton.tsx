@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  useColorScheme,
-  LayoutChangeEvent,
-  Dimensions,
-} from "react-native";
+import { View, Pressable, LayoutChangeEvent, Dimensions } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import { icon } from "../constants/icon";
 import Animated, {
@@ -15,6 +8,8 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { getIconSize, isSmallDevice } from "@/utils/screenUtils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CONFIG_STORAGE_KEY, ConfigUser } from "@/storage/configStorage";
 
 type RouteName = keyof typeof icon;
 
@@ -35,6 +30,7 @@ export default function TabBarButton({
   const [containerSize, setContainerSize] = useState({ height: 0, width: 0 });
   const containerRef = useRef<View>(null);
   const { width: screenWidth } = Dimensions.get("window");
+  const [animationEnabled, setAnimationEnabled] = useState<boolean>();
 
   // Tamanhos responsivos baseados no tamanho da tela
   const iconSize = getIconSize(screenWidth);
@@ -46,18 +42,22 @@ export default function TabBarButton({
   };
 
   useEffect(() => {
+    Promise.resolve(AsyncStorage.getItem(CONFIG_STORAGE_KEY)).then((value) => {
+      const config: ConfigUser = value ? JSON.parse(value) : {};
+      setAnimationEnabled(config.animation);
+    });
     scale.value = withSpring(
       typeof isFocused === "boolean" ? (isFocused ? 1 : 0) : isFocused,
       {
-        damping: 12,
-        stiffness: 90,
-        mass: 0.6,
-        overshootClamping: false,
+        duration: animationEnabled ? 1000 : 0,
+        dampingRatio: 0.5,
+        stiffness: 100,
+        overshootClamping: true,
         restDisplacementThreshold: 0.01,
-        restSpeedThreshold: 2,
+        restSpeedThreshold: 0.01,
       }
     );
-  }, [scale, isFocused]);
+  }, [scale, isFocused, animationEnabled]);
 
   const animatedIconStyle = useAnimatedStyle(() => {
     const scaleValue = interpolate(

@@ -2,15 +2,9 @@ import "@/styles/global.css";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
+import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
 import { useEffect } from "react";
-import {
-  SafeAreaView,
-  ActivityIndicator,
-  View,
-  Text,
-  Image,
-} from "react-native";
+import { ActivityIndicator, View, Text, Image } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { colors } from "@/styles/colors";
 import {
@@ -27,7 +21,7 @@ export const unstable_settings = {
   initialRouteName: "(tabs)",
 };
 
-SplashScreen.preventAutoHideAsync();
+preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -46,7 +40,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      hideAsync();
     }
   }, [loaded]);
 
@@ -69,21 +63,19 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { loading, colorScheme } = useTheme();
+  const { colorScheme } = useTheme();
 
   return (
     <ToastProvider>
-      <SafeAreaView className="flex-1 bg-neutral-200 dark:bg-neutral-800">
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-              statusBarStyle: colorScheme === "dark" ? "light" : "dark",
-            }}
-          />
-        </Stack>
-      </SafeAreaView>
+      <Stack>
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+            statusBarStyle: colorScheme === "dark" ? "light" : "dark",
+          }}
+        />
+      </Stack>
     </ToastProvider>
   );
 }

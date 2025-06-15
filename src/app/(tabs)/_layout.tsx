@@ -5,24 +5,19 @@ const TABS = ["about", "form", "index", "profile", "settings"];
 
 export default function TabLayout() {
   return (
-    <>
-      <Tabs
-        initialRouteName="index"
-        tabBar={(props: any) => <TabBar {...props} />}
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {TABS.map((tab) => (
-          <Tabs.Screen
-            key={tab}
-            name={tab}
-            options={{
-              headerShown: false,
-            }}
-          />
-        ))}
-      </Tabs>
-    </>
+    <Tabs
+      initialRouteName="settings"
+      tabBar={(props: any) => <TabBar {...props} />}
+    >
+      {TABS.map((tab) => (
+        <Tabs.Screen
+          key={tab}
+          name={tab}
+          options={{
+            headerShown: false,
+          }}
+        />
+      ))}
+    </Tabs>
   );
 }

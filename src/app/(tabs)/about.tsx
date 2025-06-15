@@ -1,5 +1,5 @@
-import { View, Text, Linking, Pressable } from "react-native";
-import { Header } from "@/components/Header";
+import { View, Text, Linking, Pressable, Image } from "react-native";
+import { Header } from "@/components/shared/Header";
 import { colors } from "@/styles/colors";
 import { Copyright, FileText, LockKey } from "phosphor-react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -10,9 +10,19 @@ export default function InfoScreen() {
     Linking.openURL(url);
   };
 
+  const starImageSource =
+    colorScheme.get() === "dark"
+      ? require("@/assets/Star.png")
+      : require("@/assets/Star-dark.png");
+
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 gap-4 px-6 pt-safe bg-neutral-200 dark:bg-neutral-900">
+        <Image
+          source={starImageSource}
+          className="absolute top-0 right-0 w-screen h-screen"
+          resizeMode="stretch"
+        />
         <Header title="Informações" />
 
         <View className="flex-col gap-4 px-4 py-6 bg-white shadow-xl dark:bg-neutral-800 rounded-2xl">

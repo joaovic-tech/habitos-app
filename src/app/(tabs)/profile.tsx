@@ -1,8 +1,12 @@
 import { Text, ScrollView, Image, View, TouchableOpacity } from "react-native";
 import { useCallback, useState } from "react";
 import Login from "../login";
-import { Header } from "@/components/Header";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
+import { Header } from "@/components/shared/Header";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/shared/Avatar";
 import { Button } from "@/components/shared/Button";
 import { PencilSimpleLine, SignOut } from "phosphor-react-native";
 import * as Habits from "@/storage/habitsStorage";
@@ -31,12 +35,12 @@ export default function Tab() {
     email: "user.email@example.com",
     habits: {
       userHabits,
-      activeHabits: userHabits.filter((habit) => habit.enabled),
-      inactiveHabits: userHabits.filter((habit) => !habit.enabled),
+      activeHabits: userHabits.filter((habit) => habit.status),
+      inactiveHabits: userHabits.filter((habit) => !habit.status),
       totalHabits: userHabits.length,
     },
     avatarUrl: "https://avatars.githubusercontent.com/u/123456789?v=4",
-    token: `null`, // Simulated token for authentication
+    token: null, // Simulated token for authentication
   };
 
   const getHabits = async () => {
@@ -64,9 +68,10 @@ export default function Tab() {
           <SafeAreaView className="flex-1 px-6 pt-safe bg-neutral-200 dark:bg-neutral-900">
             <Image
               source={starImageSource}
-              className="absolute top-0 left-0 w-full h-[350px] opacity-30 dark:opacity-20 -z-10"
-              resizeMode="contain"
+              className="absolute top-0 right-0 w-screen h-screen"
+              resizeMode="stretch"
             />
+
             <ScrollView className="max-[380px]:mb-12">
               <Header title="Perfil" />
 

@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { Text, View } from "react-native";
-import { Header } from "./Header";
+import { Header } from "./shared/Header";
 import { colorScheme } from "nativewind";
 import { PencilSimpleLine, StackPlus } from "phosphor-react-native";
 import { colors } from "@/styles/colors";
@@ -24,7 +24,7 @@ export default function StackScreen({ title }: StackScreenProps) {
   return (
     <Stack.Screen
       options={{
-        headerShown: false,
+        headerShown: true,
         animation: animationType,
         statusBarStyle: colorScheme.get() === "dark" ? "light" : "dark",
         headerBackground: () => (

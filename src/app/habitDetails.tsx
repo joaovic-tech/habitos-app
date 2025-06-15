@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { router, useLocalSearchParams, Stack } from "expo-router";
+import { View, Text, TouchableOpacity } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 import * as habitsStorage from "@/storage/habitsStorage";
 import { Feather } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { convertTime } from "@/utils/convertTime";
-import { Header } from "@/components/Header";
 import { Button } from "@/components/shared/Button";
 import { useToast } from "@/components/shared/Toast";
 import { Trash } from "phosphor-react-native";
-import { set } from "zod";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import StackScreen from "@/components/StackScreen";
 import { colors } from "@/styles/colors";
@@ -72,7 +70,6 @@ export default function HabitDetailsScreen() {
       return;
     }
 
-    // Verificação: horário de término deve ser maior que o de início
     if (endTime <= startTime) {
       toast(
         "O horário de término deve ser maior que o de início.",
@@ -84,42 +81,28 @@ export default function HabitDetailsScreen() {
 
     try {
       if (isEditMode && params.id) {
-        const currentHabits = await habitsStorage.getAll();
+        const currentHabits = await habitsStorage.getAll(); // Necessário para pegar o 'createdAt' e 'status'
         const existingHabit = currentHabits.find(
           (habit) => habit.id === params.id
         );
 
         if (existingHabit) {
-          const updatedHabit: habitsStorage.Habit = {
-            ...existingHabit,
+          const updatedHabitData: habitsStorage.Habit = {
+            ...existingHabit, // Mantém createdAt e status original
             name: params.name,
             description: params.description,
             startTime: convertTime(startTime),
             endTime: convertTime(endTime),
             alertsPerDay: alertsPerDay,
           };
-
-          try {
-            await habitsStorage.update(updatedHabit);
-            toast("Hábito atualizado com sucesso!", "success");
-            router.push("/(tabs)");
-            return;
-          } catch (error) {
-            console.error("Error updating habit:", error);
-            toast("Ocorreu um erro ao atualizar o hábito.", "destructive");
-            // setIsSubmitting(false) will be called in finally
-          } finally {
-            setTimeout(() => {
-              setIsSubmitting(false);
-            }, 1500);
-          }
+          await habitsStorage.update(updatedHabitData);
+          toast("Hábito atualizado com sucesso!", "success");
+          router.push("/(tabs)");
         } else {
-          // Habit to edit was not found
           toast("Hábito para editar não encontrado.", "destructive");
-          // setIsSubmitting(false) will be called in finally
         }
       } else {
-        const newHabit: habitsStorage.Habit = {
+        const newHabitData: habitsStorage.Habit = {
           id: Date.now().toString(),
           name: params.name,
           description: params.description,
@@ -127,20 +110,27 @@ export default function HabitDetailsScreen() {
           endTime: convertTime(endTime),
           alertsPerDay: alertsPerDay,
           createdAt: Date.now(),
-          enabled: true,
+          status: true,
         };
-
-        await habitsStorage.add(newHabit);
+        await habitsStorage.add(newHabitData);
         toast("Hábito adicionado com sucesso!", "success");
         router.push("/(tabs)");
       }
-    } catch (error) {
-      console.error("Error saving habit:", error);
-      toast("Ocorreu um erro ao salvar o hábito.", "destructive");
+    } catch (error: any) {
+      if (error.message.includes("Já existe um hábito com este nome.")) {
+        toast("Já existe um hábito com este nome.", "destructive");
+
+        setTimeout(() => {
+          toast("Tente usar um hábito diferente.", "info");
+        }, 3500); // Redireciona após 1.5 segundos para evitar confusão
+      } else {
+        toast("Ocorreu um erro ao salvar o hábito.", "destructive");
+      }
     } finally {
+      // Usar um timeout menor ou remover se a navegação já tratar o estado de loading
       setTimeout(() => {
         setIsSubmitting(false);
-      }, 1500);
+      }, 500); // Reduzido para melhor UX
     }
   };
 
