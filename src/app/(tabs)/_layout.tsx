@@ -6,7 +6,7 @@ const TABS = ["about", "form", "index", "profile", "settings"];
 export default function TabLayout() {
   return (
     <Tabs
-      initialRouteName="settings"
+      initialRouteName="form"
       tabBar={(props: any) => <TabBar {...props} />}
     >
       {TABS.map((tab) => (
