@@ -3,12 +3,11 @@
     "name": "habitos-app",
     "slug": "habitos-app",
     "version": "1.0.0",
+    "scheme": "habitosApp",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "habitosApp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "backgroundColor": "#121214",
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
@@ -16,16 +15,18 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.joaovic.habitosapp"
+      "bundleIdentifier": "com.joaovictech.habitosapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
-      "package": "com.joaovic.habitosapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#121214"
       },
-      "edgeToEdgeEnabled": true,
-      "backgroundColor": "#121214"
+      "package": "com.joaovictech.habitospp",
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "bundler": "metro",
@@ -34,15 +35,19 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification_icon.png",
+          "color": "#121214",
+          "iosDisplayInForeground": true
+        }
+      ]
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "extra": {
-      "router": {},
       "eas": {
-        "projectId": "a873ec10-ed62-4cf0-8c12-aead23ef42ef"
+        "projectId": "bec2da59-854a-4f5b-8403-9d0562f0223d"
       }
     }
   }

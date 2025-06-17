@@ -4,6 +4,9 @@
     "scrollbar.shadow": "#00000000"
   },
   "cSpell.words": [
-    "Pressable"
-  ]
+    "notifee",
+    "Pressable",
+    "Schedulable"
+  ],
+  "java.configuration.updateBuildConfiguration": "disabled"
 }

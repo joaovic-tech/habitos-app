@@ -40,7 +40,7 @@ export default function Tab() {
       totalHabits: userHabits.length,
     },
     avatarUrl: "https://avatars.githubusercontent.com/u/123456789?v=4",
-    token: null, // Simulated token for authentication
+    token: `null`, // Simulated token for authentication
   };
 
   const getHabits = async () => {

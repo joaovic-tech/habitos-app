@@ -18,7 +18,6 @@ import { Header } from "@/components/shared/Header";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/shared/Button";
-import { router } from "expo-router";
 
 export default function Tab() {
   const {

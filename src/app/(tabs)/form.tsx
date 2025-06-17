@@ -209,8 +209,8 @@ export default function FeedbackFormScreen() {
             <Button
               label="Enviar"
               onPress={handleSubmit}
-              variant="primary" // Assuming your Button component handles this variant
-              className="mt-4 bg-blue-600" // Explicitly using blue-600 for primary, adjust if Button handles variant color
+              variant="primary"
+              className="mt-4 bg-blue-600"
             />
           </View>
         </View>

@@ -7,11 +7,13 @@ export type ThemeMode = "light" | "dark" | "system";
 export type ConfigUser = {
   animation: boolean;
   theme: ThemeMode;
+  permissionNotification: boolean | null;
 };
 
 export const DEFAULT_CONFIG: ConfigUser = {
   animation: true,
   theme: "system",
+  permissionNotification: null,
 };
 
 export async function saveConfig(config: ConfigUser): Promise<void> {
@@ -29,7 +31,6 @@ export async function getConfig(): Promise<ConfigUser> {
     const jsonValue = await AsyncStorage.getItem(CONFIG_STORAGE_KEY);
     if (jsonValue !== null) {
       const parsedConfig = JSON.parse(jsonValue);
-      // Garantir que a configuração tenha todos os campos esperados
       return { ...DEFAULT_CONFIG, ...parsedConfig };
     }
     return DEFAULT_CONFIG;
