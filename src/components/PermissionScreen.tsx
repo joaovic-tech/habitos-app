@@ -4,7 +4,6 @@ import { colorScheme } from "nativewind";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { requestPermissionsAsync } from "@/services/NotificationService";
 import { saveConfig, getConfig } from "@/storage/configStorage";
-import { router } from "expo-router";
 
 interface PermissionScreenProps {
   onPermissionGranted: () => void;
@@ -21,26 +20,19 @@ export function PermissionScreen({
   const handleRequestPermissions = async () => {
     const status = await requestPermissionsAsync();
     try {
-      // Obtém as configurações atuais para não sobrescrever outras configurações
       const currentConfig = await getConfig();
-
       if (status.granted) {
-        // Salva a permissão nas configurações mantendo outras configs
         await saveConfig({
           ...currentConfig,
           permissionNotification: true,
         });
-        // Notifica o componente pai que a permissão foi concedida
         onPermissionGranted();
       } else {
-        console.log("Permissão negada para notificações.");
-        // Salva que o usuário negou a permissão
         await saveConfig({
           ...currentConfig,
           permissionNotification: false,
         });
-        // Não recarrega mais a página, deixa o fluxo natural do layout acontecer
-        onPermissionGranted(); // Isso fará o layout decidir o que mostrar
+        onPermissionGranted();
       }
     } catch (error) {
       console.error("Erro ao salvar configuração:", error);
@@ -52,24 +44,35 @@ export function PermissionScreen({
       <SafeAreaView className="flex-1 bg-neutral-200 dark:bg-neutral-900">
         <Image
           source={starImageSource}
-          className="absolute top-0 right-0 w-screen h-screen opacity-50"
-          resizeMode="stretch"
+          className="absolute top-0 right-0 w-screen h-screen opacity-40"
+          resizeMode="cover"
         />
-        <View className="items-center justify-start flex-1 gap-6 px-6">
-          <Text className="text-4xl text-center text-neutral-800 dark:text-neutral-100 font-dosis-bold">
-            Bem vindo ao App Hábitos
-          </Text>
+        <View className="items-center justify-center flex-1 px-6">
+          <View className="items-center w-full max-w-xl gap-8 p-8 border border-blue-100 shadow-lg bg-white/80 dark:bg-neutral-800/80 rounded-3xl dark:border-neutral-700">
+            <View className="relative items-center w-20 h-20">
+              <View className="absolute items-center w-20 h-20 p-2 text-center bg-blue-600 rounded-lg animate-bounce">
+                <Text className="m-auto text-5xl text-white">H</Text>
+              </View>
+            </View>
 
-          <Text className="text-base text-center text-neutral-600 dark:text-neutral-300 font-dosis">
-            Para continuar, permita que o app envie notificações para te ajudar
-            a manter seus hábitos em dia.
-          </Text>
-
-          <Button
-            label="Permitir Notificações"
-            variant="primary"
-            onPress={async () => handleRequestPermissions()}
-          />
+            <Text className="text-4xl tracking-tight text-center text-blue-600 font-dosis-bold">
+              Bem-vindo ao App Hábitos
+            </Text>
+            <Text className="mb-2 text-lg text-center text-neutral-700 dark:text-neutral-200 font-dosis">
+              Para continuar, permita que o app envie notificações para te
+              ajudar a manter seus hábitos em dia.
+            </Text>
+            <Button
+              label="Permitir Notificações"
+              variant="primary"
+              className="mt-2 shadow-md shadow-blue-300 dark:shadow-blue-900"
+              onPress={handleRequestPermissions}
+            />
+            <Text className="mt-2 text-xs text-center text-neutral-500 dark:text-neutral-400">
+              Você pode alterar essa permissão depois nas configurações do seu
+              dispositivo.
+            </Text>
+          </View>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

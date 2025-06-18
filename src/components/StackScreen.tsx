@@ -24,7 +24,7 @@ export default function StackScreen({ title }: StackScreenProps) {
   return (
     <Stack.Screen
       options={{
-        headerShown: true,
+        headerShown: false,
         animation: animationType,
         statusBarStyle: colorScheme.get() === "dark" ? "light" : "dark",
         headerBackground: () => (

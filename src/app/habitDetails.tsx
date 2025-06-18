@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import * as habitsStorage from "@/storage/habitsStorage";
 import { Feather } from "@expo/vector-icons";
@@ -12,6 +12,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import StackScreen from "@/components/StackScreen";
 import { colors } from "@/styles/colors";
 import { colorScheme } from "nativewind";
+import NotificationSchedule from "@/components/NotificationSchedule";
 
 const DEFAULT_ALERTS_PER_DAY = [1, 2, 3, 4, 5, 6];
 
@@ -30,8 +31,30 @@ export default function HabitDetailsScreen() {
   const { toast } = useToast();
 
   const isEditMode = !!params.id;
-  const [startTime, setStartTime] = useState(new Date(dateTimeStart));
-  const [endTime, setEndTime] = useState(new Date(dateTimeEnd));
+
+  // Initialize times based on edit mode
+  const getInitialStartTime = () => {
+    if (isEditMode && params.startTime) {
+      const [hours, minutes] = params.startTime.split(":").map(Number);
+      const date = new Date();
+      date.setHours(hours, minutes, 0, 0);
+      return date;
+    }
+    return new Date(dateTimeStart);
+  };
+
+  const getInitialEndTime = () => {
+    if (isEditMode && params.endTime) {
+      const [hours, minutes] = params.endTime.split(":").map(Number);
+      const date = new Date();
+      date.setHours(hours, minutes, 0, 0);
+      return date;
+    }
+    return new Date(dateTimeEnd);
+  };
+
+  const [startTime, setStartTime] = useState(getInitialStartTime());
+  const [endTime, setEndTime] = useState(getInitialEndTime());
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [alertsPerDay, setAlertsPerDay] = useState(
@@ -155,6 +178,18 @@ export default function HabitDetailsScreen() {
     }
   };
 
+  // Calcula o número máximo de alertas possíveis para o intervalo selecionado
+  const getMaxAlerts = () => {
+    const diffMs = endTime.getTime() - startTime.getTime();
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    // Mínimo de 30 minutos entre alertas
+    return Math.max(1, Math.floor(diffMinutes / 30) + 1);
+  };
+  const maxAlerts = getMaxAlerts();
+  const availableAlerts = DEFAULT_ALERTS_PER_DAY.filter(
+    (count) => count <= maxAlerts
+  );
+
   const isDarkMode = colorScheme.get() === "dark";
 
   return (
@@ -243,7 +278,7 @@ export default function HabitDetailsScreen() {
               Alertas por dia
             </Text>
             <View className="flex-row flex-wrap gap-3">
-              {DEFAULT_ALERTS_PER_DAY.map((count) => (
+              {availableAlerts.map((count) => (
                 <TouchableOpacity
                   key={count}
                   onPress={() => handleAlertsChange(count)}
@@ -252,6 +287,7 @@ export default function HabitDetailsScreen() {
                       ? "bg-blue-600"
                       : "bg-white border border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700"
                   }`}
+                  disabled={count > maxAlerts}
                 >
                   <Text
                     className={`text-base font-dosis-bold ${
@@ -267,6 +303,13 @@ export default function HabitDetailsScreen() {
             </View>
           </View>
         </View>
+
+        {/* Notification Schedule */}
+        <NotificationSchedule
+          startTime={startTime}
+          endTime={endTime}
+          alertsPerDay={alertsPerDay}
+        />
 
         <View className="flex-col gap-4">
           {/* Save Button */}

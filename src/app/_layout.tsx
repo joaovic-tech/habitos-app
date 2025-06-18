@@ -17,6 +17,14 @@ import {
 import { ToastProvider } from "@/components/shared/Toast";
 import { PermissionScreen } from "@/components/PermissionScreen";
 import { allowsNotificationsAsync } from "@/services/NotificationService";
+import { getAll as getAllHabits } from "@/storage/habitsStorage";
+import { cancelAllNotifications } from "@/services/HabitSchedulerService";
+
+// Inicializa o gerenciador de ciclo de vida das notificações
+import "@/services/NotificationLifecycleService";
+
+// Inicializa o debugger de notificações (dev only)
+import "@/utils/notificationDebugger";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -52,6 +60,12 @@ export default function RootLayout() {
   useEffect(() => {
     async function loadUserConfig() {
       try {
+        // Limpa notificações órfãs se não houver hábitos na inicialização
+        const habits = await getAllHabits();
+        if (habits.length === 0) {
+          await cancelAllNotifications();
+        }
+
         const [userConfig, permissionSystem] = await Promise.all([
           getConfig(),
           allowsNotificationsAsync(),
