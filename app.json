@@ -2,17 +2,12 @@
   "expo": {
     "name": "habitos-app",
     "slug": "habitos-app",
-    "version": "1.0.0",
+    "version": "1.0.0-beta.1",
     "scheme": "habitosApp",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#121214"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.joaovictech.habitosapp",
@@ -23,10 +18,14 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#121214"
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.joaovictech.habitospp",
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.SCHEDULE_EXACT_ALARM"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -40,8 +39,23 @@
         "expo-notifications",
         {
           "icon": "./assets/images/notification_icon.png",
-          "color": "#121214",
-          "iosDisplayInForeground": true
+          "color": "#2563EB",
+          "iosDisplayInForeground": true,
+          "sounds": [
+            "./assets/sounds/notification_sound.wav"
+          ]
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "backgroundColor": "#E5E5E5",
+          "imageWidth": 200,
+          "dark": {
+            "image": "./assets/images/splash-icon.png",
+            "backgroundColor": "#171717"
+          }
         }
       ]
     ],
