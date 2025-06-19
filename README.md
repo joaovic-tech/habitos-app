@@ -32,6 +32,20 @@ Aplicativo de gerenciamento de hábitos desenvolvido com React Native, TypeScrip
 - Exclusão de hábitos com animação
 - Suporte a tema claro/escuro
 
+## 📱 Demonstração
+
+### Capturas de Tela
+
+| Modo Claro | Modo Escuro |
+|------------|-------------|
+| ![Light Mode](./template/light-mode.jpeg) | ![Dark Mode](./template/dark-mode.jpeg) |
+
+### Vídeo Demonstrativo
+
+![Demonstração do App](./template/demonstracao.mp4)
+
+*Vídeo mostrando as principais funcionalidades do aplicativo em ação*
+
 ## Estrutura do Projeto
 
 - `/src/app` - Telas do aplicativo
